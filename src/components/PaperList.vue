@@ -4,8 +4,18 @@ const paperDataStore = usePaperDataStore();
 </script>
 
 <template>
-  <q-virtual-scroll :items="paperDataStore.allData" separator v-slot="{ item }">
-    <q-item :key="item.doi">
+  <q-virtual-scroll
+    :items="paperDataStore.allData"
+    bordered
+    separator
+    v-slot="{ item }"
+  >
+    <q-item
+      :key="item.doi"
+      clickable
+      v-ripple
+      @click="paperDataStore.selectedPaper = item"
+    >
       <q-item-section>
         <q-item-label>{{ item.title }}</q-item-label>
         <q-item-label caption lines="2">{{

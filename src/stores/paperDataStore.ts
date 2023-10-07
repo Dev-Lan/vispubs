@@ -21,6 +21,8 @@ export interface PaperDataStoreState {
 export const usePaperDataStore = defineStore('paperDataStore', () => {
   const allData = ref<PaperInfo[] | null>(null);
 
+  const selectedPaper = ref<PaperInfo | null>(null);
+
   function getAward(paperInfo: PaperInfo): string {
     const key = paperInfo.award;
     if (key === 'HM') return 'Honorable Mention';
@@ -69,5 +71,5 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return header.slice(0, 1).toLowerCase() + header.slice(1);
   }
 
-  return { allData, getAward, getConference, getAuthors };
+  return { allData, selectedPaper, getAward, getConference, getAuthors };
 });
