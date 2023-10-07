@@ -1,14 +1,30 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
 </script>
 
 <template>
-  <div v-if="paperDataStore.allData">
-    <div>Title: {{ paperDataStore.allData[0].title }}</div>
-    <div>Authors: {{ paperDataStore.allData[0].authorNames }}</div>
-  </div>
+  <q-list v-if="paperDataStore.allData">
+    <q-item v-for="paperInfo in paperDataStore.allData" :key="paperInfo.doi">
+      <q-item-section>
+        <q-item-label>{{ paperInfo.title }}</q-item-label>
+        <q-item-label caption lines="2">{{
+          paperInfo.authorNames
+        }}</q-item-label>
+      </q-item-section>
+
+      <q-item-section side top>
+        <q-item-label caption>{{
+          `${paperInfo.conference}, ${paperInfo.year}`
+        }}</q-item-label>
+        <span v-if="paperInfo.award">
+          <span>{{ paperInfo.award }} </span>
+          <q-icon name="emoji_events" color="primary" size="xs" />
+        </span>
+      </q-item-section>
+    </q-item>
+    <q-separator spaced inset />
+  </q-list>
 </template>
 
 <style scoped lang="scss"></style>

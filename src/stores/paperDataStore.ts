@@ -9,7 +9,8 @@ export interface PaperInfo {
   doi: string;
   year: number;
   abstract: string;
-  conferenct: string;
+  conference: string;
+  award: string;
 }
 
 export interface PaperDataStoreState {
