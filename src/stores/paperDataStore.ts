@@ -22,6 +22,44 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   const allData = ref<PaperInfo[] | null>(null);
 
   const selectedPaper = ref<PaperInfo | null>(null);
+  const selectedPaperIndex = ref<number | null>(null);
+
+  function selectPaper(index: number): void {
+    if (allData.value === null) return;
+    selectedPaperIndex.value = index;
+    selectedPaper.value = allData.value[index];
+  }
+
+  function previousPaper(): void {
+    if (allData.value === null) return;
+    if (selectedPaperIndex.value === null) {
+      selectPaper(0);
+      return;
+    }
+    selectPaper(Math.max(selectedPaperIndex.value - 1, 0));
+  }
+
+  function nextPaper(): void {
+    if (allData.value === null) return;
+    if (selectedPaperIndex.value === null) {
+      selectPaper(0);
+      return;
+    }
+    selectPaper(
+      Math.min(selectedPaperIndex.value + 1, allData.value.length - 1)
+    );
+  }
+
+  function deselectPaper(): void {
+    selectedPaper.value = null;
+    selectedPaperIndex.value = null;
+  }
+
+  const progressDisplay = computed<string>(() => {
+    if (selectedPaperIndex.value === null) return '';
+    if (allData.value === null) return '';
+    return `${selectedPaperIndex.value + 1} of ${allData.value.length}`;
+  });
 
   function getAward(paperInfo: PaperInfo): string {
     const key = paperInfo.award;
@@ -71,5 +109,17 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return header.slice(0, 1).toLowerCase() + header.slice(1);
   }
 
-  return { allData, selectedPaper, getAward, getConference, getAuthors };
+  return {
+    allData,
+    selectedPaper,
+    previousPaper,
+    nextPaper,
+    selectedPaperIndex,
+    progressDisplay,
+    selectPaper,
+    deselectPaper,
+    getAward,
+    getConference,
+    getAuthors,
+  };
 });

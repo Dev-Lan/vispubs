@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { usePaperDataStore } from 'src/stores/paperDataStore';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+import { PaperInfo, usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
 </script>
 
@@ -8,13 +10,13 @@ const paperDataStore = usePaperDataStore();
     :items="paperDataStore.allData"
     bordered
     separator
-    v-slot="{ item }"
+    v-slot="{ item, index }"
   >
     <q-item
       :key="item.doi"
       clickable
       v-ripple
-      @click="paperDataStore.selectedPaper = item"
+      @click="paperDataStore.selectPaper(index)"
     >
       <q-item-section>
         <q-item-label>{{ item.title }}</q-item-label>
