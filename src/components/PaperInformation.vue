@@ -58,7 +58,7 @@ function getAuthorFormLink(author: string): string {
         icon-right="open_in_new"
         flat
         no-caps
-        size="xl"
+        size="lg"
       >
       </q-btn>
     </div>
@@ -103,6 +103,7 @@ function getAuthorFormLink(author: string): string {
           icon-right="help"
           flat
           no-caps
+          size="md"
         />
       </template>
     </div>
