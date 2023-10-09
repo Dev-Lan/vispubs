@@ -21,7 +21,10 @@ const paperDataStore = usePaperDataStore();
       <q-item-section>
         <q-item-label>{{ item.title }}</q-item-label>
         <q-item-label caption lines="2">{{
-          paperDataStore.getAuthors(item).join(', ')
+          paperDataStore
+            .getAuthors(item)
+            .map((d) => d.displayName)
+            .join(', ')
         }}</q-item-label>
       </q-item-section>
 

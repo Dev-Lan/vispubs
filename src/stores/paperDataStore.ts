@@ -5,7 +5,6 @@ import { parse, type ParseResult } from 'papaparse';
 
 export interface PaperInfo {
   title: string;
-  authorNames: string;
   authorNamesDeduped: string;
   doi: string;
   year: number;
@@ -75,7 +74,12 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return key;
   }
 
-  function getAuthors(paperInfo: PaperInfo): string[] {
+  interface AuthorName {
+    displayName: string; // e.g. 'Devin Lange'
+    dedupedName: string; //  e.g. 'Devin Lange 0007'
+  }
+
+  function getAuthors(paperInfo: PaperInfo): AuthorName[] {
     const authors = paperInfo.authorNamesDeduped;
     if (authors == null) {
       return [];
@@ -84,7 +88,8 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
       const nameChunks = name.split(' ').filter((chunk: string) => {
         return isNaN(parseInt(chunk));
       });
-      return nameChunks.join(' ');
+      const displayName = nameChunks.join(' ');
+      return { displayName, dedupedName: name };
     });
     return authorList;
   }
@@ -98,7 +103,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     comments: '#',
     transformHeader,
     complete: (results: ParseResult<any>, _file: string) => {
-      console.log(results);
+      // console.log(results);
       allData.value = results.data;
     },
   });
