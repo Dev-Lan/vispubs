@@ -49,11 +49,19 @@ function getAuthorFormLink(author: string): string {
     ></q-btn>
   </q-toolbar>
 
-  <div v-if="paperDataStore.selectedPaper" class="q-ma-lg">
+  <div v-if="paperDataStore.selectedPaper" class="q-mt-sm q-mx-lg q-mb-lg">
     <div class="text-h5 text-center">
-      {{ paperDataStore.selectedPaper.title }}
+      <q-btn
+        :href="`https://doi.org/${paperDataStore.selectedPaper.doi}`"
+        :label="paperDataStore.selectedPaper.title"
+        target="_blank"
+        icon-right="open_in_new"
+        flat
+        no-caps
+        size="xl"
+      />
     </div>
-    <div class="q-ma-sm flex justify-center">
+    <div class="q-mb-md q-mx-sm flex justify-center">
       <template
         v-for="(
           { displayName, dedupedName }, index
@@ -67,6 +75,7 @@ function getAuthorFormLink(author: string): string {
           target="_blank"
           icon-right="open_in_new"
           flat
+          no-caps
         />
         <q-btn
           v-else
@@ -75,6 +84,7 @@ function getAuthorFormLink(author: string): string {
           target="_blank"
           icon-right="help"
           flat
+          no-caps
         />
       </template>
     </div>
