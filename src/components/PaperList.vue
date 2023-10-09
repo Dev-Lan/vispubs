@@ -32,10 +32,10 @@ const paperDataStore = usePaperDataStore();
         <q-item-label caption>{{
           `${paperDataStore.getConference(item)}, ${item.year}`
         }}</q-item-label>
-        <q-item-label v-if="item.award"
+        <q-badge v-if="item.award" color="positive" outline
           >{{ paperDataStore.getAward(item) }}
-          <q-icon name="emoji_events" color="primary" size="xs" />
-        </q-item-label>
+          <q-icon name="emoji_events" color="positive" size="xs" />
+        </q-badge>
       </q-item-section>
     </q-item>
   </q-virtual-scroll>

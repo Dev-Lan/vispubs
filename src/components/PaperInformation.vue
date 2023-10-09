@@ -59,7 +59,25 @@ function getAuthorFormLink(author: string): string {
         flat
         no-caps
         size="xl"
-      />
+      >
+      </q-btn>
+    </div>
+    <div class="q-mb-sm q-mx-sm flex justify-center">
+      <div>
+        {{
+          `${paperDataStore.getConference(paperDataStore.selectedPaper)}, ${
+            paperDataStore.selectedPaper.year
+          }`
+        }}
+      </div>
+      <q-badge
+        outline
+        v-if="paperDataStore.selectedPaper.award"
+        color="positive"
+        class="q-ml-lg"
+        >{{ paperDataStore.getAward(paperDataStore.selectedPaper) }}
+        <q-icon name="emoji_events" color="positive" size="xs" />
+      </q-badge>
     </div>
     <div class="q-mb-md q-mx-sm flex justify-center">
       <template
