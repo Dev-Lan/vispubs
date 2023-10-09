@@ -16,9 +16,6 @@ const { width: containerWidth, height: outerContainerHeight } =
 </script>
 
 <template>
-  <q-page ref="container" class="row items-center justify-evenly">
-    <PaperList />
-  </q-page>
   <q-drawer
     v-model="rightDrawerOpen"
     side="right"
@@ -27,4 +24,9 @@ const { width: containerWidth, height: outerContainerHeight } =
   >
     <PaperInformation />
   </q-drawer>
+  <q-page-container>
+    <q-page ref="container" class="row items-center justify-evenly">
+      <PaperList />
+    </q-page>
+  </q-page-container>
 </template>

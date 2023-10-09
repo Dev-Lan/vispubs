@@ -8,10 +8,7 @@
         </q-tabs>
       </q-toolbar>
     </q-header>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
+    <router-view />
   </q-layout>
 </template>
 
