@@ -1955,7 +1955,7 @@
   dependencies:
     "brace-expansion" "^2.0.1"
 
-"minimist@^1.2.6":
+"minimist@^1.2.0", "minimist@^1.2.6":
   "integrity" "sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA=="
   "resolved" "https://registry.npmjs.org/minimist/-/minimist-1.2.8.tgz"
   "version" "1.2.8"
@@ -2236,6 +2236,13 @@
   "integrity" "sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA=="
   "resolved" "https://registry.npmjs.org/punycode/-/punycode-2.3.0.tgz"
   "version" "2.3.0"
+
+"push-dir@^0.4.1":
+  "integrity" "sha512-Nrrsly0c3kCfu725Jnif/s5adHpBwKCGWBttHVxTndF4iyGBSFtNi/pduFxHF5ks0kWtHcbA3XXP5MEra6iiCA=="
+  "resolved" "https://registry.npmjs.org/push-dir/-/push-dir-0.4.1.tgz"
+  "version" "0.4.1"
+  dependencies:
+    "minimist" "^1.2.0"
 
 "qs@6.11.0":
   "integrity" "sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q=="
