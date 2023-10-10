@@ -62,7 +62,7 @@ function getAuthorFormLink(author: string): string {
       >
       </q-btn>
     </div>
-    <div class="q-mb-sm q-mx-sm flex justify-center">
+    <div class="q-mb-sm q-mx-sm flex justify-center items-center">
       <div>
         {{
           `${paperDataStore.getConference(paperDataStore.selectedPaper)}, ${
