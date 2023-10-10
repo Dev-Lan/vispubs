@@ -3,6 +3,8 @@ import { defineStore } from 'pinia';
 
 import { parse, type ParseResult } from 'papaparse';
 
+import { useUrlSearchParams } from '@vueuse/core';
+
 export interface PaperInfo {
   title: string;
   authorNamesDeduped: string;
@@ -18,6 +20,8 @@ export interface PaperDataStoreState {
 }
 
 export const usePaperDataStore = defineStore('paperDataStore', () => {
+  const params = useUrlSearchParams('hash');
+
   const allData = ref<PaperInfo[] | null>(null);
 
   const selectedPaper = ref<PaperInfo | null>(null);
@@ -27,6 +31,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     if (allData.value === null) return;
     selectedPaperIndex.value = index;
     selectedPaper.value = allData.value[index];
+    params.paper = selectedPaper.value?.doi;
   }
 
   function previousPaper(): void {
@@ -52,6 +57,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   function deselectPaper(): void {
     selectedPaper.value = null;
     selectedPaperIndex.value = null;
+    params.paper = null;
   }
 
   const progressDisplay = computed<string>(() => {
@@ -105,6 +111,14 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     complete: (results: ParseResult<any>, _file: string) => {
       // console.log(results);
       allData.value = results.data;
+      if (params.paper) {
+        const selectedIndex = allData.value.findIndex(
+          (paperInfo: PaperInfo) => paperInfo.doi === params.paper
+        );
+        if (selectedIndex >= 0) {
+          selectPaper(selectedIndex);
+        }
+      }
     },
   });
 

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-const router = useRouter();
-import { PaperInfo, usePaperDataStore } from 'src/stores/paperDataStore';
+import { usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
 </script>
 
