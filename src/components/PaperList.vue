@@ -1,14 +1,22 @@
 <script setup lang="ts">
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
+
+// guaranteed to be loaded because of the v-if in the parent
+// not sure the impact but Quasar docs suggest to not use responsive
+// objects https://quasar.dev/vue-components/virtual-scroll#qvirtualscroll-api
+const papers = JSON.parse(JSON.stringify(paperDataStore.allData));
+const offset = 50; // height of header
 </script>
 
 <template>
   <q-virtual-scroll
-    :items="paperDataStore.allData"
+    :items="papers"
     bordered
     separator
     v-slot="{ item, index }"
+    class="flex-grow-1"
+    :style="`max-height: calc(100vh - ${offset}px);`"
   >
     <q-item
       :key="item.doi"
@@ -39,4 +47,8 @@ const paperDataStore = usePaperDataStore();
   </q-virtual-scroll>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.flex-grow-1 {
+  flex-grow: 1;
+}
+</style>

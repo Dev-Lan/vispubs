@@ -26,7 +26,8 @@ const { width: containerWidth, height: outerContainerHeight } =
   </q-drawer>
   <q-page-container>
     <q-page ref="container" class="row items-center justify-evenly">
-      <PaperList />
+      <PaperList v-if="paperDataStore.allData" />
+      <div v-else>loading...</div>
     </q-page>
   </q-page-container>
 </template>
