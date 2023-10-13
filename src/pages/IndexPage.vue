@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useElementSize } from '@vueuse/core';
 import { useKeypress } from 'vue3-keypress';
 

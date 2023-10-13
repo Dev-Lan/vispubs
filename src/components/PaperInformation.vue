@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 import { useAuthorStore } from 'src/stores/authorStore';
 const paperDataStore = usePaperDataStore();
