@@ -20,7 +20,7 @@
 
         <p>
           If you notice any mistakes, or would like to make a suggestion, please
-          <a href="https://github.com/Dev-Lan/vispubs/issues/new"
+          <a href="https://github.com/Dev-Lan/vispubs/issues"
             >let me know here.</a
           >
         </p>
