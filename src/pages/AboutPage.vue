@@ -10,6 +10,15 @@
         </p>
 
         <p>
+          Currently this site includes IEEE Visualization (IEEE VIS)
+          publications from 1990-2022. This is based on a subset of data from
+          this
+          <a href="https://sites.google.com/site/vispubdata/home?authuser=0"
+            >visualization publication dataset</a
+          >. Thank you to all the creators/maintainers of this dataset!
+        </p>
+
+        <p>
           If you notice any mistakes, or would like to make a suggestion, please
           <a href="https://github.com/Dev-Lan/vispubs/issues/new"
             >let me know here.</a
