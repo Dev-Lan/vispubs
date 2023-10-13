@@ -17,6 +17,9 @@ const { width: containerWidth, height: outerContainerHeight } =
 
 <template>
   <q-drawer
+    no-swipe-open
+    no-swipe-close
+    no-swipe-backdrop
     v-model="rightDrawerOpen"
     side="right"
     overlay
