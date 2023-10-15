@@ -10,6 +10,11 @@ const offset = 50; // height of header
 </script>
 
 <template>
+  <q-toolbar class="q-mt-sm">
+    <q-badge color="primary" outline>{{ papers.length }} papers</q-badge>
+
+    <q-space />
+  </q-toolbar>
   <q-virtual-scroll
     :items="papers"
     bordered
@@ -25,7 +30,10 @@ const offset = 50; // height of header
       @click="paperDataStore.selectPaper(index)"
     >
       <q-item-section>
-        <q-item-label>{{ item.title }}</q-item-label>
+        <q-item-label>
+          <q-badge color="primary" outline>{{ index + 1 }}</q-badge>
+          {{ item.title }}</q-item-label
+        >
         <q-item-label caption lines="2">{{
           paperDataStore
             .getAuthors(item)
