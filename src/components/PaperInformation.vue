@@ -107,9 +107,15 @@ function getAuthorFormLink(author: string): string {
       </template>
     </div>
     <div>
-      {{ paperDataStore.selectedPaper.abstract }}
+      <div class="mw-600">
+        {{ paperDataStore.selectedPaper.abstract }}
+      </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.mw-600 {
+  max-width: 600px;
+}
+</style>
