@@ -19,8 +19,9 @@ fetch(window.location.origin + '/data/changelog.md')
         <p>
           This website is a personal project to create a single website that
           contains all visualization publications. Currently this site includes
-          IEEE Visualization (IEEE VIS) publications from 1990-2022. This is
-          based on a subset of data from this
+          IEEE Visualization (IEEE VIS) publications from 1990–2022 and EuroVis
+          publications from 2008–2022. The VIS papers are based on a subset of
+          data from this
           <a href="https://sites.google.com/site/vispubdata/home?authuser=0"
             >visualization publication dataset</a
           >. Thank you to all the creators/maintainers of this dataset!
