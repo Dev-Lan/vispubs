@@ -106,7 +106,7 @@ function getAuthorFormLink(author: string): string {
         />
       </template>
     </div>
-    <div>
+    <div class="flex flex-center">
       <div class="mw-600">
         {{ paperDataStore.selectedPaper.abstract }}
       </div>
