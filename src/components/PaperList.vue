@@ -6,13 +6,13 @@ const paperDataStore = usePaperDataStore();
 // not sure the impact but Quasar docs suggest to not use responsive
 // objects https://quasar.dev/vue-components/virtual-scroll#qvirtualscroll-api
 const papers = JSON.parse(JSON.stringify(paperDataStore.allData));
-const offset = 50; // height of header
+const offset = 50 * 2; // height of header + inner toolbar
 </script>
 
 <template>
-  <q-toolbar class="q-mt-sm">
+  <q-toolbar>
     <q-badge color="primary" outline>{{ papers.length }} papers</q-badge>
-
+    <!-- warning: if spacing is changed, offset will have to change -->
     <q-space />
   </q-toolbar>
   <q-virtual-scroll
