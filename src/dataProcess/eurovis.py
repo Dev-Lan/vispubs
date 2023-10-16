@@ -7,31 +7,39 @@ from bs4 import BeautifulSoup, NavigableString
 
 # source page with links to all years of EuroVis
 # https://dblp.org/db/conf/vissym/index.html
-
-# 2022
-# https://dblp.org/db/journals/cgf/cgf41.html#nr3
 def main():
     csv_string = 'Conference,Year,Title,DOI,Abstract,AuthorNames-Deduped,Award\n'
 
     flat_list_urls = {'https://dblp.org/db/journals/cgf/cgf41.html#nr3'}
     url_list = [
-        # 'https://dblp.org/db/journals/cgf/cgf41.html#nr3', # 2022
-        # 'https://dblp.org/db/journals/cgf/cgf40.html#nr3', # 2021
-        # 'https://dblp.org/db/journals/cgf/cgf39.html#nr3',
-        # 'https://dblp.org/db/journals/cgf/cgf38.html#nr3',
-        # 'https://dblp.org/db/journals/cgf/cgf37.html#nr3', # 2018
-        # 'https://dblp.org/db/journals/cgf/cgf36.html#nr3', 
-        # 'https://dblp.org/db/journals/cgf/cgf35.html#nr3',
-        # 'https://dblp.org/db/journals/cgf/cgf34.html#nr3', # 2015
-        # 'https://dblp.org/db/journals/cgf/cgf33.html#nr3',
-        # 'https://dblp.org/db/journals/cgf/cgf32.html#nr3', # 2013
-        # 'https://dblp.org/db/journals/cgf/cgf31.html#nr3pt1',
-        # 'https://dblp.org/db/journals/cgf/cgf30.html#nr3', # 2011 (keynote/capstone)
+        'https://dblp.org/db/journals/cgf/cgf41.html#nr3', # 2022
+        'https://dblp.org/db/journals/cgf/cgf40.html#nr3', # 2021
+        'https://dblp.org/db/journals/cgf/cgf39.html#nr3',
+        'https://dblp.org/db/journals/cgf/cgf38.html#nr3',
+        'https://dblp.org/db/journals/cgf/cgf37.html#nr3', # 2018
+        'https://dblp.org/db/journals/cgf/cgf36.html#nr3', 
+        'https://dblp.org/db/journals/cgf/cgf35.html#nr3',
+        'https://dblp.org/db/journals/cgf/cgf34.html#nr3', # 2015
+        'https://dblp.org/db/journals/cgf/cgf33.html#nr3',
+        'https://dblp.org/db/journals/cgf/cgf32.html#nr3', # 2013
+        'https://dblp.org/db/journals/cgf/cgf31.html#nr3pt1',
+        'https://dblp.org/db/journals/cgf/cgf30.html#nr3', # 2011 (keynote/capstone)
         'https://dblp.org/db/journals/cgf/cgf29.html#nr3',
         'https://dblp.org/db/journals/cgf/cgf28.html#nr3',
-        'https://dblp.org/db/journals/cgf/cgf27.html#nr3' # 2008
+        'https://dblp.org/db/journals/cgf/cgf27.html#nr3', # 2008
+        # 'https://dblp.org/db/conf/vissym/eurovis2007.html',
+        # 'https://dblp.org/db/conf/vissym/eurovis2006.html',
+        # 'https://dblp.org/db/conf/vissym/eurovis2005.html',
+        # 'https://dblp.org/db/conf/vissym/vissym2004.html', # nested, skip inited
+        # 'https://dblp.org/db/conf/vissym/vissym2003.html',
+        # 'https://dblp.org/db/conf/vissym/vissym2002.html',
+        # 'https://dblp.org/db/conf/vissym/vissym2001.html',
+        # 'https://dblp.org/db/conf/vissym/vissym2000.html',
+        # 'https://dblp.org/db/conf/vissym/vissym1999.html'
+
     ]
-    # TODO, get abstract, get 2008 - 2010 to work, get 1999 to 2007
+    #get 1999 to 2007
+    # pre 2007, this may be enough document.getElementsByClassName('publ-list')
     # https://api.crossref.org/${DOI}/transform/application/vnd.crossref.unixsd+xml
 
     # 2022 single list format

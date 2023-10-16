@@ -100,7 +100,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return authorList;
   }
 
-  parse(window.location.origin + '/data/VIS.csv', {
+  parse(window.location.origin + '/data/papers.csv', {
     header: true,
     dynamicTyping: true,
     skipEmptyLines: true,
