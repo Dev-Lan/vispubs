@@ -2,7 +2,7 @@ import requests
 import csv 
 
 
-
+# TODO: If this is reused then <jats> should be stripped more systematically.
 def get_abstract_from_doi(doi):
     base_url = "https://api.crossref.org/works/"
     url = f"{base_url}{doi}"
