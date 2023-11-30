@@ -8,12 +8,12 @@ def strip_xml_tags(text):
 	clean = re.compile('<.*?>')
 	return re.sub(clean, '', text)
 
-def get_abstract_from_doi(doi):
+def get_abstract_from_doi_crossref(doi):
     base_url = "https://api.crossref.org/works/"
     url = f"{base_url}{doi}"
 
-    # sleep for 0.2 seconds to avoid rate limiting
-    time.sleep(0.2)
+    # # sleep for 0.2 seconds to avoid rate limiting
+    # time.sleep(0.2)
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
@@ -24,6 +24,30 @@ def get_abstract_from_doi(doi):
     except Exception as e:
         print(f"Error fetching abstract for DOI {doi}: {e}")
         return None
+	
+
+def get_abstract_from_doi_semantic(doi):
+	base_url = "https://api.semanticscholar.org/v1/paper/"
+	url = f"{base_url}{doi}"
+
+	# # sleep for 0.2 seconds to avoid rate limiting
+	# time.sleep(0.2)
+	try:
+		response = requests.get(url)
+		response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
+		result = response.json()
+		abstract = result['abstract']
+		abstract = strip_xml_tags(abstract)
+		return abstract
+	except Exception as e:
+		print(f"Error fetching abstract for DOI {doi}: {e}")
+		return None
+
+
+def get_abstract_from_doi(doi):
+	abstract = get_abstract_from_doi_semantic(doi)
+	if abstract is None:
+		return get_abstract_from_doi_crossref(doi)
     
 # 0 Conference
 # 1 Year
@@ -35,7 +59,7 @@ def get_abstract_from_doi(doi):
 
 abstracts_found = 0
 abstracts_missing = 0
-with open("papers.csv", "r") as source: 
+with open("eurovis-pre-2008.csv", "r") as source: 
 	reader = csv.reader(source)
 	with open("papers-abstracted.csv", "w") as result:
 		writer = csv.writer(result) 
