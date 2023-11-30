@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### Nov 30, 2023
+
+- Remove XML tags from abstracts
+
 ###### Oct 16, 2023
 
 - add EuroVis papers from 2022 to 2008
