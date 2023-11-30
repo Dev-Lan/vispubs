@@ -1,19 +1,25 @@
 import requests
 import csv 
+import re
+import time
 
+def strip_xml_tags(text):
+	'''Remove XML tags from a string'''
+	clean = re.compile('<.*?>')
+	return re.sub(clean, '', text)
 
-# TODO: If this is reused then <jats> should be stripped more systematically.
 def get_abstract_from_doi(doi):
     base_url = "https://api.crossref.org/works/"
     url = f"{base_url}{doi}"
 
+    # sleep for 0.2 seconds to avoid rate limiting
+    time.sleep(0.2)
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
         result = response.json()
         abstract = result['message']['abstract']
-        abstract = abstract.removeprefix('<jats:title>Abstract</jats:title><jats:p>')
-        abstract = abstract.removesuffix('</jats:p>')
+        abstract = strip_xml_tags(abstract)
         return abstract
     except Exception as e:
         print(f"Error fetching abstract for DOI {doi}: {e}")
