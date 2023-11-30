@@ -12,8 +12,6 @@ with open("papers.csv", "r") as source:
 		writer = csv.writer(result) 
 		for r in reader: 
 			print(r[1], r[3])
-			if r[4] == '':
-				continue
 			abstract = strip_xml_tags(r[4])
 
 			writer.writerow((r[0], r[1], r[2], r[3], abstract, r[5], r[6]))
