@@ -45,9 +45,10 @@ def get_abstract_from_doi_semantic(doi):
 
 
 def get_abstract_from_doi(doi):
-	abstract = get_abstract_from_doi_semantic(doi)
+	abstract = get_abstract_from_doi_crossref(doi)
 	if abstract is None:
-		return get_abstract_from_doi_crossref(doi)
+		abstract = get_abstract_from_doi_semantic(doi)
+	return abstract
     
 # 0 Conference
 # 1 Year
@@ -59,9 +60,9 @@ def get_abstract_from_doi(doi):
 
 abstracts_found = 0
 abstracts_missing = 0
-with open("eurovis-pre-2008.csv", "r") as source: 
+with open("VIS.csv", "r") as source: 
 	reader = csv.reader(source)
-	with open("papers-abstracted.csv", "w") as result:
+	with open("VIS-abstracted.csv", "w") as result:
 		writer = csv.writer(result) 
 		for r in reader: 
 			print(r[1], r[3])
