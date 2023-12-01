@@ -10,8 +10,13 @@ df2 = pd.read_csv('eurovis.csv')
 # Combine the DataFrames vertically using concat
 combined_df = pd.concat([df1, df2], axis=0, ignore_index=True)
 
-# Sort the combined DataFrame by "Year" and "Conference" columns
-combined_df = combined_df.sort_values(by=['Year', 'Conference'], ascending=[False, True], ignore_index=True)
+# Sort the combined DataFrame by "Year", "Conference", and "Title" columns
+combined_df['Title_lower'] = combined_df['Title'].str.lower()
+
+combined_df = combined_df.sort_values(by=['Year', 'Conference', 'Title_lower'], ascending=[False, True, True], ignore_index=True)
+
+# drop "Title_lower" column
+combined_df = combined_df.drop(columns=['Title_lower'])
 
 # Save the combined DataFrame to a new CSV file
 combined_df.to_csv('papers.csv', index=False)
