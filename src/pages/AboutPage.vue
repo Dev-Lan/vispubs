@@ -20,7 +20,7 @@ fetch(window.location.origin + '/data/changelog.md')
           This website is a personal project to create a single website that
           contains all visualization publications. Currently this site includes
           IEEE Visualization (IEEE VIS) publications from 1990–2022 and EuroVis
-          publications from 2008–2022. The VIS papers are based on a subset of
+          publications from 1999–2023. The VIS papers are based on a subset of
           data from this
           <a href="https://sites.google.com/site/vispubdata/home?authuser=0"
             >visualization publication dataset</a

@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### Dec 6, 2023
+
+- add EuroVis papers for 2023
+
 ###### Dec 1, 2023
 
 - add EuroVis papers from 2007 to 1999
