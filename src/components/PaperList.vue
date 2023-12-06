@@ -30,10 +30,7 @@ const offset = 50 * 2; // height of header + inner toolbar
       @click="paperDataStore.selectPaper(index)"
     >
       <q-item-section>
-        <q-item-label>
-          <q-badge color="primary" outline>{{ index + 1 }}</q-badge>
-          {{ item.title }}</q-item-label
-        >
+        <q-item-label> {{ item.title }}</q-item-label>
         <q-item-label caption lines="2">{{
           paperDataStore
             .getAuthors(item)
@@ -43,9 +40,12 @@ const offset = 50 * 2; // height of header + inner toolbar
       </q-item-section>
 
       <q-item-section side top>
-        <q-item-label caption>{{
-          `${paperDataStore.getConference(item)}, ${item.year}`
-        }}</q-item-label>
+        <q-item-label caption
+          ><span style="color: black">{{
+            `${paperDataStore.getConference(item)}, ${item.year}`
+          }}</span>
+          [{{ index + 1 }}]</q-item-label
+        >
         <q-badge v-if="item.award" color="positive" outline
           >{{ paperDataStore.getAward(item) }}
           <q-icon name="emoji_events" color="positive" size="xs" />
