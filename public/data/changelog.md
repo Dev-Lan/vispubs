@@ -3,6 +3,7 @@
 ###### Dec 6, 2023
 
 - add EuroVis papers for 2023
+- add homepage links for ~25 prolific authors
 
 ###### Dec 1, 2023
 
