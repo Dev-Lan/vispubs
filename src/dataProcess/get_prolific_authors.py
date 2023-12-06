@@ -49,6 +49,7 @@ for a in author_count:
 # sort by count
 author_count_list.sort(key=lambda x: x[1], reverse=True)
 
+print()
 print('--------------------------')
 print('Total unique authors:', len(author_count))
 print('Covered unique authors:', len(author_set))
@@ -74,7 +75,8 @@ while printed < 5:
         printed += 1
         top_count += count
 print('Top 5 unlinked author count:', top_count, "({:.2f}%)".format(top_count / total_author_count * 100))
-
+print('--------------------------')
+print()
 if not SAVE_TOP_AUTHORS:
     exit()
 
