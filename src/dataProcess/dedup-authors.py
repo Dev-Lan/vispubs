@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 input_file_path = "./temp/eurovis23.csv"
 references_file_path = "./temp/papers.csv"
 output_file_path = "./temp/eurovis23-dedup.csv"
+# TODO: Remove trailing whitespace on author names
 
 # Load the input file
 with open(input_file_path, "r") as input_file:
