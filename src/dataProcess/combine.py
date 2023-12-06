@@ -13,7 +13,7 @@ combined_df = pd.concat([df1, df2], axis=0, ignore_index=True)
 # Sort the combined DataFrame by "Year", "Conference", and "Title" columns
 combined_df['Title_lower'] = combined_df['Title'].str.lower()
 
-combined_df = combined_df.sort_values(by=['Year', 'Conference', 'Title_lower'], ascending=[False, True, True], ignore_index=True)
+combined_df = combined_df.sort_values(by=['Year', 'Conference', 'Title_lower'], ascending=[False, False, True], ignore_index=True)
 
 # drop "Title_lower" column
 combined_df = combined_df.drop(columns=['Title_lower'])
