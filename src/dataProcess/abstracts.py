@@ -23,6 +23,8 @@ def get_abstract_from_doi_crossref(doi):
         result = response.json()
         abstract = result['message']['abstract']
         abstract = strip_xml_tags(abstract)
+        # the string "Abstract" is sometimes prepended to the abstract
+        abstract = abstract.removeprefix('Abstract')
         return abstract
     except Exception as e:
         print(f"Error fetching abstract for DOI {doi}: {e}")
@@ -48,11 +50,9 @@ def get_abstract_from_doi_semantic(doi):
 
 
 def get_abstract_from_doi(doi):
-	abstract = get_abstract_from_doi_crossref(doi)
+	abstract = get_abstract_from_doi_semantic(doi)
 	if abstract is None:
-		abstract = get_abstract_from_doi_semantic(doi)
-	# the string "Abstract" is sometimes prepended to the abstract
-	abstract = abstract.removeprefix('Abstract')
+		abstract = get_abstract_from_doi_crossref(doi)
 	return abstract
     
 # 0 Conference
