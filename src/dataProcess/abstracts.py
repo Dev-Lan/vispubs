@@ -3,6 +3,9 @@ import csv
 import re
 import time
 
+INPUT_FILENAME = './temp/eurovis23-dedup-manual.csv'
+OUTPUT_FILENAME = './temp/eurovis23-abstracted.csv'
+
 def strip_xml_tags(text):
 	'''Remove XML tags from a string'''
 	clean = re.compile('<.*?>')
@@ -48,6 +51,8 @@ def get_abstract_from_doi(doi):
 	abstract = get_abstract_from_doi_crossref(doi)
 	if abstract is None:
 		abstract = get_abstract_from_doi_semantic(doi)
+	# the string "Abstract" is sometimes prepended to the abstract
+	abstract = abstract.removeprefix('Abstract')
 	return abstract
     
 # 0 Conference
@@ -60,9 +65,9 @@ def get_abstract_from_doi(doi):
 
 abstracts_found = 0
 abstracts_missing = 0
-with open("VIS.csv", "r") as source: 
+with open(INPUT_FILENAME, "r") as source: 
 	reader = csv.reader(source)
-	with open("VIS-abstracted.csv", "w") as result:
+	with open(OUTPUT_FILENAME, "w") as result:
 		writer = csv.writer(result) 
 		for r in reader: 
 			print(r[1], r[3])
