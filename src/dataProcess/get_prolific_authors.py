@@ -2,8 +2,8 @@ import csv
 
 INPUT_PAPERS_FILENAME = '../../public/data/papers.csv'
 INPUT_AUTHORS_FILENAME = '../../public/data/authors.csv'
-OUTPUT_FILENAME = './top_authors.txt'
-SAVE_TOP_AUTHORS = False
+OUTPUT_FILENAME = './temp/top_authors.txt'
+SAVE_TOP_AUTHORS = True
 # 0 Conference
 # 1 Year
 # 2 Title

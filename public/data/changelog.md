@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### Dec 8, 2023
+
+- add homepage links for ~20 authors
+
 ###### Dec 6, 2023
 
 - add EuroVis papers for 2023

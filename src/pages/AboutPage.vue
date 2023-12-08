@@ -31,7 +31,8 @@ fetch(window.location.origin + '/data/changelog.md')
           resources related to the publication. This includes link to authors
           research page. If you would like to suggest a website for an author,
           fill out
-          <a href="https://forms.gle/WuXG2ZSidd9A9Ns57">this form</a>.
+          <a href="https://forms.gle/WuXG2ZSidd9A9Ns57">this form</a>. The
+          change will be active on the website the next time I push an update.
         </p>
         <p>
           If you notice any mistakes, or would like to make a suggestion, please
