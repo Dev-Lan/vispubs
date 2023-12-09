@@ -132,21 +132,47 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   const searchText = ref<string>('');
   const allPapers = ref();
   const papers = computed<PaperInfo[]>(() => {
-    // get papers that match the search text
-    const search = searchText.value.toLowerCase();
-    if (search === '') return allPapers.value;
+    if (searchText.value === '') return allPapers.value;
     return allPapers.value.filter((paper: PaperInfo) => {
-      return (
-        (paper.title ?? '').toLowerCase().includes(search) ||
-        (paper.authorNamesDeduped ?? '').toLowerCase().includes(search) ||
-        // paper.doi.toLowerCase().includes(search) ||
-        // paper.year.toString().includes(search) ||
-        (paper.abstract ?? '').toLowerCase().includes(search)
-        // paper.conference.toLowerCase().includes(search) ||
-        // paper.award.toLowerCase().includes(search)
-      );
+      return paperMatchesQuery(searchText.value, paper);
     });
   });
+
+  function paperMatchesQuery(
+    query: string,
+    paper: PaperInfo,
+    matchCase = false,
+    useRegex = false
+  ): boolean {
+    const authors = getAuthors(paper);
+    for (const author of authors) {
+      if (
+        textMatchesQuery(query, author.displayName ?? '', matchCase, useRegex)
+      ) {
+        return true;
+      }
+    }
+    return (
+      textMatchesQuery(query, paper.title ?? '', matchCase, useRegex) ||
+      textMatchesQuery(query, paper.abstract ?? '', matchCase, useRegex)
+    );
+  }
+
+  function textMatchesQuery(
+    query: string,
+    text: string,
+    matchCase = false,
+    useRegex = false
+  ): boolean {
+    if (!matchCase) {
+      query = query.toLowerCase();
+      text = text.toLowerCase();
+    }
+    if (useRegex) {
+      return text.match(query) !== null;
+    }
+    return text.includes(query);
+  }
 
   return {
     allData,
