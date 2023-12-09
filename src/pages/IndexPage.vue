@@ -54,7 +54,7 @@ function nextPaper() {
     <PaperInformation />
   </q-drawer>
   <q-page-container>
-    <q-page ref="container" class="row items-center justify-evenly">
+    <q-page ref="container" class="items-center">
       <PaperList v-if="paperDataStore.allData" />
       <div v-else>loading...</div>
     </q-page>

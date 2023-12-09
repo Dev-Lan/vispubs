@@ -6,9 +6,8 @@ const paperDataStore = usePaperDataStore();
 // guaranteed to be loaded because of the v-if in the parent
 // not sure the impact but Quasar docs suggest to not use responsive
 // objects https://quasar.dev/vue-components/virtual-scroll#qvirtualscroll-api
-const papers = JSON.parse(JSON.stringify(paperDataStore.allData));
+// const papers = JSON.parse(JSON.stringify(paperDataStore.allData));
 const offset = 50 + 50; // height of header + inner toolbar
-const searchText = ref('');
 </script>
 
 <template>
@@ -20,23 +19,26 @@ const searchText = ref('');
       dense
       class="flex-grow-1 q-mr-md"
       label="Search (Title, Author, Abstract)"
-      v-model="searchText"
+      v-model="paperDataStore.searchText"
     >
       <template v-slot:append>
-        <q-icon v-if="searchText === ''" name="search" />
+        <q-icon v-if="paperDataStore.searchText === ''" name="search" />
         <q-icon
           v-else
           name="clear"
           class="cursor-pointer"
-          @click="searchText = ''"
+          @click="paperDataStore.searchText = ''"
         />
       </template>
     </q-input>
 
-    <q-badge color="primary" outline>{{ papers.length }} papers</q-badge>
+    <q-badge color="primary" outline
+      >{{ paperDataStore.papers.length }} papers</q-badge
+    >
   </q-toolbar>
   <q-virtual-scroll
-    :items="papers"
+    v-if="paperDataStore.papers.length > 0"
+    :items="paperDataStore.papers"
     bordered
     separator
     v-slot="{ item, index }"
@@ -73,6 +75,13 @@ const searchText = ref('');
       </q-item-section>
     </q-item>
   </q-virtual-scroll>
+  <q-card v-else flat bordered square>
+    <q-card-section>
+      <div class="text-h6">No papers found...</div>
+      with "{{ paperDataStore.searchText }}" in the <b>Title</b>,
+      <b>Author List</b>, or <b>Abstract</b>.
+    </q-card-section>
+  </q-card>
 </template>
 
 <style scoped lang="scss">

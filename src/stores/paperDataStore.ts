@@ -28,14 +28,14 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   const selectedPaperIndex = ref<number | null>(null);
 
   function selectPaper(index: number): void {
-    if (allData.value === null) return;
+    if (papers.value === null) return;
     selectedPaperIndex.value = index;
-    selectedPaper.value = allData.value[index];
+    selectedPaper.value = papers.value[index];
     params.paper = selectedPaper.value?.doi;
   }
 
   function previousPaper(): void {
-    if (allData.value === null) return;
+    if (papers.value === null) return;
     if (selectedPaperIndex.value === null) {
       selectPaper(0);
       return;
@@ -44,13 +44,13 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   }
 
   function nextPaper(): void {
-    if (allData.value === null) return;
+    if (papers.value === null) return;
     if (selectedPaperIndex.value === null) {
       selectPaper(0);
       return;
     }
     selectPaper(
-      Math.min(selectedPaperIndex.value + 1, allData.value.length - 1)
+      Math.min(selectedPaperIndex.value + 1, papers.value.length - 1)
     );
   }
 
@@ -62,8 +62,8 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
 
   const progressDisplay = computed<string>(() => {
     if (selectedPaperIndex.value === null) return '';
-    if (allData.value === null) return '';
-    return `${selectedPaperIndex.value + 1} of ${allData.value.length}`;
+    if (papers.value === null) return '';
+    return `${selectedPaperIndex.value + 1} of ${papers.value.length}`;
   });
 
   function getAward(paperInfo: PaperInfo): string {
@@ -111,6 +111,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     complete: (results: ParseResult<any>, _file: string) => {
       // console.log(results);
       allData.value = results.data;
+      allPapers.value = JSON.parse(JSON.stringify(allData.value));
       if (params.paper) {
         const selectedIndex = allData.value.findIndex(
           (paperInfo: PaperInfo) => paperInfo.doi === params.paper
@@ -128,6 +129,25 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return header.slice(0, 1).toLowerCase() + header.slice(1);
   }
 
+  const searchText = ref<string>('');
+  const allPapers = ref();
+  const papers = computed<PaperInfo[]>(() => {
+    // get papers that match the search text
+    const search = searchText.value.toLowerCase();
+    if (search === '') return allPapers.value;
+    return allPapers.value.filter((paper: PaperInfo) => {
+      return (
+        (paper.title ?? '').toLowerCase().includes(search) ||
+        (paper.authorNamesDeduped ?? '').toLowerCase().includes(search) ||
+        // paper.doi.toLowerCase().includes(search) ||
+        // paper.year.toString().includes(search) ||
+        (paper.abstract ?? '').toLowerCase().includes(search)
+        // paper.conference.toLowerCase().includes(search) ||
+        // paper.award.toLowerCase().includes(search)
+      );
+    });
+  });
+
   return {
     allData,
     selectedPaper,
@@ -140,5 +160,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     getAward,
     getConference,
     getAuthors,
+    papers,
+    searchText,
   };
 });
