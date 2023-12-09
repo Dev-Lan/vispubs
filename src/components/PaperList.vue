@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
 
@@ -6,14 +7,33 @@ const paperDataStore = usePaperDataStore();
 // not sure the impact but Quasar docs suggest to not use responsive
 // objects https://quasar.dev/vue-components/virtual-scroll#qvirtualscroll-api
 const papers = JSON.parse(JSON.stringify(paperDataStore.allData));
-const offset = 50 * 2; // height of header + inner toolbar
+const offset = 50 + 50; // height of header + inner toolbar
+const searchText = ref('');
 </script>
 
 <template>
   <q-toolbar>
-    <q-badge color="primary" outline>{{ papers.length }} papers</q-badge>
     <!-- warning: if spacing is changed, offset will have to change -->
-    <q-space />
+    <q-input
+      rounded
+      outlined
+      dense
+      class="flex-grow-1 q-mr-md"
+      label="Search (Title, Author, Abstract)"
+      v-model="searchText"
+    >
+      <template v-slot:append>
+        <q-icon v-if="searchText === ''" name="search" />
+        <q-icon
+          v-else
+          name="clear"
+          class="cursor-pointer"
+          @click="searchText = ''"
+        />
+      </template>
+    </q-input>
+
+    <q-badge color="primary" outline>{{ papers.length }} papers</q-badge>
   </q-toolbar>
   <q-virtual-scroll
     :items="papers"
