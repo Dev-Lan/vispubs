@@ -133,12 +133,26 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   const allPapers = ref();
   const papers = computed<PaperInfo[]>(() => {
     if (searchText.value === '') return allPapers.value;
+    const ignoreCase = matchCase.value === null;
+    let regex: RegExp | null = null;
+    if (useRegex.value !== null) {
+      regex = ignoreCase
+        ? new RegExp(searchText.value, 'i')
+        : new RegExp(searchText.value);
+    }
+    let query = searchText.value;
+    if (ignoreCase) {
+      query = query.toLowerCase();
+    }
     return allPapers.value.filter((paper: PaperInfo) => {
-      return paperMatchesQuery(searchText.value, paper);
+      return paperMatchesQuery(regex ?? query, paper);
     });
   });
 
-  function paperMatchesQuery(query: string, paper: PaperInfo): boolean {
+  function paperMatchesQuery(
+    query: string | RegExp,
+    paper: PaperInfo
+  ): boolean {
     const authors = getAuthors(paper);
     for (const author of authors) {
       if (textMatchesQuery(query, author.displayName ?? '')) {
@@ -151,14 +165,12 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     );
   }
 
-  function textMatchesQuery(query: string, text: string): boolean {
-    const ignoreCase = matchCase.value === null;
-    if (useRegex.value !== null) {
-      const regex = ignoreCase ? new RegExp(query, 'i') : new RegExp(query);
-      return regex.test(text);
+  function textMatchesQuery(query: string | RegExp, text: string): boolean {
+    if (typeof query !== 'string') {
+      // evaluate regex
+      return query.test(text);
     }
-    if (ignoreCase) {
-      query = query.toLowerCase();
+    if (matchCase.value === null) {
       text = text.toLowerCase();
     }
     return text.includes(query);
