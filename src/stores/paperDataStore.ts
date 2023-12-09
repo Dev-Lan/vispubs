@@ -138,41 +138,34 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     });
   });
 
-  function paperMatchesQuery(
-    query: string,
-    paper: PaperInfo,
-    matchCase = false,
-    useRegex = false
-  ): boolean {
+  function paperMatchesQuery(query: string, paper: PaperInfo): boolean {
     const authors = getAuthors(paper);
     for (const author of authors) {
-      if (
-        textMatchesQuery(query, author.displayName ?? '', matchCase, useRegex)
-      ) {
+      if (textMatchesQuery(query, author.displayName ?? '')) {
         return true;
       }
     }
     return (
-      textMatchesQuery(query, paper.title ?? '', matchCase, useRegex) ||
-      textMatchesQuery(query, paper.abstract ?? '', matchCase, useRegex)
+      textMatchesQuery(query, paper.title ?? '') ||
+      textMatchesQuery(query, paper.abstract ?? '')
     );
   }
 
-  function textMatchesQuery(
-    query: string,
-    text: string,
-    matchCase = false,
-    useRegex = false
-  ): boolean {
-    if (!matchCase) {
+  function textMatchesQuery(query: string, text: string): boolean {
+    const ignoreCase = matchCase.value === null;
+    if (useRegex.value !== null) {
+      const regex = ignoreCase ? new RegExp(query, 'i') : new RegExp(query);
+      return regex.test(text);
+    }
+    if (ignoreCase) {
       query = query.toLowerCase();
       text = text.toLowerCase();
     }
-    if (useRegex) {
-      return text.match(query) !== null;
-    }
     return text.includes(query);
   }
+
+  const matchCase = ref<string | null>(null);
+  const useRegex = ref<string | null>(null);
 
   return {
     allData,
@@ -188,5 +181,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     getAuthors,
     papers,
     searchText,
+    matchCase,
+    useRegex,
   };
 });

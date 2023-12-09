@@ -22,6 +22,33 @@ const offset = 50 + 50; // height of header + inner toolbar
       v-model="paperDataStore.searchText"
     >
       <template v-slot:append>
+        <q-btn-toggle
+          v-model="paperDataStore.matchCase"
+          bordered
+          no-caps
+          rounded
+          clearable
+          toggle-color="primary"
+          color="white"
+          text-color="primary"
+          dense
+          size="sm"
+          :options="[{ label: 'Match Case', value: 'matchCase' }]"
+        />
+
+        <q-btn-toggle
+          v-model="paperDataStore.useRegex"
+          bordered
+          no-caps
+          rounded
+          clearable
+          toggle-color="primary"
+          color="white"
+          text-color="primary"
+          dense
+          size="sm"
+          :options="[{ label: 'Use Regex', value: 'useRegex' }]"
+        />
         <q-icon v-if="paperDataStore.searchText === ''" name="search" />
         <q-icon
           v-else
