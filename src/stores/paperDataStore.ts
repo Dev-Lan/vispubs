@@ -137,8 +137,8 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     let regex: RegExp | null = null;
     if (useRegex.value !== null) {
       regex = ignoreCase
-        ? new RegExp(searchText.value, 'i')
-        : new RegExp(searchText.value);
+        ? new RegExp(searchText.value, 'mi')
+        : new RegExp(searchText.value, 'm');
     }
     let query = searchText.value;
     if (ignoreCase) {
@@ -153,16 +153,16 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     query: string | RegExp,
     paper: PaperInfo
   ): boolean {
+    const textArray: string[] = [];
     const authors = getAuthors(paper);
     for (const author of authors) {
-      if (textMatchesQuery(query, author.displayName ?? '')) {
-        return true;
-      }
+      textArray.push(author.displayName ?? '');
     }
-    return (
-      textMatchesQuery(query, paper.title ?? '') ||
-      textMatchesQuery(query, paper.abstract ?? '')
-    );
+    textArray.push(paper.title ?? '');
+    textArray.push(paper.abstract ?? '');
+    // combine all text into one string so regex can match across fields
+    // use ¶ as a separator because it is an unlikely character in the text
+    return textMatchesQuery(query, textArray.join('¶'));
   }
 
   function textMatchesQuery(query: string | RegExp, text: string): boolean {
