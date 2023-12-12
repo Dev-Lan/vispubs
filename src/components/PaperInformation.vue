@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 import { useAuthorStore } from 'src/stores/authorStore';
+import Highlighter from 'vue-highlight-words';
 const paperDataStore = usePaperDataStore();
 const authorStore = useAuthorStore();
 function authorHasWebsite(author: string): boolean {
@@ -21,6 +23,14 @@ function getAuthorFormLink(author: string): string {
   const encodedName = encodeURIComponent(author);
   return `https://docs.google.com/forms/d/e/1FAIpQLSfjSiQs92GtpDRItX69tFdmu0teSIFZPs5pXenoy3untsKV2Q/viewform?usp=pp_url&entry.1065422414=${encodedName}`;
 }
+
+const autoEscape = computed(() => {
+  return paperDataStore.useRegex ? false : true;
+});
+
+const searchWords = computed(() => {
+  return [paperDataStore.searchText];
+});
 </script>
 
 <template>
@@ -52,13 +62,18 @@ function getAuthorFormLink(author: string): string {
     <div class="text-h5 text-center">
       <q-btn
         :href="`https://doi.org/${paperDataStore.selectedPaper.doi}`"
-        :label="paperDataStore.selectedPaper.title"
         target="_blank"
         icon-right="open_in_new"
         flat
         no-caps
         size="lg"
       >
+        <Highlighter
+          highlightClassName="highlight"
+          :searchWords="searchWords"
+          :autoEscape="autoEscape"
+          :textToHighlight="paperDataStore.selectedPaper.title"
+        />
       </q-btn>
     </div>
     <div class="q-mb-sm q-mx-sm flex justify-center items-center">
@@ -88,27 +103,41 @@ function getAuthorFormLink(author: string): string {
         <q-btn
           v-if="authorHasWebsite(dedupedName)"
           :href="getAuthorWebsite(dedupedName)"
-          :label="displayName"
           target="_blank"
           icon-right="open_in_new"
           flat
           no-caps
-        />
+        >
+          <Highlighter
+            highlightClassName="highlight"
+            :searchWords="searchWords"
+            :autoEscape="autoEscape"
+            :textToHighlight="displayName"
+        /></q-btn>
         <q-btn
           v-else
           :href="getAuthorFormLink(dedupedName)"
-          :label="displayName"
           target="_blank"
           icon-right="help"
           flat
           no-caps
           size="md"
-        />
+          ><Highlighter
+            highlightClassName="highlight"
+            :searchWords="searchWords"
+            :autoEscape="autoEscape"
+            :textToHighlight="displayName"
+        /></q-btn>
       </template>
     </div>
     <div class="flex flex-center">
       <div class="mw-600">
-        {{ paperDataStore.selectedPaper.abstract }}
+        <Highlighter
+          highlightClassName="highlight"
+          :searchWords="searchWords"
+          :autoEscape="autoEscape"
+          :textToHighlight="paperDataStore.selectedPaper.abstract"
+        />
       </div>
     </div>
   </div>

@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed } from 'vue';
+import Highlighter from 'vue-highlight-words';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
 
-// guaranteed to be loaded because of the v-if in the parent
-// not sure the impact but Quasar docs suggest to not use responsive
-// objects https://quasar.dev/vue-components/virtual-scroll#qvirtualscroll-api
-// const papers = JSON.parse(JSON.stringify(paperDataStore.allData));
+const autoEscape = computed(() => {
+  return paperDataStore.useRegex ? false : true;
+});
+
+const searchWords = computed(() => {
+  return [paperDataStore.searchText];
+});
+
 const offset = 50 + 50; // height of header + inner toolbar
 </script>
 
@@ -79,13 +84,27 @@ const offset = 50 + 50; // height of header + inner toolbar
       @click="paperDataStore.selectPaper(index)"
     >
       <q-item-section>
-        <q-item-label> {{ item.title }}</q-item-label>
-        <q-item-label caption lines="2">{{
-          paperDataStore
-            .getAuthors(item)
-            .map((d) => d.displayName)
-            .join(', ')
-        }}</q-item-label>
+        <q-item-label>
+          <Highlighter
+            highlightClassName="highlight"
+            :searchWords="searchWords"
+            :autoEscape="autoEscape"
+            :textToHighlight="item.title"
+          />
+        </q-item-label>
+        <q-item-label caption lines="2">
+          <Highlighter
+            highlightClassName="highlight"
+            :searchWords="searchWords"
+            :autoEscape="autoEscape"
+            :textToHighlight="
+              paperDataStore
+                .getAuthors(item)
+                .map((d) => d.displayName)
+                .join(', ')
+            "
+          />
+        </q-item-label>
       </q-item-section>
 
       <q-item-section side top>

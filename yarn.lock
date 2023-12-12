@@ -1584,6 +1584,11 @@
   "resolved" "https://registry.npmjs.org/he/-/he-1.2.0.tgz"
   "version" "1.2.0"
 
+"highlight-words-core@^1.2.2":
+  "integrity" "sha512-BXUKIkUuh6cmmxzi5OIbUJxrG8OAk2MqoL1DtO3Wo9D2faJg2ph5ntyuQeLqaHJmzER6H5tllCDA9ZnNe9BVGg=="
+  "resolved" "https://registry.npmjs.org/highlight-words-core/-/highlight-words-core-1.2.2.tgz"
+  "version" "1.2.2"
+
 "html-minifier@^4.0.0":
   "integrity" "sha512-aoGxanpFPLg7MkIl/DDFYtb0iWz7jMFGqFhvEDZga6/4QTjneiD8I/NXL1x5aaoCp7FSIT6h/OhykDdPsbtMig=="
   "resolved" "https://registry.npmjs.org/html-minifier/-/html-minifier-4.0.0.tgz"
@@ -2854,6 +2859,13 @@
   "integrity" "sha512-aM4A58FVL0wV2ptYi+xzAjeg+pQVRyUcfBc5UkXAwQrR4t3WBhor50Izp2I+3Oo7+l+vWJ7u78DGcNzReb8S/A=="
   "resolved" "https://registry.npmjs.org/vue-gtag/-/vue-gtag-2.0.1.tgz"
   "version" "2.0.1"
+
+"vue-highlight-words@^3.0.1":
+  "integrity" "sha512-t6L0+KRaMzX5RVubWl6Sog+Aa+U0kHsbUlDIrln1VfajR2SEg+zQYfXov8UmX3MLNOfd6cv7MCM6LclqNlW4ww=="
+  "resolved" "https://registry.npmjs.org/vue-highlight-words/-/vue-highlight-words-3.0.1.tgz"
+  "version" "3.0.1"
+  dependencies:
+    "highlight-words-core" "^1.2.2"
 
 "vue-markdown-render@^2.1.0":
   "integrity" "sha512-MjSRZld0/IRZtvNl/gLV1Wp2bH9bgVMrWgs1FIzFmIWKRNsWqd2QDs9ZzS/8SteQycRxzU61YrX7NE1b194R0w=="
