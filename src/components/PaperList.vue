@@ -105,8 +105,9 @@ const offset = 50 + 50; // height of header + inner toolbar
   <q-card v-else flat bordered square>
     <q-card-section>
       <div class="text-h6">No papers found...</div>
-      with "{{ paperDataStore.searchText }}" in the <b>Title</b>,
-      <b>Author List</b>, or <b>Abstract</b>.
+      with {{ paperDataStore.useRegex ? 'Regex ' : '' }}"{{
+        paperDataStore.searchText
+      }}" in the <b>Title</b>, <b>Author List</b>, or <b>Abstract</b>.
     </q-card-section>
   </q-card>
 </template>
