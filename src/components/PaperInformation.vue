@@ -24,6 +24,9 @@ function getAuthorFormLink(author: string): string {
   return `https://docs.google.com/forms/d/e/1FAIpQLSfjSiQs92GtpDRItX69tFdmu0teSIFZPs5pXenoy3untsKV2Q/viewform?usp=pp_url&entry.1065422414=${encodedName}`;
 }
 
+const caseSensitive = computed(() => {
+  return paperDataStore.matchCase ? true : false;
+});
 const autoEscape = computed(() => {
   return paperDataStore.useRegex ? false : true;
 });
@@ -72,6 +75,7 @@ const searchWords = computed(() => {
           highlightClassName="highlight"
           :searchWords="searchWords"
           :autoEscape="autoEscape"
+          :caseSensitive="caseSensitive"
           :textToHighlight="paperDataStore.selectedPaper.title"
         />
       </q-btn>
@@ -112,6 +116,7 @@ const searchWords = computed(() => {
             highlightClassName="highlight"
             :searchWords="searchWords"
             :autoEscape="autoEscape"
+            :caseSensitive="caseSensitive"
             :textToHighlight="displayName"
         /></q-btn>
         <q-btn
@@ -136,6 +141,7 @@ const searchWords = computed(() => {
           highlightClassName="highlight"
           :searchWords="searchWords"
           :autoEscape="autoEscape"
+          :caseSensitive="caseSensitive"
           :textToHighlight="paperDataStore.selectedPaper.abstract"
         />
       </div>

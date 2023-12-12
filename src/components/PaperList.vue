@@ -4,6 +4,9 @@ import Highlighter from 'vue-highlight-words';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
 
+const caseSensitive = computed(() => {
+  return paperDataStore.matchCase ? true : false;
+});
 const autoEscape = computed(() => {
   return paperDataStore.useRegex ? false : true;
 });
@@ -89,6 +92,7 @@ const offset = 50 + 50; // height of header + inner toolbar
             highlightClassName="highlight"
             :searchWords="searchWords"
             :autoEscape="autoEscape"
+            :caseSensitive="caseSensitive"
             :textToHighlight="item.title"
           />
         </q-item-label>
@@ -97,6 +101,7 @@ const offset = 50 + 50; // height of header + inner toolbar
             highlightClassName="highlight"
             :searchWords="searchWords"
             :autoEscape="autoEscape"
+            :caseSensitive="caseSensitive"
             :textToHighlight="
               paperDataStore
                 .getAuthors(item)
