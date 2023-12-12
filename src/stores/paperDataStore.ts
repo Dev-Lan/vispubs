@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 
 import { parse, type ParseResult } from 'papaparse';
@@ -20,7 +20,7 @@ export interface PaperDataStoreState {
 }
 
 export const usePaperDataStore = defineStore('paperDataStore', () => {
-  const params = useUrlSearchParams('hash');
+  const params = useUrlSearchParams('history');
 
   const allData = ref<PaperInfo[] | null>(null);
 
@@ -113,7 +113,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
       allData.value = results.data;
       allPapers.value = JSON.parse(JSON.stringify(allData.value));
       if (params.paper) {
-        const selectedIndex = allData.value.findIndex(
+        const selectedIndex = papers.value.findIndex(
           (paperInfo: PaperInfo) => paperInfo.doi === params.paper
         );
         if (selectedIndex >= 0) {
@@ -129,7 +129,16 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return header.slice(0, 1).toLowerCase() + header.slice(1);
   }
 
-  const searchText = ref<string>('');
+  const searchText = ref<string>(params.search ?? '');
+
+  watch(searchText, () => {
+    if (searchText.value === '') {
+      params.search = null;
+      return;
+    }
+    params.search = searchText.value;
+  });
+
   const allPapers = ref();
   const papers = computed<PaperInfo[]>(() => {
     if (searchText.value === '') return allPapers.value;
