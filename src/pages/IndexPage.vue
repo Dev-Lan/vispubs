@@ -21,10 +21,12 @@ useKeypress({
     {
       keyCode: 'left',
       success: previousPaper,
+      preventDefault: false,
     },
     {
       keyCode: 'right',
       success: nextPaper,
+      preventDefault: false,
     },
   ],
 });
