@@ -33,7 +33,7 @@ const offset = 50 + 50; // height of header + inner toolbar
           text-color="primary"
           dense
           size="sm"
-          :options="[{ label: 'Match Case', value: 'matchCase' }]"
+          :options="[{ label: 'Match Case', value: 'true' }]"
         />
 
         <q-btn-toggle
@@ -47,7 +47,7 @@ const offset = 50 + 50; // height of header + inner toolbar
           text-color="primary"
           dense
           size="sm"
-          :options="[{ label: 'Use Regex', value: 'useRegex' }]"
+          :options="[{ label: 'Use Regex', value: 'true' }]"
         />
         <q-icon v-if="paperDataStore.searchText === ''" name="search" />
         <q-icon

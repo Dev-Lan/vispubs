@@ -185,8 +185,15 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return text.includes(query);
   }
 
-  const matchCase = ref<string | null>(null);
-  const useRegex = ref<string | null>(null);
+  const matchCase = ref<string | null>(params.matchCase ?? null);
+  watch(matchCase, () => {
+    params.matchCase = matchCase.value;
+  });
+
+  const useRegex = ref<string | null>(params.useRegex ?? null);
+  watch(useRegex, () => {
+    params.useRegex = useRegex.value;
+  });
 
   return {
     allData,
