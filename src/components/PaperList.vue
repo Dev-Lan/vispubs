@@ -16,6 +16,10 @@ const searchWords = computed(() => {
 });
 
 const offset = 50 + 50; // height of header + inner toolbar
+
+function exportPublications() {
+  console.log('todo export data');
+}
 </script>
 
 <template>
@@ -67,9 +71,28 @@ const offset = 50 + 50; // height of header + inner toolbar
       </template>
     </q-input>
 
-    <q-badge color="primary" outline
+    <q-badge color="primary" outline class="q-mr-md"
       >{{ paperDataStore.papers.length }} papers</q-badge
     >
+
+    <q-btn
+      class="xs"
+      color="primary"
+      push
+      size="sm"
+      round
+      icon="file_download"
+      @click="exportPublications"
+    />
+    <q-btn
+      class="gt-xs"
+      color="primary"
+      push
+      size="sm"
+      icon="file_download"
+      label="Export"
+      @click="exportPublications"
+    />
   </q-toolbar>
   <q-virtual-scroll
     v-if="paperDataStore.papers.length > 0"
