@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### Dec 27, 2023
+
+- add homepage links for ~15 authors
+
 ###### Dec 18, 2023
 
 - add homepage links for ~30 authors
