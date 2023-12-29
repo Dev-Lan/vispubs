@@ -141,14 +141,38 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   });
 
   const allPapers = ref();
+
+  const validRegex = computed<boolean>(() => {
+    if (useRegex.value === null) {
+      regexErrorString.value = '';
+      return true;
+    }
+    try {
+      new RegExp(searchText.value);
+    } catch (e: Error) {
+      console.log('setting regex error string');
+      console.log({ e });
+      regexErrorString.value = e.message;
+      return false;
+    }
+    regexErrorString.value = '';
+    return true;
+  });
+
+  const regexErrorString = ref<string>('');
+
   const papers = computed<PaperInfo[]>(() => {
     if (searchText.value === '') return allPapers.value;
     const ignoreCase = matchCase.value === null;
     let regex: RegExp | null = null;
     if (useRegex.value !== null) {
-      regex = ignoreCase
-        ? new RegExp(searchText.value, 'mi')
-        : new RegExp(searchText.value, 'm');
+      try {
+        regex = ignoreCase
+          ? new RegExp(searchText.value, 'mi')
+          : new RegExp(searchText.value, 'm');
+      } catch (e) {
+        return [];
+      }
     }
     let query = searchText.value;
     if (ignoreCase) {
@@ -227,5 +251,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     searchText,
     matchCase,
     useRegex,
+    validRegex,
+    regexErrorString,
   };
 });

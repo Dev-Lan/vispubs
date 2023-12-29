@@ -336,9 +336,16 @@ const offset = 50 + 50; // height of header + inner toolbar
   <q-card v-else flat bordered square>
     <q-card-section>
       <div class="text-h6">No papers found...</div>
-      with {{ paperDataStore.useRegex ? 'Regex ' : '' }}"{{
-        paperDataStore.searchText
-      }}" in the <b>Title</b>, <b>Author List</b>, or <b>Abstract</b>.
+
+      <span v-if="paperDataStore.validRegex">
+        with {{ paperDataStore.useRegex ? 'Regex ' : '' }}"{{
+          paperDataStore.searchText
+        }}" in the <b>Title</b>, <b>Author List</b>, or <b>Abstract</b>.
+      </span>
+      <q-banner rounded v-else inline-actions class="error-message">
+        <div class="text-h6 text-negative">Error</div>
+        <div>{{ paperDataStore.regexErrorString }}</div>
+      </q-banner>
     </q-card-section>
   </q-card>
 </template>
@@ -346,5 +353,10 @@ const offset = 50 + 50; // height of header + inner toolbar
 <style scoped lang="scss">
 .flex-grow-1 {
   flex-grow: 1;
+}
+
+.error-message {
+  border: solid $red-10 1px;
+  background-color: $red-1;
 }
 </style>
