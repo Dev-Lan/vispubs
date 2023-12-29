@@ -116,6 +116,15 @@ async function exportToXLSX() {
   );
 }
 
+const searchbar = ref();
+function clearSearchbar() {
+  paperDataStore.searchText = '';
+  // set focus back to searchbar
+  if (searchbar.value) {
+    searchbar.value.focus();
+  }
+}
+
 const exportShown = ref(false);
 
 const offset = 50 + 50; // height of header + inner toolbar
@@ -125,6 +134,7 @@ const offset = 50 + 50; // height of header + inner toolbar
   <q-toolbar>
     <!-- warning: if spacing is changed, offset will have to change -->
     <q-input
+      ref="searchbar"
       rounded
       outlined
       dense
@@ -161,12 +171,17 @@ const offset = 50 + 50; // height of header + inner toolbar
           :options="[{ label: '[.*]', value: 'true' }]"
         />
         <q-icon v-if="paperDataStore.searchText === ''" name="search" />
-        <q-icon
+        <q-btn
           v-else
-          name="clear"
-          class="cursor-pointer"
-          @click="paperDataStore.searchText = ''"
+          icon="clear"
+          flat
+          round
+          title="Clear search text"
+          dense
+          style="margin-right: -9.6px"
+          @click="clearSearchbar"
         />
+        <!-- -9.6 is hack to get btn to match width of q-icon -->
       </template>
     </q-input>
 
