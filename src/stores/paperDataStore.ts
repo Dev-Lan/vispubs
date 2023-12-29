@@ -13,6 +13,7 @@ export interface PaperInfo {
   abstract: string;
   conference: string;
   award: string;
+  link?: string;
 }
 
 export interface PaperDataStoreState {
@@ -158,6 +159,20 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     });
   });
 
+  const papersWithLinks = computed<PaperInfo[]>(() => {
+    if (papers.value === null) return [];
+    if (papers.value.length === 0) return [];
+    const currentUrl = window.location.href;
+    return papers.value.map((paper: PaperInfo) => {
+      const url = new URL(currentUrl);
+      url.searchParams.set('paper', paper.doi);
+      return {
+        ...paper,
+        link: url.toString(),
+      };
+    });
+  });
+
   function paperMatchesQuery(
     query: string | RegExp,
     paper: PaperInfo
@@ -208,6 +223,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     getConference,
     getAuthors,
     papers,
+    papersWithLinks,
     searchText,
     matchCase,
     useRegex,

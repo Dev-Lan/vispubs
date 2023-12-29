@@ -16,6 +16,8 @@
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "@vueuse/core": "^10.5.0",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
     "papaparse": "^5.4.1",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
