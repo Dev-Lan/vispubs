@@ -5,8 +5,6 @@ import { usePaperDataStore } from 'src/stores/paperDataStore';
 import { unparse } from 'papaparse';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
-import useClipboard from 'vue-clipboard3';
-const { toClipboard } = useClipboard();
 
 const paperDataStore = usePaperDataStore();
 
