@@ -4,7 +4,11 @@ The column for both are formatted as "first1 last1; first2 last2; first3 last3" 
 has been deduplicated. So some authors have an id number after their name, e.g. "first1 last1 00001; first2 last2 00007".
 
 This script will go through each author in the input file and check if they are in the references file. If they are,
-it will replace the author name with the deduplicated version.
+it will replace the author name with the deduplicated version. Otherwise it will use the dblp api to try to find the
+author. If the author is found, it will replace the author name with the deduplicated version.
+
+If there is ambiguity in either approach, the file will add potential matches to the author name, and add
+the DEDUP keword to the author name for manual review.
 '''
 import time
 import csv
@@ -13,9 +17,9 @@ import xml.etree.ElementTree as ET
 
 
 # Define the file paths
-input_file_path = "./temp/eurovis23.csv"
-references_file_path = "./temp/papers.csv"
-output_file_path = "./temp/eurovis23-dedup.csv"
+input_file_path = "./temp/VIS23/all-pubs.csv"
+references_file_path = "../../public/data/papers.csv"
+output_file_path = "./temp/VIS23/all-pubs-dedup.csv"
 # TODO: Remove trailing whitespace on author names, maybe just update line 120, but test
 
 # Load the input file
@@ -61,7 +65,11 @@ single_vis_count = 0
 single_dblp_count = 0
 no_dblp_count = 0
 
+row_number = 0
 for row in input_data:
+    row_number += 1
+    print()
+    print('ROW: ' + str(row_number))
     authors = row[5]
     new_authors = []
     for author in authors.split(";"):
@@ -89,8 +97,8 @@ for row in input_data:
             print('fetching: ' + author)
             # fetch xml from dbpl api
             try:
-                # sleep for 3 seconds to avoid rate limiting
-                time.sleep(3)
+                # sleep for 10 seconds to avoid rate limiting
+                time.sleep(10)
                 response = requests.get(query)
                 response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
                 result = response.text
@@ -115,7 +123,7 @@ for row in input_data:
                 
             except Exception as e:
                 no_dblp_count += 1
-                print(f"API returned error {author}: {e}")
+                print(f"\tAPI returned error {author}: {e}")
                 new_authors.append(author)
     row[5] = '; '.join(new_authors)
 
