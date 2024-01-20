@@ -4,7 +4,7 @@ import bibtexparser
 # Specify the file paths
 bibtex_file_path = "temp/VIS23/all-pubs.bib"
 csv_file_path = "temp/VIS23/all-pubs.csv"
-
+conference = 'Vis' # (Vis|CHI|EuroVis)
 
 def format_names(names):
     # converts a list of names in the format "last1, first1 and last2, first2" to "first1 last1; first2 last2"
@@ -30,7 +30,7 @@ with open(csv_file_path, "w", newline="") as csv_file:
     bib_items = entries = bib_database.entries
     # Write the data rows
     for item in bib_items:
-        conference = 'EuroVis'
+        conference = conference
         year = item['year']
         title = item['title']
         # strip {} from start and end of title
