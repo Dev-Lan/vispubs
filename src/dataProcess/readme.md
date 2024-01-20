@@ -13,6 +13,6 @@ Processing Steps for VIS (rough draft partially from memory)
    Note: this can take some time since the API requires rate-limiting
    manually dedup ambiguous authors
 7. manually add Test of time and best paper awards based on https://ieeevis.org/
-8. combine with full paper dataset.
+8. run 'python3 combine.py' to combine with full paper dataset.
 9. update paper stub creations
 10. advertise
