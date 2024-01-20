@@ -58,7 +58,7 @@ function nextPaper() {
   <q-page-container>
     <q-page ref="container" class="items-center">
       <PaperList v-if="paperDataStore.allData" />
-      <div v-else>loading...</div>
+      <div class="q-ma-lg" v-else>loading...</div>
     </q-page>
   </q-page-container>
 </template>
