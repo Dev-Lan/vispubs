@@ -1,5 +1,10 @@
 ##### Dataset Changelog
 
+###### Jan 20, 2024
+
+- add VIS papers for 2023
+- add homepage links for ~20 authors
+
 ###### Dec 27, 2023
 
 - add homepage links for ~15 authors
