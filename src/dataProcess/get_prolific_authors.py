@@ -63,19 +63,19 @@ coverage_percentage = covered_author_count / total_author_count * 100
 formatted_percentage = "{:.2f}%".format(coverage_percentage)
 print("Instance Coverage:", formatted_percentage)
 print('--------------------------')
-print('Top 5 unlinked authors:')
-printed = 0
-top_count = 0
-i = 0
-while printed < 5:
-    author, count = author_count_list[i]
-    i += 1
-    if author not in author_set:
-        print(author)
-        printed += 1
-        top_count += count
-print('Top 5 unlinked author count:', top_count, "({:.2f}%)".format(top_count / total_author_count * 100))
-print('--------------------------')
+# print('Top 5 unlinked authors:')
+# printed = 0
+# top_count = 0
+# i = 0
+# while printed < 5:
+#     author, count = author_count_list[i]
+#     i += 1
+#     if author not in author_set:
+#         print(author)
+#         printed += 1
+#         top_count += count
+# print('Top 5 unlinked author count:', top_count, "({:.2f}%)".format(top_count / total_author_count * 100))
+# print('--------------------------')
 print()
 if not SAVE_TOP_AUTHORS:
     exit()
