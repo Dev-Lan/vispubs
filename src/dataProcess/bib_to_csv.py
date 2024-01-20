@@ -2,8 +2,8 @@ import csv
 import bibtexparser
 
 # Specify the file paths
-bibtex_file_path = "temp/eurovis23.bib"
-csv_file_path = "temp/eurovis23.csv"
+bibtex_file_path = "temp/VIS23/all-pubs.bib"
+csv_file_path = "temp/VIS23/all-pubs.csv"
 
 
 def format_names(names):
@@ -36,7 +36,7 @@ with open(csv_file_path, "w", newline="") as csv_file:
         # strip {} from start and end of title
         title = title.strip('{}')
         doi = item['doi']
-        abstract = ''
+        abstract = item['abstract'] if 'abstract' in item else ''
         authorNames = format_names(item['author'])
         award = ''
         writer.writerow([conference, year, title, doi, abstract, authorNames, award])
