@@ -19,5 +19,5 @@ Processing Steps for VIS (rough draft partially from memory)
 11. publish `quasar build`
 12. Test build `http-server dist/spa`
 13. publish build `yarn deploy`
-14. test live on www.vispubs.com'
+14. test live on www.vispubs.com
 15. advertise on twitter, mastadon, bluesky, linkedin
