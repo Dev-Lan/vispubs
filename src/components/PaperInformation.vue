@@ -79,6 +79,13 @@ function quoteText(text: string): string {
 }
 
 const addResourcesShown = ref(false);
+const authorModalShown = ref(false);
+const selectedAuthor = ref<string>('');
+
+function selectAuthor(author: string): void {
+  selectedAuthor.value = author;
+  authorModalShown.value = true;
+}
 </script>
 
 <template>
@@ -166,8 +173,7 @@ const addResourcesShown = ref(false);
         /></q-btn>
         <q-btn
           v-else
-          :href="getAuthorFormLink(dedupedName)"
-          target="_blank"
+          @click="selectAuthor(dedupedName)"
           icon-right="help"
           flat
           no-caps
@@ -178,6 +184,54 @@ const addResourcesShown = ref(false);
             :autoEscape="autoEscape"
             :textToHighlight="displayName"
         /></q-btn>
+
+        <q-dialog v-model="authorModalShown">
+          <q-card>
+            <q-card-section>
+              Search for author on:
+              <q-card-actions>
+                <q-btn
+                  :href="`https://www.google.com/search?q=${selectedAuthor}`"
+                  target="_blank"
+                  no-caps
+                  flat
+                  >Google</q-btn
+                >
+                <q-btn
+                  :href="`https://www.bing.com/search?q=${selectedAuthor}`"
+                  target="_blank"
+                  no-caps
+                  flat
+                  >Bing</q-btn
+                >
+                <q-btn
+                  :href="`https://www.duckduckgo.com/?q=${selectedAuthor}`"
+                  target="_blank"
+                  no-caps
+                  flat
+                  >DuckDuckGo</q-btn
+                >
+              </q-card-actions>
+            </q-card-section>
+
+            <q-card-section class="q-pb-none">
+              Submit author information:
+              <q-card-actions>
+                <q-btn
+                  :href="getAuthorFormLink(selectedAuthor)"
+                  target="_blank"
+                  no-caps
+                  flat
+                  >Google Form</q-btn
+                >
+              </q-card-actions>
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="Done" color="primary" v-close-popup />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       </template>
     </div>
     <div class="flex flex-center">
