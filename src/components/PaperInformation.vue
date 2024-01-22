@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 import { useAuthorStore } from 'src/stores/authorStore';
 import Highlighter from 'vue-highlight-words';
@@ -34,6 +34,51 @@ const autoEscape = computed(() => {
 const searchWords = computed(() => {
   return [paperDataStore.searchText];
 });
+
+function mapResourceColor(icon: string): string {
+  switch (icon) {
+    case 'paper':
+      return 'indigo';
+    case 'video':
+      return 'red';
+    case 'code':
+      return 'green-10';
+    case 'data':
+      return 'purple';
+    case 'project':
+      return 'teal';
+    default:
+      return 'none';
+  }
+}
+
+function mapResourceTextColor(icon: string): string {
+  if (icon === 'other') return 'black';
+  return 'white';
+}
+
+function mapResourceIcon(icon: string): string {
+  switch (icon) {
+    case 'paper':
+      return 'article';
+    case 'video':
+      return 'ondemand_video';
+    case 'code':
+      return 'code';
+    case 'data':
+      return 'storage';
+    case 'project':
+      return 'language';
+    default:
+      return 'open_in_new';
+  }
+}
+
+function quoteText(text: string): string {
+  return `"${text}"`;
+}
+
+const addResourcesShown = ref(false);
 </script>
 
 <template>
@@ -136,7 +181,103 @@ const searchWords = computed(() => {
       </template>
     </div>
     <div class="flex flex-center">
-      <div class="mw-600">
+      <q-card flat bordered class="q-ml-md q-mr-md q-mb-md align-self-start">
+        <q-card-section>
+          <div class="text-h6">Resources</div>
+        </q-card-section>
+
+        <q-card-section class="q-pa-none q-pb-sm">
+          <q-list dense>
+            <q-item
+              v-for="resourceLink in paperDataStore.selectedPaperResourceLinks"
+              :key="resourceLink.name"
+              clickable
+              v-ripple
+              :href="resourceLink.url"
+              target="_blank"
+            >
+              <q-item-section avatar>
+                <q-avatar
+                  :color="mapResourceColor(resourceLink.icon)"
+                  :text-color="mapResourceTextColor(resourceLink.icon)"
+                  :icon="mapResourceIcon(resourceLink.icon)"
+                  size="md"
+                />
+              </q-item-section>
+
+              <q-item-section>{{ resourceLink.name }}</q-item-section>
+            </q-item>
+
+            <q-separator class="q-mt-md q-mb-md" />
+
+            <q-item clickable v-ripple @click="addResourcesShown = true">
+              <q-item-section avatar>
+                <q-avatar
+                  color="primary"
+                  text-color="white"
+                  icon="add"
+                  size="md"
+                />
+              </q-item-section>
+
+              <q-item-section>Add resources</q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+        <q-card-section>
+          Search for paper on:
+          <q-card-actions>
+            <q-btn
+              :href="`https://www.google.com/search?q=${quoteText(
+                paperDataStore.selectedPaper.title
+              )}`"
+              target="_blank"
+              no-caps
+              flat
+              >Google</q-btn
+            >
+            <q-btn
+              :href="`https://www.bing.com/search?q=${quoteText(
+                paperDataStore.selectedPaper.title
+              )}`"
+              target="_blank"
+              no-caps
+              flat
+              >Bing</q-btn
+            >
+            <q-btn
+              :href="`https://www.duckduckgo.com/?q=${quoteText(
+                paperDataStore.selectedPaper.title
+              )}`"
+              target="_blank"
+              no-caps
+              flat
+              >DuckDuckGo</q-btn
+            >
+          </q-card-actions>
+        </q-card-section>
+      </q-card>
+      <q-dialog v-model="addResourcesShown">
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Add additional resources</div>
+          </q-card-section>
+
+          <q-card-section class="q-pb-none flex column"
+            >Review instructions for adding resources at
+            <a href="">github.</a></q-card-section
+          >
+
+          <q-card-section class="q-pb-none flex column"
+            >Then update <a href="">this paper's resource file</a>.
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Done" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+      <div class="mw-600 align-self-start">
         <Highlighter
           highlightClassName="highlight"
           :searchWords="searchWords"
@@ -152,5 +293,9 @@ const searchWords = computed(() => {
 <style scoped lang="scss">
 .mw-600 {
   max-width: 600px;
+}
+
+.align-self-start {
+  align-self: flex-start;
 }
 </style>

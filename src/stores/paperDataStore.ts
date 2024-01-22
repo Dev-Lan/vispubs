@@ -20,6 +20,12 @@ export interface PaperDataStoreState {
   allData: PaperInfo[] | null;
 }
 
+export interface PaperResourceLink {
+  name: string;
+  url: string;
+  icon: 'paper' | 'video' | 'code' | 'project' | 'data' | 'other';
+}
+
 export const usePaperDataStore = defineStore('paperDataStore', () => {
   const params = useUrlSearchParams('history');
 
@@ -28,11 +34,30 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   const selectedPaper = ref<PaperInfo | null>(null);
   const selectedPaperIndex = ref<number | null>(null);
 
+  const selectedPaperResourceLinks = ref<PaperResourceLink[]>([]);
+
   function selectPaper(index: number): void {
     if (papers.value === null) return;
     selectedPaperIndex.value = index;
     selectedPaper.value = papers.value[index];
     params.paper = selectedPaper.value?.doi;
+    selectedPaperResourceLinks.value = [];
+    if (!selectedPaper.value?.doi) return;
+    const doi = selectedPaper.value.doi;
+    const csvPath = window.location.origin + '/data/paperLinks/' + doi;
+    parse(csvPath, {
+      header: true,
+      dynamicTyping: false,
+      skipEmptyLines: true,
+      download: true,
+      // worker: true,
+      comments: '#',
+      complete: (results: ParseResult<any>, _file: string) => {
+        console.log('parsed paper resources');
+        console.log(results);
+        selectedPaperResourceLinks.value = results.data;
+      },
+    });
   }
 
   function previousPaper(): void {
@@ -237,6 +262,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   return {
     allData,
     selectedPaper,
+    selectedPaperResourceLinks,
     previousPaper,
     nextPaper,
     selectedPaperIndex,
