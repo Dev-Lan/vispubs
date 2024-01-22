@@ -14,11 +14,12 @@ Processing Steps for VIS (rough draft partially from memory)
    manually dedup ambiguous authors
 7. manually add Test of time and best paper awards based on https://ieeevis.org/
 8. run `python3 combine.py` to combine with full paper dataset.
-9. run `python3 process_paper_links.py`
-10. update `changelog.md`
-11. test locally `quasar dev`
-12. publish `quasar build`
-13. Test build `http-server dist/spa`
-14. publish build `yarn deploy`
-15. test live on www.vispubs.com
-16. advertise on twitter, mastadon, bluesky, linkedin
+9. run `python3 process_paper_links.py` to create any new paper resource file pages
+10. run `python3 update_paper_link_flags.py` to update the link flags column in paper list
+11. update `changelog.md`
+12. test locally `quasar dev`
+13. publish `quasar build`
+14. Test build `http-server dist/spa`
+15. publish build `yarn deploy`
+16. test live on www.vispubs.com
+17. advertise on twitter, mastadon, bluesky, linkedin
