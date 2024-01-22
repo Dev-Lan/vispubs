@@ -10,12 +10,12 @@ file name. If the folder does not exist it will create the folder and the file. 
 folder and file already exist it will not modify the file.
 
 The base contents for the stub file is the following:
-title,url,icon
+name,url,icon
 '''
 
 PAPER_LIST_FILENAME = '../../public/data/papers.csv'
 ROOT_FOLDER = '../../public/data/paperLinks/'
-BASE_CONTENTS = 'title,url,icon'
+BASE_CONTENTS = 'name,url,icon'
 
 def create_stub_files():
     with open(PAPER_LIST_FILENAME, 'r') as file:
