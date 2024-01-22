@@ -265,11 +265,20 @@ const addResourcesShown = ref(false);
 
           <q-card-section class="q-pb-none flex column"
             >Review instructions for adding resources at
-            <a href="">github.</a></q-card-section
+            <a
+              href="https://github.com/Dev-Lan/vispubs/tree/main/public/data"
+              target="_blank"
+              >github.</a
+            ></q-card-section
           >
 
           <q-card-section class="q-pb-none flex column"
-            >Then update <a href="">this paper's resource file</a>.
+            >Then update this paper's
+            <a
+              :href="`https://github.com/Dev-Lan/vispubs/tree/main/public/data/paperLinks/${paperDataStore.selectedPaper.doi}`"
+              target="_blank"
+              >resource file.</a
+            >
           </q-card-section>
 
           <q-card-actions align="right">
