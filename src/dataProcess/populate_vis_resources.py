@@ -21,7 +21,7 @@ prerecorded_video_link, Prerecorded Talk, video
 youtube_prerecorded_link, Prerecorded Talk, video
 '''
 
-INPUT_METADATA_FILENAME = './temp/paper_list_22.json'
+INPUT_METADATA_FILENAME = './temp/paper_list_21.json'
 INPUT_PAPER_LIST_FILENAME = '../../public/data/papers.csv'
 ROOT_FOLDER = '../../public/data/paperLinks/'
 
