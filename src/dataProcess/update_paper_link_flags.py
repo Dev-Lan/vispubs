@@ -15,3 +15,4 @@ The possible values are:
 
 PAPER_LIST_FILENAME = '../../public/data/papers.csv'
 ROOT_FOLDER = '../../public/data/paperLinks/'
+
