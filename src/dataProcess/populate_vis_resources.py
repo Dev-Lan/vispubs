@@ -21,7 +21,7 @@ prerecorded_video_link, Prerecorded Talk, video
 youtube_prerecorded_link, Prerecorded Talk, video
 '''
 
-INPUT_METADATA_FILENAME = './temp/paper_list_23.json'
+INPUT_METADATA_FILENAME = './temp/paper_list_22.json'
 INPUT_PAPER_LIST_FILENAME = '../../public/data/papers.csv'
 ROOT_FOLDER = '../../public/data/paperLinks/'
 
@@ -39,9 +39,8 @@ def populate_vis_resources():
         metadata = json.load(metadata_file)
 
     title_doi_map = populate_title_doi_map(INPUT_PAPER_LIST_FILENAME)
-
-    # print(metadata)
-
+    total_count = len(metadata)
+    processed_count = 0
     for row_key in metadata:
         row = metadata[row_key]
         # print(row)
@@ -54,12 +53,13 @@ def populate_vis_resources():
                 title = row.get('title')
                 if title:
                     doi = title_doi_map.get(title, None)
-
         if doi:
             if not os.path.exists(ROOT_FOLDER + doi):
                 continue
             # Add rows to the existing resource files
             add_rows_to_resource_files(doi, row)
+            processed_count += 1
+    print(f'Processed {processed_count} out of {total_count} papers.')
 
 def populate_title_doi_map(input_paper_list_filename):
     title_doi_map = {}
@@ -68,7 +68,7 @@ def populate_title_doi_map(input_paper_list_filename):
         reader = csv.reader(file)
         next(reader)
         for row in reader:
-            title = row[0]
+            title = row[2]
             doi = row[3]
             title_doi_map[title] = doi
     return title_doi_map
