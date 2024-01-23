@@ -60,11 +60,11 @@ def search_preprint_versions():
             if link is not None:
                 print("\t🍺 Found arXiv")
                 found_arxiv += 1
-            else:
-                link = search_osf_api(browser, title)
-                if link is not None:
-                    print("\t🍺 Found OSF")
-                    found_osf += 1
+            # else:
+            #     link = search_osf_api(browser, title)
+            #     if link is not None:
+            #         print("\t🍺 Found OSF")
+            #         found_osf += 1
 
             if link is not None:
                 add_link_to_file(link, doi)
