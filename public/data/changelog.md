@@ -1,5 +1,12 @@
 ##### Dataset Changelog
 
+###### Jan 23, 2024
+
+- add initial paper resource links
+  - open source preprints on arxiv and osf
+  - videos for VIS 2020 – 2023
+- add homepage links for 20 authors
+
 ###### Jan 20, 2024
 
 - add VIS papers for 2023
