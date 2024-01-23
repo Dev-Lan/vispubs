@@ -1,3 +1,5 @@
+import csv
+import os
 '''
 This file updates the `resources` column in the PAPER_LIST_FILENAME csv file.
 For every row it will find the DOI value, then it will find the corresponding
@@ -16,3 +18,41 @@ The possible values are:
 PAPER_LIST_FILENAME = '../../public/data/papers.csv'
 ROOT_FOLDER = '../../public/data/paperLinks/'
 
+def update_paper_link_flags():
+    with open(PAPER_LIST_FILENAME, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        rows = list(reader)
+
+    for row in rows:
+        doi = row['DOI']
+        resource_file = os.path.join(ROOT_FOLDER, doi)
+
+        if os.path.exists(resource_file):
+            with open(resource_file, 'r') as file:
+                contents = file.readlines()
+            icons = set([x.split(',')[-1] for x in contents])
+
+            flags = []
+            if 'paper' in icons:
+                flags.append('P')
+            if 'video' in icons:
+                flags.append('V')
+            if 'code' in icons:
+                flags.append('C')
+            if 'project_website' in icons:
+                flags.append('PW')
+            if 'data' in icons:
+                flags.append('D')
+            if 'other' in icons:
+                flags.append('O')
+
+            row['resources'] = ';'.join(flags)
+
+    with open(PAPER_LIST_FILENAME, 'w', newline='') as csvfile:
+        fieldnames = reader.fieldnames
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+if __name__ == '__main__':
+    update_paper_link_flags()
