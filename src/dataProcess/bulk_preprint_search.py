@@ -52,6 +52,10 @@ def search_preprint_versions():
                 found_links += 1
                 continue
 
+            if preprint_already_searched_and_not_found(doi):
+                print('\🤷 Skipping, searched in past and not found')
+                continue
+
             link = search_arxiv_api(title)
             if link is not None:
                 print("\t🍺 Found arXiv")
@@ -161,6 +165,14 @@ def preprint_already_added(doi):
         lines = file.readlines()
         for line in lines:
             if 'Paper Preprint' in line:
+                return True
+        return False
+    
+def preprint_already_searched_and_not_found(doi):
+    with open(NOT_FOUND_LIST_FILENAME, 'r') as not_found_file:
+        lines = not_found_file.readlines()
+        for line in lines:
+            if doi in line:
                 return True
         return False
 
