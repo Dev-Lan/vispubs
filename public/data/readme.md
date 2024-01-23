@@ -23,3 +23,6 @@ These icons will be displayed in the detailed paper view and the paper list view
 also be used to determine which resources are available on each paper. For example, once
 filtering is implemented, a user may filter to only papers that have a preprint version of
 the `paper` linked.
+
+Submit suggested changes as a pull request. I will review them and push them to the website
+periodically.
