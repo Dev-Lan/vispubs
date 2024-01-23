@@ -261,3 +261,367 @@ doi,title
 10.1109/TVCG.2021.3114820,VITALITY: Promoting Serendipitous Discovery of Academic Literature with Transformers &amp; Visual Analytics
 10.1109/TVCG.2021.3114804,VizLinter: A Linter and Fixer Framework for Data Visualization
 10.1109/TVCG.2021.3114841,VizSnippets: Compressing Visualization Bundles Into Representative Previews for Browsing Visualization Collections
+10.1109/TVCG.2021.3114835,What's the Situation with Situated Visualization? A Survey and Perspectives on Situatedness
+10.1109/TVCG.2021.3114855,Where Can We Help? A Visual Analytics Approach to Diagnosing and Improving Semantic Segmentation of Movable Objects
+10.1111/cgf.14309,A Deeper Understanding of Visualization-Text Interplay in Geographic Data-driven Stories
+10.1111/cgf.14315,A novel approach for exploring annotated data with interactive lenses
+10.1111/cgf.14317,A Progressive Approach for Uncertainty Visualization in Diffusion Tensor Imaging
+10.1111/cgf.14329,A Survey of Human-Centered Evaluations in Human-Centered Machine Learning
+10.1111/cgf.14302,A Visual Designer of Layer-wise Relevance Propagation Models
+10.1111/cgf.14298,Accessible Visualization: Design Space, Opportunities, and Challenges
+10.1111/cgf.14325,Animated Presentation of Static Infographics with InfoMotion
+10.1111/cgf.14324,AutoClips: An Automatic Approach to Video Generation from Data Facts
+10.1111/cgf.14313,Automatic Improvement of Continuous Colormaps in Euclidean Colorspaces
+10.1111/cgf.14312,Boundary Objects in Design Studies: Reflections on the Collaborative Creation of Isochrone Maps
+10.1111/cgf.14322,ClusterSets: Optimizing Planar Clusters in Categorical Point Data
+10.1111/cgf.14286,CommAID: Visual Analytics for Communication Analysis through Interactive Dynamics Modeling
+10.1111/cgf.14303,Daisen: A Framework for Visualizing Detailed GPU Execution
+10.1111/cgf.14310,Design Space of Origin-Destination Data Visualization
+10.1111/cgf.14291,Guided Stable Dynamic Projections
+10.1111/cgf.14308,Hornero: Thunderstorms Characterization using Visual Analytics
+10.1111/cgf.14318,Implicit Modeling of Patient-Specific Aortic Dissections with Elliptic Fourier Descriptors
+10.1111/cgf.14299,iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+10.1111/cgf.14301,Learning Contextualized User Preferences for Co-Adaptive Guidance in Mixed-Initiative Topic Model Refinement
+10.1111/cgf.14304,Leveraging Topological Events in Tracking Graphs for Understanding Particle Diffusion
+10.1111/cgf.14316,Line Weaver: Importance-Driven Order Enhanced Rendering of Dense Line Charts
+10.1111/cgf.14293,Local Extraction of 3D Time-Dependent Vector Field Topology
+10.1111/cgf.14323,Optimal Axes for Data Value Estimation in Star Coordinates and Radial Axes Plots
+10.1111/cgf.14294,Parameterized Splitting of Summed Volume Tables
+10.1111/cgf.14314,ParSetgnostics: Quality Metrics for Parallel Sets
+10.1111/cgf.14287,ProBGP: Progressive Visual Analytics of Live BGP Updates
+10.1111/cgf.14297,Public Data Visualization: Analyzing Local Running Statistics on Situated Displays
+10.1111/cgf.14306,SenVis: Interactive Tensor-based Sensitivity Visualization
+10.1111/cgf.14305,SumRe: Design and Evaluation of a Gist-based Summary Visualization for Incident Reports Triage
+10.1111/cgf.14292,Texture Browser: Feature-based Texture Exploration
+10.1111/cgf.14296,Thin-Volume Visualization on Curved Domains
+10.1111/cgf.14285,Topography of Violence: Considerations for Ethical and Collaborative Visualization Design
+10.1111/cgf.14327,TourVis: Narrative Visualization of Multi-Stage Bicycle Races
+10.1111/cgf.14333,Uncertainty-aware Visualization in Medical Imaging - A Survey
+10.1111/cgf.14326,Uncertainty-aware Visualization of Regional Time Series Correlation in Spatio-temporal Ensembles
+10.1111/cgf.14284,VEHICLE: Validation and Exploration of the Hierarchical Integration of Conflict Event Data
+10.1111/cgf.14320,VICE: Visual Identification and Correction of Neural Circuit Errors
+10.1111/cgf.14300,VisEvol: Visual Analytics to Support Hyperparameter Search through Evolutionary Optimization
+10.1111/cgf.14311,Visual Analysis of Spatio-temporal Phenomena with 1D Projections
+10.1109/TVCG.2020.3028956,A Visual Analytics Approach for Ecosystem Dynamics based on Empirical Dynamic Modeling
+10.1109/TVCG.2020.3028894,Argus: Interactive a priori Power Analysis
+10.1109/TVCG.2020.3028985,Boba: Authoring and Visualizing Multiverse Analyses
+10.1109/TVCG.2020.3030443,CAVA: A Visual Analytics System for Exploratory Columnar Data Augmentation Using Knowledge Graphs
+10.1109/TVCG.2020.3030357,CcNav: Understanding Compiler Optimizations in Binary Code
+10.1109/TVCG.2020.3030461,CNNPruner: Pruning Convolutional Neural Networks with Visual Analytics
+10.1109/TVCG.2020.3030411,Co-Bridges: Pair-wise Visual Connection and Comparison for Multi-item Data Streams
+10.1109/VAST50239.2020.00006,ConceptExplorer: Visual Analysis of Concept Drifts in Multi-source Time-series Data
+10.1109/TVCG.2020.3030342,DECE: Decision Explorer with Counterfactual Explanations for Machine Learning Models
+10.1109/TVCG.2020.3030354,Explainable Matrix - Visualization for Global and Local Interpretability of Random Forest Classification Ensembles
+10.1109/TVCG.2020.3030414,Githru: Visual Analytics for Understanding Software Development History Through Git Metadata Analysis
+10.1109/TVCG.2020.3030380,HyperTendril: Visual Analytics for User-Driven Hyperparameter Optimization of Deep Neural Networks
+10.1109/TVCG.2020.3030449,HypoML: Visual Analysis for Hypothesis-based Evaluation of Machine Learning Models
+10.1109/VAST50239.2020.00013,iConViz: Interactive Visual Exploration of the Default Contagion Risk of Networked-Guarantee Loans
+10.1109/TVCG.2020.3030383,II-20: Intelligent and pragmatic analytic categorization of image collections
+10.1109/TVCG.2020.3030409,InCorr: Interactive Data-Driven Correlation Panels for Digital Outcrop Analysis
+10.1109/TVCG.2020.3030376,Insight Beyond Numbers: The Impact of Qualitative Factors on Visual Data Analysis
+10.1109/TVCG.2020.3030421,LineSmooth: An Analytical Framework for Evaluating the Effectiveness of Smoothing Techniques on Line Charts
+10.1109/TVCG.2020.3030386,MultiSegVA: Using Visual Analytics to Segment Biologging Time Series on Multiple Scales
+10.1109/TVCG.2020.3030453,P6: A Declarative Language for Integrating Machine Learning in Visual Analytics
+10.1109/TVCG.2020.3030359,PassVizor: Toward Better Understanding of the Dynamics of Soccer Passes
+10.1109/TVCG.2020.3030361,PipelineProfiler: A Visual Analytics Tool for the Exploration of AutoML Pipelines
+10.1109/TVCG.2020.3030337,QLens: Visual Analytics of MUlti-step Problem-solving Behaviors for Improving Question Design
+10.1109/VAST50239.2020.00014,SilkViser: A Visual Explorer of Blockchain-based Cryptocurrency Transaction Data
+10.1109/VAST50239.2020.00015,SMAP: A Joint Dimensionality Reduction Scheme for Secure Multi-Party Visualization
+10.1109/TVCG.2020.3030352,StackGenVis: Alignment of Data, Algorithms, and Models for Stacking Ensemble Learning Using Performance Metrics
+10.1109/VAST50239.2020.00012,STULL: Unbiased Online Sampling for Visual Exploration of Large Spatiotemporal Data
+10.1109/TVCG.2020.3030370,TaxThemis: Interactive Mining and Exploration of Suspicious Tax Evasion Groups
+10.1109/TVCG.2020.3030334,Uplift: A Tangible and Immersive Tabletop System for Casual Collaborative Visual Analytics
+10.1109/TVCG.2020.3030350,VATLD: A Visual Analytics System to Assess, Understand and Improve Traffic Light Detection
+10.1109/TVCG.2020.3030356,Visilant: Visual Support for the Exploration and Analytical Process Tracking in Criminal Investigations
+10.1109/VAST50239.2020.00011,Visual Abstraction of Geographical Point Data with Spatial Autocorrelations
+10.1109/TVCG.2020.3030425,Visual Analysis of Argumentation in Essays
+10.1109/VAST50239.2020.00009,Visual Analytics of Multivariate Event Sequence Data in Racquet Sports
+10.1109/TVCG.2020.3030387,VizCommender: Computing Text-Based Similarity in Visualization Repositories for Content-Based Recommendations
+10.1109/TVCG.2020.3028947,A Fluid Flow Data Set for Machine Learning and its Application to Neural Flow Map Interpolation
+10.1109/TVCG.2020.3028893,A Suggestive Interface for Untangling Mathematical Knots
+10.1109/TVCG.2020.3028892,A Visualization Framework for Multi-scale Coherent Structures in Taylor-Couette Turbulence
+10.1109/TVCG.2020.3028954,Advanced Rendering of Line Data with Ambient Occlusion and Transparency
+10.1109/TVCG.2020.3030438,ChemVA: Interactive Visual Analysis of Chemical Compound Similarity in Virtual Screening
+10.1109/TVCG.2020.3030473,Data-Driven Space-Filling Curves
+10.1109/TVCG.2020.3030381,Efficient and Flexible Hierarchical Data Layouts for a Unified Encoding of Scalar Field Precision and Resolution
+10.1109/TVCG.2020.3030452,Interactive Black-Hole Visualization
+10.1109/TVCG.2020.3030389,IsoTrotter: Visually Guided Empirical Modelling of Atmospheric Convection
+10.1109/TVCG.2020.3030415,Modeling in the Time of COVID-19: Statistical and Rule-based Mesoscale Models
+10.1109/TVCG.2020.3030454,Objective Observer-Relative Flow Visualization in Curved Spaces for Unsteady 2D Geophysical Flows
+10.1109/TVCG.2020.3030407,Polyphorm: Structural Analysis of Cosmological Datasets via Interactive Physarum Polycephalum Visualization
+10.1109/TVCG.2020.3030412,Sea of Genes: A Reflection on Visualising Metagenomic Data for Museums
+10.1109/TVCG.2020.3030441,TopoMap: A 0-dimensional Homology Preserving Projection of High-Dimensional Data
+10.1109/TVCG.2020.3030466,Uncertainty in Continuous Scatterplots, Continuous Parallel Coordinates, and Fibers
+10.1109/TVCG.2020.3030346,V2V: A Deep Learning Approach to Variable-to-Variable Selection and Translation for Multivariate Time-Varying Data
+10.1109/TVCG.2020.3030374,VC-Net: Deep Volume-Composition Networks for Segmentation and Visualization of Highly Sparse and Noisy Image Data
+10.1109/TVCG.2020.3028953,A Simple Pipeline for Coherent Grid Maps
+10.1109/TVCG.2020.3028891,A Structured Review of Data Management Technology for Interactive Visualization and Analysis
+10.1109/TVCG.2020.3028975,A Survey of Text Alignment Visualization
+10.1109/TVCG.2020.3028984,Bayesian-Assisted Inference from Visualized Data
+10.1109/TVCG.2020.3030403,Calliope: Automatic Visual Data Story Generation from a Spreadsheet
+10.1109/TVCG.2020.3030351,Chartem: Reviving Chart Images with Data Embedding
+10.1109/TVCG.2020.3030440,Context-aware Sampling of Large Networks via Graph Representation Learning
+10.1109/TVCG.2020.3030447,DRGraph: An Efficient Graph Layout Algorithm for Large-scale Graphs by Dimensionality Reduction
+10.1109/TVCG.2020.3030393,Exemplar-based Layout Fine-tuning for Node-link Diagrams
+10.1109/TVCG.2020.3030360,Gemini: A Grammar and Recommender System for Animated Transitions in Statistical Graphics
+10.1109/TVCG.2020.3030426,Introducing Layers of Meaning (LoM): A Framework to Reduce Semantic Distance of Visualization In Humanistic Research
+10.1109/TVCG.2020.3030369,Investigating Visual Analysis of Differentially Private Data
+10.1109/TVCG.2020.3030372,Kyrix-S: Authoring Scalable Scatterplot Visualizations of Big Data
+10.1109/TVCG.2020.3030475,MetroSets: Visualizing Sets as Metro Maps
+10.1109/TVCG.2020.3030423,MobileVisFixer: Tailoring Web Visualizations for Mobile Phones Leveraging an Explainable Reinforcement Learning Framework
+10.1109/TVCG.2020.3030373,Multi-Perspective, Simultaneous Embedding
+10.1109/TVCG.2020.3030378,NL4DV: A Toolkit for Generating Analytic Specifications for Data Visualization from Natural Language Queries
+10.1109/TVCG.2020.3030345,No mark is an island: Precision and category repulsion biases in data reproductions
+10.1109/TVCG.2020.3030406,Palettailor: Discriminable Colorization for Categorical Data
+10.1109/TVCG.2020.3030467,PlotThread: Creating Expressive Storyline Visualizations using Reinforcement Learning
+10.1109/TVCG.2020.3030424,QualDash: Adaptable Generation of Visualisation Dashboards for Healthcare Quality Improvement
+10.1109/TVCG.2020.3030448,Retrieve-Then-Adapt: Example-based Automatic Generation for Proportion-related Infographics
+10.1109/TVCG.2020.3030429,Revealing Perceptual Proxies with Adversarial Examples
+10.1109/TVCG.2020.3030400,Revisited: Comparison of Empirical Methods to Evaluate Visualizations Supporting Crafting and Assembly Purposes
+10.1109/TVCG.2020.3030382,SafetyLens: Visual Data Analysis of Functional Safety of Vehicles
+10.1109/TVCG.2020.3030392,ShuttleSpace: Exploring and Analyzing Movement Trajectory in Immersive Visualization
+10.1109/TVCG.2020.3030404,SineStream: Improving the Readability of Streamgraphs by Minimizing Sine Illusion Effects
+10.1109/TVCG.2020.3030476,StructGraphics: Flexible Visualization Design through Data-Agnostic and Reusable Graphical Structures
+10.1109/TVCG.2020.3030395,Towards Modeling Visualization Processes as Dynamic Bayesian Networks
+10.1109/TVCG.2020.3030343,VisCode: Embedding Information in Visualization Images using Encoder-Decoder Network
+10.1109/TVCG.2020.3030396,What Makes a Data-GIF Understandable?
+10.1111/cgf.13991,A Globally Conforming Lattice Structure for 2D Stress Tensor Visualization
+10.1111/cgf.14036,A Survey of Seed Placement and Streamline Selection Techniques
+10.1111/cgf.14030,A Survey on Transit Map Layout - from Design, Machine, and Human Perspectives
+10.1111/cgf.13969,A Visual Analytics Approach to Facilitate Crime Hotspot Analysis
+10.1111/cgf.13987,Augmenting Node-Link Diagrams with Topographic Attribute Maps
+10.1111/cgf.13965,Bombalytics: Visualization of Competition and Collaboration Strategies of Players in a Bomb Laying Game
+10.1111/cgf.13972,Boxer: Interactive Comparison of Classifier Results
+10.1111/cgf.14005,Canis: A High-Level Language for Data-Driven Chart Animations
+10.1111/cgf.13981,Co-creating Visualizations: A First Evaluation with Social Science Researchers
+10.1111/cgf.13958,CPU Ray Tracing of Tree-Based Adaptive Mesh Refinement Data
+10.1111/cgf.13962,DRLViz: Understanding Decisions and Memory in Deep Reinforcement Learning
+10.1111/cgf.14000,Evaluating Reordering Strategies for Cluster Identification in Parallel Coordinates
+10.1111/cgf.13982,Extraction of Distinguished Hyperbolic Trajectories for 2D Time-Dependent Vector Field Topology
+10.1111/cgf.13992,Feature Driven Combination of Animated Vector Field Visualizations
+10.1111/cgf.13983,Fiber Surfaces for many Variables
+10.1111/cgf.13985,Fuzzy Contour Trees: Alignment and Joint Layout of Multiple Contour Trees
+10.1111/cgf.13995,GTMapLens: Interactive Lens for Geo-Text Data Browsing on Map
+10.1111/cgf.13960,Hairy Slices II: Depth Cues for Visualizing 3D Streamlines Through Cutting Planes
+10.1111/cgf.14004,Infomages: Embedding Data into Thematic Images
+10.1111/cgf.13959,Knowledge-Assisted Comparative Assessment of Breast Cancer using Dynamic Contrast-Enhanced Magnetic Resonance Imaging
+10.1111/cgf.13993,LOCALIS: Locally-adaptive Line Simplification for GPU-based Geographic Vector Data Visualization
+10.1111/cgf.13976,Many At Once: Capturing Intentions to Create And Use Many Views At Once In Large Display Environments
+10.1111/cgf.13986,Metro Maps on Octilinear Grid Graphs
+10.1111/cgf.13963,MotionGlyphs: Visual Abstraction of Spatio-Temporal Networks in Collective Animal Behavior
+10.1111/cgf.13968,Ocupado: Visualizing Location-Based Counts Over Time Across Buildings
+10.1111/cgf.13967,Orchard: Exploring Multivariate Heterogeneous Networks on Mobile Phones
+10.1111/cgf.13990,PAVED: Pareto Front Visualization for Engineering Design
+10.1111/cgf.13971,Peax : Interactive Visual Pattern Search in Sequential Data Using Unsupervised Deep Representation Learning
+10.1111/cgf.13978,Phase Space Projection of Dynamical Systems
+10.1111/cgf.14032,Privacy-Preserving Data Visualization: Reflections on the State of the Art and Research Opportunities
+10.1111/cgf.13970,QUESTO: Interactive Construction of Objective Functions for Classification Tasks
+10.1111/cgf.13964,Reading Traces: Scalable Exploration in Elastic Visualizations of Cultural Heritage Data
+10.1111/cgf.13961,Representative Isovalue Detection and Isosurface Segmentation Using Novel Isosurface Measures
+10.1111/cgf.13997,Resolving Conflicting Insights in Asynchronous Collaborative Visual Analysis
+10.1111/cgf.13999,SEEVis: A Smart Emergency Evacuation Plan Visualization System with Data-Driven Shot Designs
+10.1111/cgf.13998,SeqDynamics: Visual Analytics for Evaluating Online Problem-solving Dynamics
+10.1111/cgf.13988,Set Streams: Visual Exploration of Dynamic Overlapping Sets
+10.1111/cgf.13979,Short-Contact Touch-Manipulation of Scatterplot Matrices on Wall Displays
+10.1111/cgf.14037,State of the Art in Time-Dependent Flow Topology: Interpreting Physical Meaningfulness Through Mathematical Properties
+10.1111/cgf.13980,Structure and Empathy in Visual Data Storytelling: Evaluating their Influence on Attitude
+10.1111/cgf.14003,Sublinear Time Force Computation for Big Complex Network Visualization
+10.1111/cgf.14001,Sunspot Plots: Model-based Structure Enhancement for Dense Scatter Plots
+10.1111/cgf.14031,The State of the Art in Map-Like Visualization
+10.1111/cgf.13974,Understanding the Design Space and Authoring Paradigms for Animated Data Graphics
+10.1111/cgf.14002,v-plots: Designing Hybrid Charts for the Comparative Analysis of Data Distributions
+10.1111/cgf.13966,VA-TRAC: Geospatial Trajectory Analysis for Monitoring, Identification, and Verification in Fishing Vessel Operations
+10.1111/cgf.13984,Visual Analysis of the Finite-Time Lyapunov Exponent
+10.1111/cgf.13975,VisuaLint: Sketchy In Situ Annotations of Chart Construction Errors
+10.1111/cgf.13996,Warehouse Vis: A Visual Analytics Approach to Facilitating Warehouse Location Selection for Business Districts
+10.1109/TVCG.2019.2934670,AirVis: Visual Analytics of Air Pollution Propagation
+10.1109/TVCG.2019.2934613,CloudDet: Interactive Visual Analysis of Anomalous Performances in Cloud Computing Systems
+10.1109/TVCG.2019.2934243,CourtTime: Generating Actionable Insights into Tennis Matches Using Visual Analytics
+10.1109/VAST47406.2019.8986918,Do What I Mean, Not What I Say! Design Considerations for Supporting Intent and Context in Analytical Conversation
+10.1109/TVCG.2019.2934656,EmoCo: Visual Analysis of Emotion Coherence in Presentation Videos
+10.1109/TVCG.2019.2934629,explAIner: A Visual Analytics Framework for Interactive and Explainable Machine Learning
+10.1109/TVCG.2019.2934547,Facetto: Combining Unsupervised and Supervised Learning for Hierarchical Phenotype Analysis in Multi-Channel Image Data
+10.1109/TVCG.2019.2934262,FairSight: Visual Analytics for Fairness in Decision Making
+10.1109/VAST47406.2019.8986948,FAIRVIS: Visual Analytics for Discovering Intersectional Bias in Machine Learning
+10.1109/VAST47406.2019.8986940,FDive: Learning Relevance Models Using Pattern-based Similarity Measures
+10.1109/TVCG.2019.2934668,FlowSense: A Natural Language Interface for Visual Data Exploration within a Dataflow System
+10.1109/TVCG.2019.2934667,Galex: Exploring the Evolution and Intersection of Disciplines
+10.1109/TVCG.2019.2934300,GUIRO: User-Guided Matrix Reordering
+10.1109/VAST47406.2019.8986923,ICE: An Interactive Configuration Explorer for High Dimensional Categorical Parameter Spaces
+10.1109/VAST47406.2019.8986943,Interactive Correction of Mislabeled Training Data
+10.1109/TVCG.2019.2934658,LightGuider: Guiding Interactive Lighting Design using Suggestions, Provenance, and Quality Visualization
+10.1109/TVCG.2019.2934603,MetricsVis: A Visual Analytics System for Evaluating Employee Performance in Public Safety Agencies
+10.1109/TVCG.2019.2934591,NNVA: Neural Network Assisted Visual Analysis of Yeast Cell Polarization Simulation
+10.1109/TVCG.2019.2934657,OD Morphing: Balancing Simplicity with Faithfulness for OD Bundling
+10.1109/VAST47406.2019.8986909,Origraph: Interactive Network Wrangling
+10.1109/TVCG.2019.2934275,PlanningVis: A Visual Analytics Approach to Production Planning in Smart Factories
+10.1109/TVCG.2019.2934267,ProtoSteer: Steering Deep Sequence Model with Prototypes
+10.1109/TVCG.2019.2934263,R-Map: A Map Metaphor for Visualizing Information Reposting Process in Social Media
+10.1109/TVCG.2019.2934660,sPortfolio: Stratified Visual Analysis of Stock Portfolios
+10.1109/TVCG.2019.2934289,STBins: Visual Tracking and Comparison of Multiple Data Sequences Using Temporal Binning
+10.1109/TVCG.2019.2934659,Summit: Scaling Deep Learning Interpretability by Visualizing Activation and Attribution Summarizations
+10.1109/TVCG.2019.2934630,Tac-Simur: Tactic-based Simulative Visual Analytics of Table Tennis
+10.1109/VAST47406.2019.8986922,TopicSifter: Interactive Search Space Reduction through Targeted Topic Modeling
+10.1109/TVCG.2019.2934593,Understanding the Role of Alternatives in Data Analysis Practices
+10.1109/TVCG.2019.2934609,VASABI: Hierarchical User Profiles for Interactive Visual User Behaviour Analytics
+10.1109/TVCG.2019.2934266,VASSL: A Visual Analytics Toolkit for Social Spambot Labeling
+10.1109/VAST47406.2019.8986917,VIANA: Visual Interactive Annotation of Argumentation
+10.1109/TVCG.2019.2934655,Visual Analytics for Electromagnetic Situation Awareness in Radio Monitoring and Management
+10.1109/TVCG.2019.2934313,Accelerated Monte Carlo Rendering of Finite-Time Lyapunov Exponents
+10.1109/TVCG.2019.2934369,DeepOrganNet: On-the-Fly Reconstruction and Visualization of 3D / 4D Lung Models from Single-View Projections by Deep Deformation Network
+10.1109/TVCG.2019.2934368,Dynamic Nested Tracking Graphs
+10.1109/TVCG.2019.2934310,Extraction and Visual Analysis of Potential Vorticity Banners around the Alps
+10.1109/TVCG.2019.2934620,High-throughput feature extraction for measuring attributes of deforming open-cell foams
+10.1109/TVCG.2019.2934312,InSituNet: Deep Image Synthesis for Parameter Space Exploration of Ensemble Simulations
+10.1109/TVCG.2019.2934332,LassoNet: Deep Lasso-Selection of 3D Point Clouds
+10.1109/TVCG.2019.2934612,Multi-Scale Procedural Animations of Microtubule Dynamics Based on Measured Data
+10.1109/TVCG.2019.2934314,Multi-Scale Topological Analysis of Asymmetric Tensor Fields on Surfaces
+10.1109/TVCG.2019.2934259,OpenSpace: A System for Astrographics
+10.1109/TVCG.2019.2934258,Scale-Space Splatting: Reforming Spacetime for Cross-Scale Exploration of Integral Measures in Molecular Dynamics
+10.1109/TVCG.2019.2934337,Temporal Views of Flattened Mitral Valve Geometries
+10.1109/TVCG.2019.2934257,Toward Localized Topological Data Structures: Querying the Forest for the Tree
+10.1109/TVCG.2019.2934255,TSR-TVD: Temporal Super-Resolution for Time-Varying Data Analysis and Visualization
+10.1109/TVCG.2019.2934375,Vector Field Topology of Time-Dependent Flows in a Steady Reference Frame
+10.1109/TVCG.2019.2934541,A Recursive Subdivision Technique for Sampling Multi-class Scatterplots
+10.1109/TVCG.2019.2934535,BarcodeTree: Scalable Comparison of Multiple Hierarchies
+10.1109/TVCG.2019.2934804,Construct-A-Vis: Exploring the Free-Form Visualization Processes of Children
+10.1109/TVCG.2019.2934799,Data Sampling in Multi-view and Multi-class Scatterplots via Set Cover Optimization
+10.1109/TVCG.2019.2934398,DataShot: Automatic Generation of Fact Sheets from Tabular Data
+10.1109/TVCG.2019.2934401,Decoding a Complex Visualization in a Science Museum – An Empirical Study
+10.1109/TVCG.2019.2934798,DeepDrawing: A Deep Learning Approach to Graph Drawing
+10.1109/TVCG.2019.2934806,GenerativeMap: Visualization and Exploration of Dynamic Density Maps via Generative Learning Model
+10.1109/TVCG.2019.2934796,Improving the Robustness of Scagnostics
+10.1109/TVCG.2019.2934805,Interactive Structure-aware Blending of Diverse Edge Bundling Visualizations
+10.1109/TVCG.2019.2934557,OntoPlot: A Novel Visualisation for Non-hierarchical Associations in Large Ontologies
+10.1109/TVCG.2019.2934537,P5: Portable Progressive Parallel Processing Pipelines for Interactive Data Analysis and Visualization
+10.1109/TVCG.2019.2934555,Pattern-Driven Navigation in 2D Multiscale Visualizations with Scalable Insets
+10.1109/TVCG.2019.2934800,RSATree: Distribution-Aware Data Representation of Large-Scale Tabular Datasets for Flexible Visual Query
+10.1109/TVCG.2019.2934540,Separating the Wheat from the Chaff: Comparative Visual Cues for Transparent Diagnostics of Competing Models
+10.1109/TVCG.2019.2934783,ShapeWordle: Tailoring Wordles using Shape-aware Archimedean Spirals
+10.1109/TVCG.2019.2934434,SmartCube: An Adaptive Data Management Architecture for the Real-Time Visualization of Spatiotemporal Datasets
+10.1109/TVCG.2019.2934785,Text-to-Viz: Automatic Generation of Infographics from Proportion-Related Natural Language Statements
+10.1109/TVCG.2019.2934395,The Impact of Immersion on Cluster Identification Tasks
+10.1109/TVCG.2019.2934786,The Perceptual Proxies of Visual Comparison
+10.1109/TVCG.2019.2934556,The Role of Latency and Task Complexity in Predicting Visual Search Behavior
+10.1109/TVCG.2019.2934812,Uncertainty-Aware Principal Component Analysis
+10.1109/TVCG.2019.2934797,VisTA: Integrating Machine Intelligence with Visualization to Support the Investigation of Think-Aloud Sessions
+10.1109/TVCG.2019.2934283,What is Interaction for Data Visualization?
+10.1109/TVCG.2019.2934811,Winglets: Visualizing Association with Uncertainty in Multi-class Scatterplots
+10.1111/cgf.13671,A framework for GPU-accelerated exploration of massive time-varying rectilinear scalar volumes
+10.1111/cgf.13699,A Geometric Optimization Approach for the Detection and Segmentation of Multiple Aneurysms
+10.1111/cgf.13730,A Review of Guidance Approaches in Visual Data Analysis: A Multifocal Perspective
+10.1111/cgf.13723,A stable graph layout algorithm for processes
+10.1111/cgf.13688,A Visual Tool for the Analysis of Algorithms for Tomographic Fiber Reconstruction in Materials Science
+10.1111/cgf.13680,An Exploratory User Study of Visual Causality Analysis
+10.1111/cgf.13690,An Interactive Visualization System for Large Sets of Phase Space Trajectories
+10.1111/cgf.13677,An Ontological Framework for Supporting the Design and Evaluation of Visual Analytics Systems
+10.1111/cgf.13706,Analysis of Decadal Climate Predictions with User-guided Hierarchical Ensemble Clustering
+10.1111/cgf.13701,Analysis of Long Molecular Dynamics Simulations Using Interactive Focus+Context Visualization
+10.1111/cgf.13716,Augmenting Tactile 3D Data Navigation With Pressure Sensing
+10.1111/cgf.13713,Bird's-Eye - Large-Scale Visual Analytics of City Dynamics using Social Location Data
+10.1111/cgf.13696,Bridging the Data Analysis Communication Gap Utilizing a Three-Component Summarized Line Graph
+10.1111/cgf.13720,Capture & Analysis of Active Reading Behaviors for Interactive Articles on the Web
+10.1111/cgf.13678,Characterizing Exploratory Visual Analysis: A Literature Review and Evaluation of Analytic Provenance in Tableau
+10.1111/cgf.13697,ChronoCorrelator: Enriching Events with Time Series
+10.1111/cgf.13684,ClustMe: A Visual Quality Measure for Ranking Monochrome Scatterplots based on Cluster Patterns
+10.1111/cgf.13675,CV3: Visual Exploration, Assessment, and Comparison of CVs
+10.1111/cgf.13709,Designing Animated Transitions to Convey Aggregate Operations
+10.1111/cgf.13674,DIVA: Exploration and Validation of Hypothesized Drug-Drug Interactions
+10.1111/cgf.13722,Efficient Optimal Overlap Removal: Algorithms and Experiments
+10.1111/cgf.13707,Evaluating image quality measures to assess the impact of lossy data compression applied to climate simulation data
+10.1111/cgf.13695,Examining Implicit Discretization in Spectral Schemes
+10.1111/cgf.13711,Focus+Context Exploration of Hierarchical Embeddings
+10.1111/cgf.13670,Follow The Clicks: Learning and Anticipating Mouse Interactions During Exploratory Data Analysis
+10.1111/cgf.13710,Hybrid Touch/Tangible Spatial 3D Data Selection
+10.1111/cgf.13705,IGM-Vis: Analyzing Intergalactic and Circumgalactic Medium Absorption Using Quasar Sightlines in a Cosmic Web Context
+10.1111/cgf.13717,InsideInsights: Integrating Data-Driven Reporting in Collaborative Visual Analytics
+10.1111/cgf.13669,Interactive Visualization of Flood and Heavy Rain Simulations
+10.1111/cgf.13700,Interactive Volumetric Visual Analysis of Glycogen-derived Energy Absorption in Nanometric Brain Structures
+10.1111/cgf.13679,Investigating Effects of Visual Anchors on Decision-Making about Misinformation
+10.1111/cgf.13718,Investigating the Manual View Specification and Visualization by Demonstration Paradigms for Visualization Construction
+10.1111/cgf.13708,Kyrix: Interactive Pan/Zoom Visualizations at Scale
+10.1111/cgf.13672,Latent Space Cartography: Visual Analysis of Vector Space Embeddings
+10.1111/cgf.13719,Linking and Layout: Exploring the Integration of Text and Visualization in Storytelling
+10.1111/cgf.13673,Multiple Views: different meanings and collocated words
+10.1111/cgf.13721,netflower: Dynamic Network Visualization for Data Journalists
+10.1111/cgf.13668,Optimizing Stepwise Animation in Dynamic Set Diagrams
+10.1111/cgf.13683,Oui! Outlier Interpretation on Multi-dimensional Data via Visual Analytics
+10.1111/cgf.13703,Ray Tracing Generalized Tube Primitives: Method and Applications
+10.1111/cgf.13712,Route-Aware Edge Bundling for Visualizing Origin-Destination Trails in Urban Traffic
+10.1111/cgf.13715,Segmentifier: Interactive Refinement of Clickstream Data
+10.1111/cgf.13732,State-of-the-art in Multi-Light Image Collections for Surface Visualization and Analysis
+10.1111/cgf.13726,State-of-the-Art Report: Visual Computing in Radiation Therapy Planning
+10.1111/cgf.13685,SurgeryCuts: Embedding Additional Information in Maps without Occluding Features
+10.1111/cgf.13687,The Dependent Vectors Operator
+10.1111/cgf.13731,The State of the Art in Visual Analysis Approaches for Ocean and Atmospheric Datasets
+10.1111/cgf.13714,Topic Tomographies (TopTom): a visual approach to distill information from media streams
+10.1111/cgf.13682,Toward Understanding Representation Methods in Visualization Recommendations through Scatterplot Construction Tasks
+10.1111/cgf.13692,Towards Glyphs for Uncertain Symmetric Second-Order Tensors
+10.1111/cgf.13667,V-Awake: A Visual Analytics Approach for Correcting Sleep Predictions from Deep Learning Models
+10.1111/cgf.13676,VIAN: A Visual Annotation Tool for Film Analysis
+10.1111/cgf.13704,Visual Analysis of Charge Flow Networks for Complex Morphologies
+10.1111/cgf.13698,Visual-Interactive Preprocessing of Multivariate Time Series Data
+10.1111/cgf.13691,Visualization of Equivalence in 2D Bivariate Fields
+10.1111/cgf.13694,Visualization Support for Developing a Matrix Calculus Algorithm: A Case Study
+10.1111/cgf.13686,Visualizing for the Non-Visual: Enabling the Visually Impaired to Use Visualization
+10.1109/TVCG.2018.2864844,A Visual Analytics Framework for Spatiotemporal Trade Network Analysis
+10.1109/TVCG.2018.2865026,A Visual Analytics Framework for the Detection of Anomalous Call Stack Trees in High Performance Computing Applications
+10.1109/TVCG.2018.2865025,An Information-Theoretic Approach to the Cost-benefit Analysis of Visualization in Virtual Environments
+10.1109/TVCG.2018.2864843,An Interactive Method to Improve Crowdsourced Annotations
+10.1109/TVCG.2018.2864811,Analysis of Flight Variability: a Systematic Approach
+10.1109/TVCG.2018.2864814,BitExTract: Interactive Visualization for Extracting Bitcoin Exchange Intelligence
+10.1109/TVCG.2018.2864905,Doccurate: A Curation-Based Approach for Clinical Text Visualization
+10.1109/TVCG.2018.2864504,DQNViz: A Visual Analytics Approach to Understand Deep Q-Networks
+10.1109/TVCG.2018.2865051,Drag and Track: A Direct Manipulation Interface for Contextualizing Data Instances within a Continuous Parameter Space
+10.1109/VAST.2018.8802454,EmbeddingVis: A Visual Analytics Approach to Comparative Network Embedding Inspection
+10.1109/TVCG.2018.2865039,Enhancing Web-based Analytics Applications through Provenance
+10.1109/TVCG.2018.2864825,EnsembleLens: Ensemble-based Visual Exploration of Anomaly Detection Algorithms with Multidimensional Data
+10.1109/TVCG.2018.2865020,Evaluating Multi-Dimensional Visualizations for Understanding Fuzzy Clusters
+10.1109/TVCG.2018.2865041,ForVizor: Visualizing Spatio-Temporal Team Formations in Soccer
+10.1109/TVCG.2018.2865040,Futzing and Moseying: Interviews with Professional Data Analysts on Exploration Practices
+10.1109/TVCG.2018.2865021,GraphProtector: A Visual Interface for Employing and Assessing Multiple Privacy Preserving Graph Algorithms
+10.1109/TVCG.2018.2865042,Identification of Temporally Varying Areas of Interest in Long-Duration Eye-Tracking Data Sets
+10.1109/TVCG.2018.2864475,iForest: Interpreting Random Forests via Visual Analytics
+10.1109/TVCG.2018.2864887,InkPlanner: Supporting Prewriting via Intelligent Visual Diagramming
+10.1109/TVCG.2018.2865024,KnowledgePearls: Provenance-Based Visualization Retrieval
+10.1109/TVCG.2018.2865023,Lessons Learned Developing a Visual Analytics Solution for Investigative Analysis of Scamming Activities
+10.1109/TVCG.2018.2864499,Manifold: A Model-Agnostic Framework for Interpretation and Diagnosis of Machine Learning Models
+10.1109/TVCG.2018.2865049,MotionRugs: Visualizing Collective Trends in Space and Time
+10.1109/TVCG.2018.2865043,RegressionExplorer: Interactive Exploration of Logistic Regression Models with Subgroup Analysis
+10.1109/TVCG.2018.2865027,RetainVis: Visual Analytics with Interpretable and Interactive Recurrent Neural Networks on Electronic Medical Records
+10.1109/TVCG.2018.2864812,RuleMatrix: Visualizing and Understanding Classifiers with Rules
+10.1109/TVCG.2018.2865044,Seq2Seq-Vis: A Visual Debugging Tool for Sequence-to-Sequence Models
+10.1109/TVCG.2018.2865047,SIRIUS: Dual, Symmetric, Interactive Dimension Reductions
+10.1109/TVCG.2018.2865029,Situ: Identifying and Explaining Suspicious Behavior in Networks
+10.1109/VAST.2018.8802486,SMARTexplore: Simplifying High-Dimensional Data Analysis through a Table-Based Visual Analytics Approach
+10.1109/VAST.2018.8802449,The Effect of Proximity in Social Data Charts on Perceived Unity
+10.1109/VAST.2018.8802424,The Effect of Semantic Interaction on Foraging in Text Analysis
+10.1109/TVCG.2018.2865018,TPFlow: Progressive Partition and Multidimensional Pattern Extraction for Large-Scale Spatio-Temporal Data Analysis
+10.1109/TVCG.2018.2864826,VIBR: Visualizing Bipartite Relations at Scale with the Minimum Description Length Principle
+10.1109/TVCG.2018.2865022,VIS Author Profiles: Interactive Descriptions of Publication Records Combining Text and Visualization
+10.1109/TVCG.2018.2864838,VIS4ML: An Ontology for Visual Analytics Assisted Machine Learning
+10.1109/TVCG.2018.2864503,Visual Abstraction of Large Scale Geospatial Origin-Destination Movement Data
+10.1109/TVCG.2018.2864901,Visual Analysis of the Temporal Evolution of Ensemble Forecast Sensitivities
+10.1109/TVCG.2018.2864769,Visual Analytics for Topic Model Optimization based on User-Steerable Speculative Execution
+10.1109/TVCG.2018.2864885,Visual Progression Analysis of Event Sequence Data
+10.1109/TVCG.2018.2865028,Vulnus: Visual Vulnerability Analysis for Network Security
+10.1109/VAST.2018.8802383,VUSphere: Visual Analysis of Video Utilization in Online Distance Education
+10.1109/TVCG.2018.2864841,A Declarative Grammar of Flexible Volume Visualization Pipelines
+10.1109/TVCG.2018.2864853,A Study of the Trade-off Between Reducing Precision and Reducing Resolution for Data Analysis and Visualization
+10.1109/TVCG.2018.2864815,An Interactive Framework for Visualization of Weather Forecast Ensembles
+10.1109/TVCG.2018.2864801,CoDDA: A Flexible Copula-based Distribution Driven Analysis Framework for Large-Scale Multivariate Data
+10.1109/TVCG.2018.2864850,CPU Isosurface Ray Tracing of Adaptive Mesh Refinement Data
+10.1109/TVCG.2018.2864847,Culling for Extreme-Scale Segmentation Volumes: A Hybrid Deterministic and Probabilistic Approach
+10.1109/TVCG.2018.2864498,Deadeye: A Novel Preattentive Visualization Technique Based on Dichoptic Presentation
+10.1109/TVCG.2018.2864849,Details-First, Show Context, Overview Last: Supporting Exploration of Viscous Fingers in Large-Scale Ensemble Simulations
+10.1109/TVCG.2018.2864845,DT-MRI Streamsurfaces Revisited
+10.1109/TVCG.2018.2864510,Dynamic Volume Lines: Visual Comparison of 3D Volumes through Space-filling Curves
+10.1109/TVCG.2018.2864808,Exploring Time-Varying Multivariate Volume Data Using Matrix of Isosurface Similarity Maps
+10.1109/TVCG.2018.2864656,Firefly: Virtual Illumination Drones for Interactive Visualization
+10.1109/TVCG.2018.2864508,Gaia Sky: Navigating the Gaia Catalog
+10.1109/TVCG.2018.2864827,Hexahedral Mesh Structure Visualization and Evaluation
+10.1109/TVCG.2018.2864806,Interactive 3D Visual Analysis of Atmospheric Fronts
+10.1109/TVCG.2018.2864690,Interactive obstruction-free lensing for volumetric data visualization
+10.1109/TVCG.2018.2864816,Interactive Visualization of 3D Histopathology in Native Resolution
+10.1109/TVCG.2018.2864507,Interactive Visualization of RNA and DNA Structures
+10.1109/TVCG.2018.2864491,Labels on Levels: Labeling of Multi-Scale Multi-Instance and Crowded 3D Biological Environments
