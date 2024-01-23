@@ -33,14 +33,14 @@ def update_paper_link_flags():
             icons = set([x.split(',')[-1].strip() for x in contents])
 
             flags = []
+            if 'project_website' in icons:
+                flags.append('PW')
             if 'paper' in icons:
                 flags.append('P')
             if 'video' in icons:
                 flags.append('V')
             if 'code' in icons:
                 flags.append('C')
-            if 'project_website' in icons:
-                flags.append('PW')
             if 'data' in icons:
                 flags.append('D')
             if 'other' in icons:
