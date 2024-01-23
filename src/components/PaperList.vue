@@ -123,6 +123,13 @@ function clearSearchbar() {
   }
 }
 
+function getResourceKeys(string?: string): string[] {
+  if (!string) {
+    return [];
+  }
+  return string.split(';');
+}
+
 const exportShown = ref(false);
 
 const offset = 50 + 50; // height of header + inner toolbar
@@ -326,7 +333,7 @@ const offset = 50 + 50; // height of header + inner toolbar
         >
         <div class="flex items-center">
           <q-avatar
-            v-for="(resourceLink, index) in (item.resources ?? '').split(';')"
+            v-for="(resourceLink, index) in getResourceKeys(item.resources)"
             :key="index"
             :color="paperDataStore.getResourceColor(resourceLink)"
             :text-color="paperDataStore.getResourceTextColor(resourceLink)"
