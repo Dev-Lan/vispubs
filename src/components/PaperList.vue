@@ -324,10 +324,21 @@ const offset = 50 + 50; // height of header + inner toolbar
           }}</span>
           [{{ index + 1 }}]</q-item-label
         >
-        <q-badge v-if="item.award" color="positive" outline
-          >{{ paperDataStore.getAward(item) }}
-          <q-icon name="emoji_events" color="positive" size="xs" />
-        </q-badge>
+        <div class="flex items-center">
+          <q-avatar
+            v-for="(resourceLink, index) in (item.resources ?? '').split(';')"
+            :key="index"
+            :color="paperDataStore.getResourceColor(resourceLink)"
+            :text-color="paperDataStore.getResourceTextColor(resourceLink)"
+            :icon="paperDataStore.getResourceIcon(resourceLink)"
+            size="xs"
+            class="q-mr-xs"
+          />
+          <q-badge v-if="item.award" color="positive" outline
+            >{{ paperDataStore.getAward(item) }}
+            <q-icon name="emoji_events" color="positive" size="xs" />
+          </q-badge>
+        </div>
       </q-item-section>
     </q-item>
   </q-virtual-scroll>

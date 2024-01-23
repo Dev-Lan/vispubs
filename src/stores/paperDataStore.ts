@@ -13,6 +13,7 @@ export interface PaperInfo {
   abstract: string;
   conference: string;
   award: string;
+  resources?: string;
   link?: string;
 }
 
@@ -98,6 +99,55 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     if (key === 'TT') return 'Test of Time';
     if (key === 'BP') return 'Best Paper';
     return 'Unknown Award';
+  }
+
+  function getResourceColor(icon: string): string {
+    switch (icon) {
+      case 'paper':
+      case 'P':
+        return 'indigo';
+      case 'video':
+      case 'V':
+        return 'red';
+      case 'code':
+      case 'C':
+        return 'green-10';
+      case 'data':
+      case 'D':
+        return 'purple';
+      case 'project_website':
+      case 'PW':
+        return 'teal';
+      default:
+        return 'none';
+    }
+  }
+
+  function getResourceTextColor(icon: string): string {
+    if (icon === 'other' || icon === 'O') return 'black';
+    return 'white';
+  }
+
+  function getResourceIcon(icon: string): string {
+    switch (icon) {
+      case 'paper':
+      case 'P':
+        return 'article';
+      case 'video':
+      case 'V':
+        return 'ondemand_video';
+      case 'code':
+      case 'C':
+        return 'code';
+      case 'data':
+      case 'D':
+        return 'storage';
+      case 'project_website':
+      case 'PW':
+        return 'language';
+      default:
+        return 'open_in_new';
+    }
   }
 
   function getConference(paperInfo: PaperInfo): string {
@@ -270,6 +320,9 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     selectPaper,
     deselectPaper,
     getAward,
+    getResourceColor,
+    getResourceTextColor,
+    getResourceIcon,
     getConference,
     getAuthors,
     papers,

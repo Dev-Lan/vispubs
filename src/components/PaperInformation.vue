@@ -35,45 +35,6 @@ const searchWords = computed(() => {
   return [paperDataStore.searchText];
 });
 
-function mapResourceColor(icon: string): string {
-  switch (icon) {
-    case 'paper':
-      return 'indigo';
-    case 'video':
-      return 'red';
-    case 'code':
-      return 'green-10';
-    case 'data':
-      return 'purple';
-    case 'project_website':
-      return 'teal';
-    default:
-      return 'none';
-  }
-}
-
-function mapResourceTextColor(icon: string): string {
-  if (icon === 'other') return 'black';
-  return 'white';
-}
-
-function mapResourceIcon(icon: string): string {
-  switch (icon) {
-    case 'paper':
-      return 'article';
-    case 'video':
-      return 'ondemand_video';
-    case 'code':
-      return 'code';
-    case 'data':
-      return 'storage';
-    case 'project_website':
-      return 'language';
-    default:
-      return 'open_in_new';
-  }
-}
-
 function quoteText(text: string): string {
   return `"${text}"`;
 }
@@ -252,9 +213,9 @@ function selectAuthor(author: string): void {
             >
               <q-item-section avatar>
                 <q-avatar
-                  :color="mapResourceColor(resourceLink.icon)"
-                  :text-color="mapResourceTextColor(resourceLink.icon)"
-                  :icon="mapResourceIcon(resourceLink.icon)"
+                  :color="paperDataStore.getResourceColor(resourceLink.icon)"
+                  :text-color="paperDataStore.getResourceTextColor(resourceLink.icon)"
+                  :icon="paperDataStore.getResourceIcon(resourceLink.icon)"
                   size="md"
                 />
               </q-item-section>
