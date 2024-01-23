@@ -14,15 +14,17 @@ For an example of a completed resource document, see https://github.com/Dev-Lan/
 When linking the paper document, please only provide links to the open-source preprint version of the paper.
 I will only accept paper links that point to an open-access repository, such as osf.io or arxiv.org.
 This policy is in place to prevent link-rot and copyright issues. If your paper is not already on an
-open-source repository, now is a great time to do it :)
+open-source repository, now is a great time to do it ;)
 
 The order in the resource file will determine the order of links on the vispubs website.
 
-There are currently six supported icons: `paper`, `video`, `code`, `website`, `data`, `other`.
+There are currently six supported icons: `paper`, `video`, `code`, `project_website`, `data`, `other`.
 These icons will be displayed in the detailed paper view and the paper list view. They will
-also be used to determine which resources are available on each paper. For example, once
+also be used to determine which resources are available on each paper.
+
+<!-- For example, once
 filtering is implemented, a user may filter to only papers that have a preprint version of
-the `paper` linked.
+the `paper` linked. -->
 
 Submit suggested changes as a pull request. I will review them and push them to the website
 periodically.
