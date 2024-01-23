@@ -53,7 +53,7 @@ def search_preprint_versions():
                 continue
 
             if preprint_already_searched_and_not_found(doi):
-                print('\🤷 Skipping, searched in past and not found')
+                print('\t🤷 Skipping, searched in past and not found')
                 continue
 
             link = search_arxiv_api(title)
