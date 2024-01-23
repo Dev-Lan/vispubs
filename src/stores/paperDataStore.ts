@@ -93,11 +93,12 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return `${selectedPaperIndex.value + 1} of ${papers.value.length}`;
   });
 
-  function getAward(paperInfo: PaperInfo): string {
-    const key = paperInfo.award;
+  function getAward(key: string): string {
     if (key === 'HM') return 'Honorable Mention';
-    if (key === 'TT') return 'Test of Time';
     if (key === 'BP') return 'Best Paper';
+    if (key === 'TT') return 'Test of Time';
+    if (key === 'BA') return 'Best Application';
+    if (key === 'BCS') return 'Best Case Study';
     return 'Unknown Award';
   }
 
@@ -309,6 +310,13 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     params.useRegex = useRegex.value;
   });
 
+  function getKeyList(string?: string): string[] {
+    if (!string) {
+      return [];
+    }
+    return string.split(';');
+  }
+
   return {
     allData,
     selectedPaper,
@@ -319,6 +327,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     progressDisplay,
     selectPaper,
     deselectPaper,
+    getKeyList,
     getAward,
     getResourceColor,
     getResourceTextColor,

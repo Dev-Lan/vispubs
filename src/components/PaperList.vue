@@ -122,14 +122,6 @@ function clearSearchbar() {
     searchbar.value.focus();
   }
 }
-
-function getResourceKeys(string?: string): string[] {
-  if (!string) {
-    return [];
-  }
-  return string.split(';');
-}
-
 const exportShown = ref(false);
 
 const offset = 50 + 50; // height of header + inner toolbar
@@ -333,7 +325,9 @@ const offset = 50 + 50; // height of header + inner toolbar
         >
         <div class="flex items-center">
           <q-avatar
-            v-for="(resourceLink, index) in getResourceKeys(item.resources)"
+            v-for="(resourceLink, index) in paperDataStore.getKeyList(
+              item.resources
+            )"
             :key="index"
             :color="paperDataStore.getResourceColor(resourceLink)"
             :text-color="paperDataStore.getResourceTextColor(resourceLink)"
@@ -341,8 +335,13 @@ const offset = 50 + 50; // height of header + inner toolbar
             size="xs"
             class="q-mr-xs"
           />
-          <q-badge v-if="item.award" color="positive" outline
-            >{{ paperDataStore.getAward(item) }}
+          <q-badge
+            v-for="(award, index) in paperDataStore.getKeyList(item.award)"
+            :key="index"
+            color="positive"
+            outline
+            class="q-ml-xs"
+            >{{ paperDataStore.getAward(award) }}
             <q-icon name="emoji_events" color="positive" size="xs" />
           </q-badge>
         </div>

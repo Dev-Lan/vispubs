@@ -102,11 +102,14 @@ function selectAuthor(author: string): void {
         }}
       </div>
       <q-badge
-        outline
-        v-if="paperDataStore.selectedPaper.award"
+        v-for="(award, index) in paperDataStore.getKeyList(
+          paperDataStore.selectedPaper.award
+        )"
+        :key="index"
         color="positive"
-        class="q-ml-lg"
-        >{{ paperDataStore.getAward(paperDataStore.selectedPaper) }}
+        outline
+        class="q-ml-xs"
+        >{{ paperDataStore.getAward(award) }}
         <q-icon name="emoji_events" color="positive" size="xs" />
       </q-badge>
     </div>
@@ -214,7 +217,9 @@ function selectAuthor(author: string): void {
               <q-item-section avatar>
                 <q-avatar
                   :color="paperDataStore.getResourceColor(resourceLink.icon)"
-                  :text-color="paperDataStore.getResourceTextColor(resourceLink.icon)"
+                  :text-color="
+                    paperDataStore.getResourceTextColor(resourceLink.icon)
+                  "
                   :icon="paperDataStore.getResourceIcon(resourceLink.icon)"
                   size="md"
                 />
