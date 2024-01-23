@@ -154,55 +154,55 @@ function selectAuthor(displayName: string, dedupedName: string): void {
             :autoEscape="autoEscape"
             :textToHighlight="displayName"
         /></q-btn>
-
-        <q-dialog v-model="authorModalShown">
-          <q-card>
-            <q-card-section>
-              Search for author on:
-              <q-card-actions>
-                <q-btn
-                  :href="`https://www.google.com/search?q=${selectedAuthor.displayName}`"
-                  target="_blank"
-                  no-caps
-                  flat
-                  >Google</q-btn
-                >
-                <q-btn
-                  :href="`https://www.bing.com/search?q=${selectedAuthor.displayName}`"
-                  target="_blank"
-                  no-caps
-                  flat
-                  >Bing</q-btn
-                >
-                <q-btn
-                  :href="`https://www.duckduckgo.com/?q=${selectedAuthor.displayName}`"
-                  target="_blank"
-                  no-caps
-                  flat
-                  >DuckDuckGo</q-btn
-                >
-              </q-card-actions>
-            </q-card-section>
-
-            <q-card-section class="q-pb-none">
-              Submit author information:
-              <q-card-actions>
-                <q-btn
-                  :href="getAuthorFormLink(selectedAuthor.dedupedName)"
-                  target="_blank"
-                  no-caps
-                  flat
-                  >Google Form</q-btn
-                >
-              </q-card-actions>
-            </q-card-section>
-
-            <q-card-actions align="right">
-              <q-btn flat label="Done" color="primary" v-close-popup />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
       </template>
+
+      <q-dialog v-model="authorModalShown">
+        <q-card>
+          <q-card-section>
+            Search for author on:
+            <q-card-actions>
+              <q-btn
+                :href="`https://www.google.com/search?q=${selectedAuthor.displayName}`"
+                target="_blank"
+                no-caps
+                flat
+                >Google</q-btn
+              >
+              <q-btn
+                :href="`https://www.bing.com/search?q=${selectedAuthor.displayName}`"
+                target="_blank"
+                no-caps
+                flat
+                >Bing</q-btn
+              >
+              <q-btn
+                :href="`https://www.duckduckgo.com/?q=${selectedAuthor.displayName}`"
+                target="_blank"
+                no-caps
+                flat
+                >DuckDuckGo</q-btn
+              >
+            </q-card-actions>
+          </q-card-section>
+
+          <q-card-section class="q-pb-none">
+            Submit author information:
+            <q-card-actions>
+              <q-btn
+                :href="getAuthorFormLink(selectedAuthor.dedupedName)"
+                target="_blank"
+                no-caps
+                flat
+                >Google Form</q-btn
+              >
+            </q-card-actions>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Done" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
     <div class="flex flex-center">
       <q-card flat bordered class="q-ml-md q-mr-md q-mb-md align-self-start">
