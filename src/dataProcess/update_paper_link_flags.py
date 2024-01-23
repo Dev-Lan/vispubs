@@ -30,7 +30,7 @@ def update_paper_link_flags():
         if os.path.exists(resource_file):
             with open(resource_file, 'r') as file:
                 contents = file.readlines()
-            icons = set([x.split(',')[-1] for x in contents])
+            icons = set([x.split(',')[-1].strip() for x in contents])
 
             flags = []
             if 'paper' in icons:
@@ -45,8 +45,8 @@ def update_paper_link_flags():
                 flags.append('D')
             if 'other' in icons:
                 flags.append('O')
-
-            row['resources'] = ';'.join(flags)
+            
+            row['Resources'] = ';'.join(flags)
 
     with open(PAPER_LIST_FILENAME, 'w', newline='') as csvfile:
         fieldnames = reader.fieldnames
