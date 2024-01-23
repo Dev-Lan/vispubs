@@ -22,6 +22,7 @@ based on the `doi` attribute.
 
 INPUT_PAPER_LIST_FILENAME = '../../public/data/papers.csv'
 ROOT_FOLDER = '../../public/data/paperLinks/'
+NOT_FOUND_LIST_FILENAME = './openSourceNotFoundList.CSV'
 
 def search_preprint_versions():
     options = webdriver.ChromeOptions()
@@ -67,6 +68,9 @@ def search_preprint_versions():
                 added_links += 1
             else:
                 print("\t❌ Not found")
+                # add doi and title to end of OPEN_SOURCE_NOT_FOUND_LIST_FILENAME
+                with open(NOT_FOUND_LIST_FILENAME, 'a') as not_found_file:
+                    not_found_file.write(doi + ',' + title + '\n')
 
             wait_and_print(5)
     browser.quit()
@@ -116,7 +120,7 @@ def search_osf_api(browser, title):
         return None
     except Exception as error:
         # print the error
-        print('selemium error')
+        print('🐛🐞 osf error 🐞🐛')
         print(error)
         return None
 
@@ -125,24 +129,30 @@ def close_enough(s1, s2):
     return d <= 3
 
 def search_arxiv_api(title):
-    # URL encode the title
-    title_query = urllib.parse.quote(title)
+    try:
+        # URL encode the title
+        title_query = urllib.parse.quote(title)
 
-    # Build the API request URL
-    url = f'http://export.arxiv.org/api/query?search_query=ti:{title_query}'
+        # Build the API request URL
+        url = f'http://export.arxiv.org/api/query?search_query=ti:{title_query}'
 
-    # Send the request and parse the response
-    response = urllib.request.urlopen(url)
-    feed = feedparser.parse(response)
+        # Send the request and parse the response
+        response = urllib.request.urlopen(url)
+        feed = feedparser.parse(response)
 
-    # Iterate over the entries
-    for entry in feed.entries:
-        candidate_title = entry.title.strip()
-        if close_enough(candidate_title, title):
-            return entry.link
+        # Iterate over the entries
+        for entry in feed.entries:
+            candidate_title = entry.title.strip()
+            if close_enough(candidate_title, title):
+                return entry.link
 
-    # If no close enough match is found, return None
-    return None
+        # If no close enough match is found, return None
+        return None
+    except Exception as error:
+        # print the error
+        print('🐛🐞 arxiv error 🐞🐛')
+        print(error)
+        return None
 
 
 def preprint_already_added(doi):
