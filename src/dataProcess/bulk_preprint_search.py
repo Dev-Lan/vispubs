@@ -159,6 +159,11 @@ def search_arxiv_api(title):
         return None
 
 
+# Performance note for this function and the next one:
+# It would be faster to cache the file names in a set and
+# reuse that set for each paper, but I'm also waiting 5-15
+# seconds between each search, so it's not a big deal.
+# also probably will only run this script once or twice.
 def preprint_already_added(doi):
     filename = os.path.join(ROOT_FOLDER, doi)
     with open(filename, 'r') as file:
