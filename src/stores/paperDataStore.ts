@@ -119,12 +119,12 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
       case 'PW':
         return 'teal';
       default:
-        return 'none';
+        return 'blue-grey';
     }
   }
 
   function getResourceTextColor(icon: string): string {
-    if (icon === 'other' || icon === 'O') return 'black';
+    // if (icon === 'other' || icon === 'O') return 'black';
     return 'white';
   }
 
