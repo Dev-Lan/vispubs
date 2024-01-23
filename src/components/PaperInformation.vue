@@ -45,7 +45,7 @@ function mapResourceColor(icon: string): string {
       return 'green-10';
     case 'data':
       return 'purple';
-    case 'project':
+    case 'project_website':
       return 'teal';
     default:
       return 'none';
@@ -67,7 +67,7 @@ function mapResourceIcon(icon: string): string {
       return 'code';
     case 'data':
       return 'storage';
-    case 'project':
+    case 'project_website':
       return 'language';
     default:
       return 'open_in_new';

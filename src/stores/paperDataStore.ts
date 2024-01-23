@@ -23,7 +23,7 @@ export interface PaperDataStoreState {
 export interface PaperResourceLink {
   name: string;
   url: string;
-  icon: 'paper' | 'video' | 'code' | 'project' | 'data' | 'other';
+  icon: 'paper' | 'video' | 'code' | 'project_website' | 'data' | 'other';
 }
 
 export const usePaperDataStore = defineStore('paperDataStore', () => {
