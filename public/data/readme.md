@@ -27,7 +27,8 @@ users will be able to filter based on things like if a preprint version is linke
 
 To help with consistency on the site, please use the following naming conventions.
 For project landing pages please name these "Project Website" or "Project Website with Demo"
-if this includes a
+if this includes a live demo on the website. "Project Website with Paper" is also ok
+as discussed earlier. For links to preprints please name it "Paper Preprint".
 
 The order in the resource file will determine the order of links on the vispubs website.
 
