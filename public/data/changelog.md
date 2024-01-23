@@ -3,8 +3,10 @@
 ###### Jan 23, 2024
 
 - add initial paper resource links
-  - open source preprints on arxiv and osf
-  - videos for VIS 2020 – 2023
+  - All VIS and EuroVis: open source preprints found on arxiv and osf
+  - VIS 2020 - 2021: Fast Forward
+  - VIS 2022 - 2023: Fast Forward and Prerecorded talk
+  - EuroVis 2023: Fast Forward and Prerecorded talk
 - add homepage links for 20 authors
 
 ###### Jan 20, 2024
