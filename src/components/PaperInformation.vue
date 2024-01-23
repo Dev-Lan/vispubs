@@ -41,10 +41,16 @@ function quoteText(text: string): string {
 
 const addResourcesShown = ref(false);
 const authorModalShown = ref(false);
-const selectedAuthor = ref<string>('');
+const selectedAuthor = ref<{ displayName: string; dedupedName: string }>({
+  displayName: '',
+  dedupedName: '',
+});
 
-function selectAuthor(author: string): void {
-  selectedAuthor.value = author;
+function selectAuthor(displayName: string, dedupedName: string): void {
+  selectedAuthor.value = {
+    displayName,
+    dedupedName,
+  };
   authorModalShown.value = true;
 }
 </script>
@@ -137,7 +143,7 @@ function selectAuthor(author: string): void {
         /></q-btn>
         <q-btn
           v-else
-          @click="selectAuthor(dedupedName)"
+          @click="selectAuthor(displayName, dedupedName)"
           icon-right="help"
           flat
           no-caps
@@ -155,21 +161,21 @@ function selectAuthor(author: string): void {
               Search for author on:
               <q-card-actions>
                 <q-btn
-                  :href="`https://www.google.com/search?q=${selectedAuthor}`"
+                  :href="`https://www.google.com/search?q=${selectedAuthor.displayName}`"
                   target="_blank"
                   no-caps
                   flat
                   >Google</q-btn
                 >
                 <q-btn
-                  :href="`https://www.bing.com/search?q=${selectedAuthor}`"
+                  :href="`https://www.bing.com/search?q=${selectedAuthor.displayName}`"
                   target="_blank"
                   no-caps
                   flat
                   >Bing</q-btn
                 >
                 <q-btn
-                  :href="`https://www.duckduckgo.com/?q=${selectedAuthor}`"
+                  :href="`https://www.duckduckgo.com/?q=${selectedAuthor.displayName}`"
                   target="_blank"
                   no-caps
                   flat
@@ -182,7 +188,7 @@ function selectAuthor(author: string): void {
               Submit author information:
               <q-card-actions>
                 <q-btn
-                  :href="getAuthorFormLink(selectedAuthor)"
+                  :href="getAuthorFormLink(selectedAuthor.dedupedName)"
                   target="_blank"
                   no-caps
                   flat
