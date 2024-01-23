@@ -20,7 +20,7 @@ paper link file in the ROOT_FOLDER. It will determine the file location
 based on the `doi` attribute.
 '''
 
-INPUT_PAPER_LIST_FILENAME = '../../public/data/papers_test.csv'
+INPUT_PAPER_LIST_FILENAME = '../../public/data/papers.csv'
 ROOT_FOLDER = '../../public/data/paperLinks/'
 
 def search_preprint_versions():
