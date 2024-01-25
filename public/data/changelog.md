@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### Jan 24, 2024
+
+- add awards for EuroVis
+
 ###### Jan 23, 2024
 
 - add initial paper resource links
