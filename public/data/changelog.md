@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### Jan 25, 2024
+
+- add paper preprint links from arxiv for ~200 papers.
+
 ###### Jan 24, 2024
 
 - add awards for EuroVis
