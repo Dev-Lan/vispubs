@@ -5,7 +5,7 @@ Goes through every resource file, and checks for an arxiv link to the abstract. 
 it will replace it to the pdf link.
 
 The abstract url is formatted as https://arxiv.org/abs/{arxiv_id}
-The pdf url is formatted as https://arxiv.org/pdf/{arxiv_id}.pdf
+The pdf url is formatted as https://arxiv.org/pdf/{arxiv_id}.pdf (.pdf is optional)
 '''
 
 INPUT_PAPER_LIST_FILENAME = '../../public/data/papers.csv'
