@@ -71,10 +71,10 @@ const resourceExplanations = [
           <a href="https://www.devinlange.com/">Devin Lange</a> to aggregate all
           visualization publications into a single website, and make it easy to
           find resources related to publications. These resources can be
-          anything to help explain the paper, use to related tool, or reproduce
+          anything to help explain the paper, use the related tool, or reproduce
           the results. Common types of resources include:
         </p>
-        <q-list>
+        <q-list class="q-mb-md">
           <q-item
             v-for="resourceExplanation in resourceExplanations"
             :key="resourceExplanation.icon"
@@ -92,7 +92,6 @@ const resourceExplanations = [
               />
             </q-item-section>
 
-            <!-- <q-item-section>{{ resourceExplanation.name }}</q-item-section> -->
             <q-item-section>
               <q-item-label>{{ resourceExplanation.name }}</q-item-label>
               <q-item-label caption>{{
@@ -105,16 +104,22 @@ const resourceExplanations = [
         <p>
           Some resources have been added in bulk for all papers, however, the
           linked resources are not exhaustive. To add additional links for a
-          paper navigate it's page and click the
-          <q-avatar color="primary" text-color="white" icon="add" size="xs" />
-          Add Resources button.
+          paper navigate to it's page and click the
+          <q-avatar
+            class="q-ml-sm"
+            color="primary"
+            text-color="white"
+            icon="add"
+            size="xs"
+          />
+          <span class="q-ml-sm q-mr-sm">Add Resources</span> button.
         </p>
 
         <p>
           Currently this site includes IEEE Visualization (IEEE VIS)
           publications from 1990–2023 and EuroVis publications from 1999–2023.
           The VIS papers are based on a subset of data from this
-          <a href="https://sites.google.com/site/vispubdata/home?authuser=0"
+          <a href="https://sites.google.com/site/vispubdata/home"
             >visualization publication dataset</a
           >. Thank you to all the creators/maintainers of this dataset!
         </p>
