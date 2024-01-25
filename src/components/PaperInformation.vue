@@ -246,7 +246,7 @@ function selectAuthor(displayName: string, dedupedName: string): void {
                 />
               </q-item-section>
 
-              <q-item-section>Add resources</q-item-section>
+              <q-item-section>Add Resources</q-item-section>
             </q-item>
           </q-list>
         </q-card-section>
