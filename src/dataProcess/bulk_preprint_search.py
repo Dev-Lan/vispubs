@@ -1,4 +1,6 @@
 import csv
+from tabnanny import check
+from pyparsing import C
 import requests
 import os
 import urllib
@@ -23,12 +25,14 @@ based on the `doi` attribute.
 INPUT_PAPER_LIST_FILENAME = '../../public/data/papers.csv'
 ROOT_FOLDER = '../../public/data/paperLinks/'
 NOT_FOUND_LIST_FILENAME = './openSourceNotFoundList.CSV'
+CHECK_OSF = False
 
 def search_preprint_versions():
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    # executable_path param is not needed if you updated PATH
-    browser = webdriver.Chrome(options=options)#, executable_path='YOUR_PATH/chromedriver.exe')
+    if CHECK_OSF:
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        # executable_path param is not needed if you updated PATH
+        browser = webdriver.Chrome(options=options)#, executable_path='YOUR_PATH/chromedriver.exe')
 
     with open(INPUT_PAPER_LIST_FILENAME, 'r') as file:
         reader = csv.reader(file)
@@ -60,7 +64,7 @@ def search_preprint_versions():
             if link is not None:
                 print("\t🍺 Found arXiv")
                 found_arxiv += 1
-            else:
+            elif CHECK_OSF:
                 link = search_osf_api(browser, title)
                 if link is not None:
                     print("\t🍺 Found OSF")
@@ -77,7 +81,8 @@ def search_preprint_versions():
                     not_found_file.write(doi + ',' + title + '\n')
 
             wait_and_print(5)
-    browser.quit()
+    if CHECK_OSF:
+        browser.quit()
     print('Finished searching for preprint versions.')
     print('Added', added_links, ', found', found_links, ', of', index, 'total papers.')
     print('Found', found_osf, 'on OSF and', found_arxiv, 'on arXiv.')
@@ -129,13 +134,14 @@ def search_osf_api(browser, title):
         return None
 
 def close_enough(s1, s2):
-    d = nltk.edit_distance(s1, s2)
+    d = nltk.edit_distance(s1.lower(), s2.lower())
     return d <= 3
 
 def search_arxiv_api(title):
     try:
         # URL encode the title
-        title_query = urllib.parse.quote(title)
+        title_query = title.replace(':', '\:') # arxiv api doesn't like colons
+        title_query = urllib.parse.quote(title_query)
 
         # Build the API request URL
         url = f'http://export.arxiv.org/api/query?search_query=ti:{title_query}'
