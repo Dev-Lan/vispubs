@@ -60,11 +60,11 @@ def search_preprint_versions():
             if link is not None:
                 print("\t🍺 Found arXiv")
                 found_arxiv += 1
-            # else:
-            #     link = search_osf_api(browser, title)
-            #     if link is not None:
-            #         print("\t🍺 Found OSF")
-            #         found_osf += 1
+            else:
+                link = search_osf_api(browser, title)
+                if link is not None:
+                    print("\t🍺 Found OSF")
+                    found_osf += 1
 
             if link is not None:
                 add_link_to_file(link, doi)
@@ -177,7 +177,7 @@ def preprint_already_searched_and_not_found(doi):
     with open(NOT_FOUND_LIST_FILENAME, 'r') as not_found_file:
         lines = not_found_file.readlines()
         for line in lines:
-            if doi in line:
+            if doi == line.split(',')[0]:
                 return True
         return False
 
