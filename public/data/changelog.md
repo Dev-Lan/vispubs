@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### Feb 13, 2024
+
+- add a few submitted author/paper links
+
 ###### Jan 25, 2024
 
 - add paper preprint links from arxiv for ~200 papers.
