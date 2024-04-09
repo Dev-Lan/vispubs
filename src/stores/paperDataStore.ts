@@ -1,9 +1,9 @@
 import { ref, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
+import { debounce } from 'quasar';
 
 import { parse, type ParseResult } from 'papaparse';
-
-import { useUrlSearchParams } from '@vueuse/core';
 
 export interface PaperInfo {
   title: string;
@@ -28,7 +28,80 @@ export interface PaperResourceLink {
 }
 
 export const usePaperDataStore = defineStore('paperDataStore', () => {
-  const params = useUrlSearchParams('history');
+  const { currentRoute, push, replace } = useRouter();
+
+  function updateQueryState(
+    parameter: string,
+    value: string | null,
+    options?: {
+      replaceState?: boolean;
+      forceUpdate?: boolean;
+    }
+  ): void {
+    if (
+      currentRoute.value.query[parameter] === value &&
+      !options?.forceUpdate
+    ) {
+      // check if the parameter is already in the query
+      return;
+    }
+    let query;
+
+    if (value === null) {
+      query = { ...currentRoute.value.query };
+      delete query[parameter];
+    } else {
+      query = {
+        ...currentRoute.value.query,
+        [parameter]: value,
+      };
+    }
+    if (options?.replaceState) {
+      replace({ query });
+    } else {
+      if (options?.forceUpdate) {
+        console.log('pushing...');
+        console.log(value);
+      }
+      push({
+        query,
+      }).catch((e) => {
+        console.log(e);
+      });
+    }
+  }
+
+  watch(
+    currentRoute,
+    (to, from) => {
+      // changes to paper
+      const toPaper = to.query.paper;
+      const fromPaper = from.query.paper;
+      if (toPaper !== fromPaper && toPaper !== selectedPaper.value?.doi) {
+        if (toPaper == null) {
+          deselectPaper();
+        } else {
+          selectPaperByDoi(toPaper as string);
+        }
+      }
+
+      // changes to matchCase
+      if (to.query.matchCase !== from.query.matchCase) {
+        matchCase.value = (to.query.matchCase as string) ?? null;
+      }
+
+      // changes to useRegex
+      if (to.query.useRegex !== from.query.useRegex) {
+        useRegex.value = (to.query.useRegex as string) ?? null;
+      }
+
+      // changes to searchText
+      if (to.query.searchText !== from.query.searchText) {
+        searchText.value = (to.query.searchText as string) ?? '';
+      }
+    },
+    { deep: true }
+  );
 
   const allData = ref<PaperInfo[] | null>(null);
 
@@ -37,11 +110,23 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
 
   const selectedPaperResourceLinks = ref<PaperResourceLink[]>([]);
 
+  function selectPaperByDoi(doi: string): void {
+    if (papers.value === null) return;
+    const selectedIndex = papers.value.findIndex(
+      (paperInfo: PaperInfo) => paperInfo.doi === doi
+    );
+    if (selectedIndex >= 0) {
+      selectPaper(selectedIndex);
+    }
+  }
+
   function selectPaper(index: number): void {
     if (papers.value === null) return;
     selectedPaperIndex.value = index;
     selectedPaper.value = papers.value[index];
-    params.paper = selectedPaper.value?.doi;
+
+    updateQueryState('paper', selectedPaper.value?.doi);
+
     selectedPaperResourceLinks.value = [];
     if (!selectedPaper.value?.doi) return;
     const doi = selectedPaper.value.doi;
@@ -54,8 +139,8 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
       // worker: true,
       comments: '#',
       complete: (results: ParseResult<any>, _file: string) => {
-        console.log('parsed paper resources');
-        console.log(results);
+        // console.log('parsed paper resources');
+        // console.log(results);
         selectedPaperResourceLinks.value = results.data;
       },
     });
@@ -84,7 +169,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   function deselectPaper(): void {
     selectedPaper.value = null;
     selectedPaperIndex.value = null;
-    params.paper = null;
+    updateQueryState('paper', null);
   }
 
   const progressDisplay = computed<string>(() => {
@@ -189,13 +274,9 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
       // console.log(results);
       allData.value = results.data;
       allPapers.value = JSON.parse(JSON.stringify(allData.value));
-      if (params.paper) {
-        const selectedIndex = papers.value.findIndex(
-          (paperInfo: PaperInfo) => paperInfo.doi === params.paper
-        );
-        if (selectedIndex >= 0) {
-          selectPaper(selectedIndex);
-        }
+      const currentPaperDOI = currentRoute.value.query.paper;
+      if (currentPaperDOI) {
+        selectPaperByDoi(currentPaperDOI as string);
       }
     },
   });
@@ -206,15 +287,22 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return header.slice(0, 1).toLowerCase() + header.slice(1);
   }
 
-  const searchText = ref<string>(params.search ?? '');
-
+  const searchText = ref<string | null>(
+    (currentRoute.value.query.searchText as string) ?? ''
+  );
   watch(searchText, () => {
+    debouncedPushSearchTextState();
+  });
+
+  const debouncedPushSearchTextState = debounce(pushSearchTextState, 1000);
+
+  function pushSearchTextState(): void {
     if (searchText.value === '') {
-      params.search = null;
+      updateQueryState('searchText', null, { forceUpdate: true });
       return;
     }
-    params.search = searchText.value;
-  });
+    updateQueryState('searchText', searchText.value, { forceUpdate: true });
+  }
 
   const allPapers = ref();
 
@@ -300,14 +388,26 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return text.includes(query);
   }
 
-  const matchCase = ref<string | null>(params.matchCase ?? null);
+  const matchCase = ref<string | null>(
+    (currentRoute.value.query.matchCase as string) ?? null
+  );
   watch(matchCase, () => {
-    params.matchCase = matchCase.value;
+    if (matchCase.value === null) {
+      updateQueryState('matchCase', null);
+      return;
+    }
+    updateQueryState('matchCase', matchCase.value);
   });
 
-  const useRegex = ref<string | null>(params.useRegex ?? null);
+  const useRegex = ref<string | null>(
+    (currentRoute.value.query.useRegex as string) ?? null
+  );
   watch(useRegex, () => {
-    params.useRegex = useRegex.value;
+    if (useRegex.value === null) {
+      updateQueryState('useRegex', null);
+      return;
+    }
+    updateQueryState('useRegex', useRegex.value);
   });
 
   function getKeyList(string?: string): string[] {
