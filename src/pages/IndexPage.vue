@@ -28,6 +28,16 @@ useKeypress({
       success: nextPaper,
       preventDefault: false,
     },
+    {
+      keyCode: 'up',
+      success: focusPreviousPaper,
+      // preventDefault: false,
+    },
+    {
+      keyCode: 'down',
+      success: focusNextPaper,
+      // preventDefault: false,
+    },
   ],
 });
 
@@ -38,6 +48,13 @@ function previousPaper() {
 function nextPaper() {
   if (paperDataStore.selectedPaper === null) return;
   paperDataStore.nextPaper();
+}
+
+function focusPreviousPaper() {
+  paperDataStore.focusPreviousPaper();
+}
+function focusNextPaper() {
+  paperDataStore.focusNextPaper();
 }
 </script>
 

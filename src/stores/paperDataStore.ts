@@ -103,8 +103,14 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
 
   const selectedPaper = ref<PaperInfo | null>(null);
   const selectedPaperIndex = ref<number | null>(null);
+  const focusedPaperIndex = ref<number | null>(null);
 
   const selectedPaperResourceLinks = ref<PaperResourceLink[]>([]);
+
+  function selectFocusedPaper(): void {
+    if (focusedPaperIndex.value === null) return;
+    selectPaper(focusedPaperIndex.value);
+  }
 
   function selectPaperByDoi(doi: string): void {
     if (papers.value === null) return;
@@ -166,6 +172,31 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     selectedPaper.value = null;
     selectedPaperIndex.value = null;
     updateQueryState('paper', null);
+  }
+
+  function clearFocusedPaper(): void {
+    focusedPaperIndex.value = null;
+  }
+
+  function focusPaper(index: number): void {
+    focusedPaperIndex.value = index;
+  }
+
+  function focusPreviousPaper(): void {
+    if (focusedPaperIndex.value === null) {
+      return;
+    }
+    if (focusedPaperIndex.value === 0) return;
+    focusedPaperIndex.value = focusedPaperIndex.value - 1;
+  }
+
+  function focusNextPaper(): void {
+    if (focusedPaperIndex.value === null) {
+      focusedPaperIndex.value = 0;
+      return;
+    }
+    if (focusedPaperIndex.value === papers.value.length - 1) return;
+    focusedPaperIndex.value = focusedPaperIndex.value + 1;
   }
 
   const progressDisplay = computed<string>(() => {
@@ -419,9 +450,15 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     selectedPaperResourceLinks,
     previousPaper,
     nextPaper,
+    clearFocusedPaper,
+    focusPaper,
+    focusPreviousPaper,
+    focusNextPaper,
     selectedPaperIndex,
+    focusedPaperIndex,
     progressDisplay,
     selectPaper,
+    selectFocusedPaper,
     deselectPaper,
     getKeyList,
     getAward,

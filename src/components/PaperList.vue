@@ -8,7 +8,7 @@ import ExcelJS from 'exceljs';
 import { storeToRefs } from 'pinia';
 
 const paperDataStore = usePaperDataStore();
-const { selectedPaperIndex } = storeToRefs(paperDataStore);
+const { selectedPaperIndex, focusedPaperIndex } = storeToRefs(paperDataStore);
 
 const caseSensitive = computed(() => {
   return paperDataStore.matchCase ? true : false;
@@ -133,19 +133,35 @@ watch(selectedPaperIndex, () => {
   scrollToSelected();
 });
 
+watch(focusedPaperIndex, () => {
+  scrollToFocused();
+});
+
 onMounted(() => {
   scrollToSelected();
 });
 
 function scrollToSelected() {
+  if (selectedPaperIndex.value === null) {
+    return;
+  }
+  scrollToPaper(selectedPaperIndex.value);
+}
+
+function scrollToFocused() {
+  if (paperDataStore.focusedPaperIndex === null) {
+    return;
+  }
+  scrollToPaper(paperDataStore.focusedPaperIndex);
+}
+
+function scrollToPaper(index: number): void {
   if (virtualScrollRef.value === null) {
     return;
   }
-  if (selectedPaperIndex.value !== -1 && selectedPaperIndex.value !== null) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    virtualScrollRef.value.scrollTo(selectedPaperIndex.value);
-  }
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  virtualScrollRef.value.scrollTo(index);
 }
 </script>
 
@@ -160,6 +176,8 @@ function scrollToSelected() {
       class="flex-grow-1 q-mr-md"
       label="Search (Title, Author, Abstract)"
       v-model="paperDataStore.searchText"
+      @keydown.enter="paperDataStore.selectFocusedPaper()"
+      @blur="paperDataStore.clearFocusedPaper()"
     >
       <template v-slot:append>
         <q-btn-toggle
@@ -312,6 +330,9 @@ function scrollToSelected() {
       clickable
       v-ripple
       @click="paperDataStore.selectPaper(index)"
+      :manual-focus="true"
+      :focused="index === paperDataStore.focusedPaperIndex"
+      @focus="paperDataStore.focusPaper(index)"
     >
       <q-item-section>
         <q-item-label>
