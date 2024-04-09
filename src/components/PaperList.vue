@@ -145,7 +145,6 @@ function scrollToSelected() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     virtualScrollRef.value.scrollTo(selectedPaperIndex.value);
-    console.log('scroll to: ', selectedPaperIndex.value);
   }
 }
 </script>
