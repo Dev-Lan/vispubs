@@ -59,10 +59,6 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     if (options?.replaceState) {
       replace({ query });
     } else {
-      if (options?.forceUpdate) {
-        console.log('pushing...');
-        console.log(value);
-      }
       push({
         query,
       }).catch((e) => {
