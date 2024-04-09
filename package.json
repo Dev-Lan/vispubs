@@ -1,7 +1,7 @@
 {
   "name": "vispubs",
   "version": "0.0.1",
-  "description": "Collection of visualization publications",
+  "description": "Repository of visualization publications from VIS and EuroVis.",
   "productName": "Visualization Publications",
   "author": "Devin Lange <devinscottlange@gmail.com>",
   "private": true,
