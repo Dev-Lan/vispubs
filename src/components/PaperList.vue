@@ -163,6 +163,15 @@ function scrollToPaper(index: number): void {
   // @ts-ignore
   virtualScrollRef.value.scrollTo(index);
 }
+
+function onSearchbarFocus() {
+  paperDataStore.searchFocused = true;
+}
+
+function onSearhbarBlur() {
+  paperDataStore.searchFocused = false;
+  paperDataStore.clearFocusedPaper();
+}
 </script>
 
 <template>
@@ -177,7 +186,8 @@ function scrollToPaper(index: number): void {
       label="Search (Title, Author, Abstract)"
       v-model="paperDataStore.searchText"
       @keydown.enter="paperDataStore.selectFocusedPaper()"
-      @blur="paperDataStore.clearFocusedPaper()"
+      @focus="onSearchbarFocus"
+      @blur="onSearhbarBlur"
     >
       <template v-slot:append>
         <q-btn-toggle

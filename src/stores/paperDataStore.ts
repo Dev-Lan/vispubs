@@ -104,6 +104,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   const selectedPaper = ref<PaperInfo | null>(null);
   const selectedPaperIndex = ref<number | null>(null);
   const focusedPaperIndex = ref<number | null>(null);
+  const searchFocused = ref<boolean>(false);
 
   const selectedPaperResourceLinks = ref<PaperResourceLink[]>([]);
 
@@ -179,10 +180,12 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   }
 
   function focusPaper(index: number): void {
+    if (!searchFocused.value) return;
     focusedPaperIndex.value = index;
   }
 
   function focusPreviousPaper(): void {
+    if (!searchFocused.value) return;
     if (focusedPaperIndex.value === null) {
       return;
     }
@@ -191,6 +194,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   }
 
   function focusNextPaper(): void {
+    if (!searchFocused.value) return;
     if (focusedPaperIndex.value === null) {
       focusedPaperIndex.value = 0;
       return;
@@ -450,6 +454,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     selectedPaperResourceLinks,
     previousPaper,
     nextPaper,
+    searchFocused,
     clearFocusedPaper,
     focusPaper,
     focusPreviousPaper,
