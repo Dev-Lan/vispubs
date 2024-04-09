@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import Highlighter from 'vue-highlight-words';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 import { unparse } from 'papaparse';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
+import { storeToRefs } from 'pinia';
 
 const paperDataStore = usePaperDataStore();
+const { selectedPaperIndex } = storeToRefs(paperDataStore);
 
 const caseSensitive = computed(() => {
   return paperDataStore.matchCase ? true : false;
@@ -125,6 +127,27 @@ function clearSearchbar() {
 const exportShown = ref(false);
 
 const offset = 50 + 50; // height of header + inner toolbar
+
+const virtualScrollRef = ref(null);
+watch(selectedPaperIndex, () => {
+  scrollToSelected();
+});
+
+onMounted(() => {
+  scrollToSelected();
+});
+
+function scrollToSelected() {
+  if (virtualScrollRef.value === null) {
+    return;
+  }
+  if (selectedPaperIndex.value !== -1 && selectedPaperIndex.value !== null) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    virtualScrollRef.value.scrollTo(selectedPaperIndex.value);
+    console.log('scroll to: ', selectedPaperIndex.value);
+  }
+}
 </script>
 
 <template>
@@ -276,6 +299,7 @@ const offset = 50 + 50; // height of header + inner toolbar
     </q-dialog>
   </q-toolbar>
   <q-virtual-scroll
+    ref="virtualScrollRef"
     v-if="paperDataStore.papers.length > 0"
     :items="paperDataStore.papers"
     bordered
