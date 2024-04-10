@@ -2,11 +2,13 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import Highlighter from 'vue-highlight-words';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
+import { useGlobalStore } from 'src/stores/globalStore';
 import { unparse } from 'papaparse';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
 import { storeToRefs } from 'pinia';
 
+const globalStore = useGlobalStore();
 const paperDataStore = usePaperDataStore();
 const { selectedPaperIndex, focusedPaperIndex } = storeToRefs(paperDataStore);
 
@@ -234,7 +236,10 @@ function onSearhbarBlur() {
       </template>
     </q-input>
 
-    <q-badge color="primary" outline class="q-mr-md"
+    <q-badge
+      :color="globalStore.darkMode ? 'dark' : 'light'"
+      outline
+      class="q-mr-md"
       >{{ paperDataStore.papers.length }} papers</q-badge
     >
 
@@ -322,7 +327,7 @@ function onSearhbarBlur() {
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Done" color="primary" v-close-popup />
+          <q-btn label="Done" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -331,7 +336,6 @@ function onSearhbarBlur() {
     ref="virtualScrollRef"
     v-if="paperDataStore.papers.length > 0"
     :items="paperDataStore.papers"
-    bordered
     separator
     v-slot="{ item, index }"
     class="flex-grow-1"
@@ -374,7 +378,7 @@ function onSearhbarBlur() {
 
       <q-item-section side top>
         <q-item-label caption
-          ><span style="color: black">{{
+          ><span>{{
             `${paperDataStore.getConference(item)}, ${item.year}`
           }}</span>
           [{{ index + 1 }}]</q-item-label
@@ -415,7 +419,7 @@ function onSearhbarBlur() {
       </span>
       <q-banner rounded v-else inline-actions class="error-message">
         <div class="text-h6 text-negative">Error</div>
-        <div>{{ paperDataStore.regexErrorString }}</div>
+        <div class="text-dark">{{ paperDataStore.regexErrorString }}</div>
       </q-banner>
     </q-card-section>
   </q-card>
