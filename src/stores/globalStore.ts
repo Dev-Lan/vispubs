@@ -4,7 +4,8 @@ import { useQuasar } from 'quasar';
 
 export const useGlobalStore = defineStore('globalStore', () => {
   const $q = useQuasar();
-  const darkMode = ref<boolean>(sessionStorage.getItem('darkMode') === 'true');
+  const darkMode = ref<boolean>(sessionStorage.getItem('darkMode') !== 'false');
+
   $q.dark.set(!darkMode.value);
 
   watch(darkMode, (value) => {
