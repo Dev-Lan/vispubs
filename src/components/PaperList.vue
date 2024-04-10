@@ -57,6 +57,7 @@ async function exportToXLSX() {
     { header: 'Conference', key: 'Conference', width: 10 },
     { header: 'Year', key: 'Year', width: 5 },
     { header: 'Award', key: 'Award', width: 6 },
+    { header: 'Resources', key: 'Resources', width: 10 },
     { header: 'Title', key: 'Title', width: 25 },
     { header: 'AuthorNames-Dedpuped', key: 'AuthorNamesDedpuped', width: 40 },
     { header: 'Abstract', key: 'Abstract', width: 150 },
@@ -71,6 +72,7 @@ async function exportToXLSX() {
       Title: paper.title,
       AuthorNamesDedpuped: paper.authorNamesDeduped,
       Award: paper.award,
+      Resources: paper.resources,
       Abstract: paper.abstract,
     });
     const linkCell = vispubs.getCell(`A${i + 2}`);
