@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
@@ -31,37 +32,33 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   const { currentRoute, push, replace } = useRouter();
 
   function updateQueryState(
-    parameter: string,
-    value: string | null,
+    params: { [parameter: string]: string | null },
     options?: {
       replaceState?: boolean;
       forceUpdate?: boolean;
     }
   ): void {
-    if (
-      currentRoute.value.query[parameter] === value &&
-      !options?.forceUpdate
-    ) {
-      // check if the parameter is already in the query
-      return;
-    }
-    let query;
+    const query = { ...currentRoute.value.query };
 
-    if (value === null) {
-      query = { ...currentRoute.value.query };
-      delete query[parameter];
-    } else {
-      query = {
-        ...currentRoute.value.query,
-        [parameter]: value,
-      };
+    for (const parameter in params) {
+      const value = params[parameter];
+
+      if (query[parameter] === value && !options?.forceUpdate) {
+        // check if the parameter is already in the query
+        continue;
+      }
+
+      if (value === null) {
+        delete query[parameter];
+      } else {
+        query[parameter] = value;
+      }
     }
+
     if (options?.replaceState) {
       replace({ query });
     } else {
-      push({
-        query,
-      }).catch((e) => {
+      push({ query }).catch((e) => {
         console.log(e);
       });
     }
@@ -94,6 +91,22 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
       // changes to searchText
       if (to.query.searchText !== from.query.searchText) {
         searchText.value = (to.query.searchText as string) ?? '';
+      }
+
+      // changes to year filter
+      if (to.query.minYear !== from.query.minYear) {
+        if (to.query.minYear != null) {
+          yearFilter.value.min = parseInt(to.query.minYear as string);
+        } else {
+          yearFilter.value.min = yearExtent.value?.[0] ?? -Infinity;
+        }
+      }
+      if (to.query.maxYear !== from.query.maxYear) {
+        if (to.query.maxYear != null) {
+          yearFilter.value.max = parseInt(to.query.maxYear as string);
+        } else {
+          yearFilter.value.max = yearExtent.value?.[1] ?? Infinity;
+        }
       }
     },
     { deep: true }
@@ -128,7 +141,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     selectedPaperIndex.value = index;
     selectedPaper.value = papers.value[index];
 
-    updateQueryState('paper', selectedPaper.value?.doi);
+    updateQueryState({ paper: selectedPaper.value?.doi });
 
     selectedPaperResourceLinks.value = [];
     if (!selectedPaper.value?.doi) return;
@@ -172,7 +185,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   function deselectPaper(): void {
     selectedPaper.value = null;
     selectedPaperIndex.value = null;
-    updateQueryState('paper', null);
+    updateQueryState({ paper: null });
   }
 
   function clearFocusedPaper(): void {
@@ -329,10 +342,10 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
 
   function pushSearchTextState(): void {
     if (searchText.value === '') {
-      updateQueryState('searchText', null, { forceUpdate: true });
+      updateQueryState({ searchText: null }, { forceUpdate: true });
       return;
     }
-    updateQueryState('searchText', searchText.value, { forceUpdate: true });
+    updateQueryState({ searchText: searchText.value }, { forceUpdate: true });
   }
 
   const allPapers = ref();
@@ -358,6 +371,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
 
   const papers = computed<PaperInfo[]>(() => {
     let filteredPapers = allPapers.value;
+    if (filteredPapers == null) return [];
     if (searchText.value !== '') {
       const ignoreCase = matchCase.value === null;
       let regex: RegExp | null = null;
@@ -391,7 +405,8 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return filteredPapers;
   });
 
-  const yearFilterSet = computed(() => {
+  const yearFilterSet = computed<boolean>(() => {
+    if (yearFilter.value == null || yearExtent.value == null) return false;
     if (
       yearFilter.value.min === -Infinity &&
       yearFilter.value.max === Infinity
@@ -430,25 +445,63 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return yearCounts;
   });
 
-  const yearExtent = computed<[number, number]>(() => {
+  const yearExtent = computed<[number, number] | null>(() => {
     // use all papers, since x-axis should show all possible years
-    if (papers.value == null) return [0, 0];
+    if (allPapers.value == null) return null;
     const years = allPapers.value.map((paper: PaperInfo) => paper.year);
     return [Math.min(...years), Math.max(...years)];
   });
 
+  let minYear: number | null = null;
+  if (currentRoute.value.query.minYear) {
+    minYear = parseInt(currentRoute.value.query.minYear as string);
+  }
+
+  let maxYear: number | null = null;
+  if (currentRoute.value.query.maxYear) {
+    maxYear = parseInt(currentRoute.value.query.maxYear as string);
+  }
+
   const yearFilter = ref<{ min: number; max: number }>({
-    min: -Infinity,
-    max: Infinity,
+    min: minYear ?? -Infinity,
+    max: maxYear ?? Infinity,
   });
-  watch(yearExtent, () => {
-    if (yearFilter.value.min === -Infinity) {
-      yearFilter.value.min = yearExtent.value[0];
+  watch(
+    yearExtent,
+    () => {
+      if (yearExtent.value === null) return;
+      if (yearFilter.value.min === -Infinity) {
+        yearFilter.value.min = yearExtent.value[0];
+      }
+      if (yearFilter.value.max === Infinity) {
+        yearFilter.value.max = yearExtent.value[1];
+      }
+    },
+    { deep: true }
+  );
+
+  watch(
+    yearFilter,
+    () => {
+      debouncedPushYearFilterState();
+    },
+    { deep: true }
+  );
+
+  const debouncedPushYearFilterState = debounce(pushYearFilterState, 1000);
+
+  function pushYearFilterState(): void {
+    if (yearFilterSet.value) {
+      console.log('setting yearFilterState');
+      console.log(yearFilter.value);
+      updateQueryState({
+        minYear: yearFilter.value.min.toString(),
+        maxYear: yearFilter.value.max.toString(),
+      });
+    } else {
+      updateQueryState({ minYear: null, maxYear: null });
     }
-    if (yearFilter.value.max === Infinity) {
-      yearFilter.value.max = yearExtent.value[1];
-    }
-  });
+  }
 
   const maxPapersInYear = computed<number>(() => {
     if (papers.value == null) return 0;
@@ -505,10 +558,10 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   );
   watch(matchCase, () => {
     if (matchCase.value === null) {
-      updateQueryState('matchCase', null);
+      updateQueryState({ matchCase: null });
       return;
     }
-    updateQueryState('matchCase', matchCase.value);
+    updateQueryState({ matchCase: matchCase.value });
   });
 
   const useRegex = ref<string | null>(
@@ -516,10 +569,10 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   );
   watch(useRegex, () => {
     if (useRegex.value === null) {
-      updateQueryState('useRegex', null);
+      updateQueryState({ useRegex: null });
       return;
     }
-    updateQueryState('useRegex', useRegex.value);
+    updateQueryState({ useRegex: useRegex.value });
   });
 
   function getKeyList(string?: string): string[] {

@@ -2,7 +2,6 @@
 import { ref, computed, watch, onMounted } from 'vue';
 
 import { scaleLinear } from 'd3-scale';
-import { axisBottom } from 'd3-axis';
 
 import { useGlobalStore } from 'src/stores/globalStore';
 const globalStore = useGlobalStore();
@@ -15,6 +14,9 @@ const yearVisWidth = 220;
 const rightLabelWidth = 20;
 const betweenBarsPadding = 2;
 const barWidth = computed(() => {
+  if (paperDataStore.yearExtent === null) {
+    return 0;
+  }
   const numBars =
     paperDataStore.yearExtent[1] - paperDataStore.yearExtent[0] + 1;
   return (yearVisWidth - (numBars - 1) * betweenBarsPadding) / numBars;
@@ -26,6 +28,9 @@ const scaleHeight = computed(() => {
 });
 
 const scaleX = computed(() => {
+  if (paperDataStore.yearExtent === null) {
+    return () => 0;
+  }
   return scaleLinear()
     .domain(paperDataStore.yearExtent)
     .range([0, yearVisWidth - barWidth.value]);
@@ -45,6 +50,7 @@ const scaleX = computed(() => {
     />
   </q-toolbar>
 
+  <!-- <div>{{ paperDataStore.yearExtent }}</div> -->
   <q-card flat>
     <q-card-section>
       <div class="text-h6">
@@ -71,6 +77,7 @@ const scaleX = computed(() => {
         </g>
       </svg>
       <q-range
+        v-if="paperDataStore.yearExtent !== null"
         v-model="paperDataStore.yearFilter"
         :min="paperDataStore.yearExtent[0]"
         :max="paperDataStore.yearExtent[1]"
