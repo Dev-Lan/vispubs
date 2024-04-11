@@ -423,6 +423,10 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return true;
   });
 
+  function clearYearFilter(): void {
+    yearFilter.value = { min: -Infinity, max: Infinity };
+  }
+
   interface PaperYearCount {
     year: number;
     count: number;
@@ -610,6 +614,8 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     paperYearCounts,
     maxPapersInYear,
     yearFilter,
+    yearFilterSet,
+    clearYearFilter,
     yearExtent,
     papersWithLinks,
     searchText,

@@ -54,7 +54,16 @@ const scaleX = computed(() => {
   <q-card flat>
     <q-card-section>
       <div class="text-h6">
-        Year <q-btn padding="xs" size="sm" flat no-caps>(clear filter)</q-btn>
+        Year
+        <q-btn
+          v-if="paperDataStore.yearFilterSet"
+          padding="xs"
+          size="sm"
+          flat
+          no-caps
+          @click="paperDataStore.clearYearFilter()"
+          >(clear filter)</q-btn
+        >
       </div>
     </q-card-section>
     <q-card-section>
