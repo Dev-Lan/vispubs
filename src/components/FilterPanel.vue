@@ -51,7 +51,7 @@ const scaleX = computed(() => {
   </q-toolbar>
   <template v-if="paperDataStore.allData">
     <q-card flat>
-      <q-card-section class="q-pb-none">
+      <q-card-section class="q-pb-none q-pt-none">
         <div class="text-h6">
           Year
           <q-btn
@@ -66,7 +66,7 @@ const scaleX = computed(() => {
           >
         </div>
       </q-card-section>
-      <q-card-section>
+      <q-card-section class="q-pt-xs q-pb-lg">
         <svg :width="yearVisWidth + rightLabelWidth" :height="yearVisHeight">
           <g v-if="paperDataStore.papers.length > 0" class="right-label">
             <line x1="0" :x2="yearVisWidth + 2" y1="0" y2="0" />
@@ -112,7 +112,7 @@ const scaleX = computed(() => {
     </q-card>
 
     <q-card flat>
-      <q-card-section class="q-pb-none">
+      <q-card-section class="q-pb-none q-pt-none">
         <div class="text-h6">
           Venue
           <q-btn
@@ -127,11 +127,11 @@ const scaleX = computed(() => {
           >
         </div>
       </q-card-section>
-      <q-card-section>
+      <q-card-section class="q-pt-none">
         <div
           v-for="venueCount in paperDataStore.venueCounts"
           :key="venueCount.venue"
-          class="q-mb-sm"
+          class="q-mb-xs"
         >
           <q-btn
             dense
@@ -164,7 +164,7 @@ const scaleX = computed(() => {
     </q-card>
 
     <q-card flat>
-      <q-card-section class="q-pb-none">
+      <q-card-section class="q-pb-none q-pt-none">
         <div class="text-h6">
           Awards
           <q-btn padding="xs" size="sm" flat no-caps class="text-caption"
@@ -172,11 +172,11 @@ const scaleX = computed(() => {
           >
         </div>
       </q-card-section>
-      <q-card-section> TODO </q-card-section>
+      <q-card-section class="q-pt-none"> TODO </q-card-section>
     </q-card>
 
     <q-card flat>
-      <q-card-section class="q-pb-none">
+      <q-card-section class="q-pb-none q-pt-none">
         <div class="text-h6">
           Resources
           <q-btn padding="xs" size="sm" flat no-caps class="text-caption"
@@ -184,7 +184,7 @@ const scaleX = computed(() => {
           >
         </div>
       </q-card-section>
-      <q-card-section> TODO </q-card-section>
+      <q-card-section class="q-pt-none"> TODO </q-card-section>
     </q-card>
   </template>
 </template>
