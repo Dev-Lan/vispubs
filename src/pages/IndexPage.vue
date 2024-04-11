@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useElementSize } from '@vueuse/core';
+import { computed } from 'vue';
+import { useWindowSize } from '@vueuse/core';
 import { useKeypress } from 'vue3-keypress';
 
 import { usePaperDataStore } from 'src/stores/paperDataStore';
@@ -10,14 +10,9 @@ import PaperInformation from 'src/components/PaperInformation.vue';
 import PaperList from 'src/components/PaperList.vue';
 import FilterPanel from 'src/components/FilterPanel.vue';
 
-import { useGlobalStore } from 'src/stores/globalStore';
-const globalStore = useGlobalStore();
-
 const rightDrawerOpen = computed(() => paperDataStore.selectedPaper !== null);
 
-const container = ref(null);
-const { width: containerWidth, height: outerContainerHeight } =
-  useElementSize(container);
+const { width: windowWidth } = useWindowSize();
 
 useKeypress({
   keyEvent: 'keydown',
@@ -63,7 +58,13 @@ function focusNextPaper() {
 </script>
 
 <template>
-  <q-drawer v-model="paperDataStore.filterPanelOpen" side="left">
+  <q-drawer
+    no-swipe-open
+    no-swipe-close
+    no-swipe-backdrop
+    v-model="paperDataStore.filterPanelOpen"
+    side="left"
+  >
     <FilterPanel />
   </q-drawer>
 
@@ -74,14 +75,14 @@ function focusNextPaper() {
     v-model="rightDrawerOpen"
     side="right"
     overlay
-    :width="containerWidth"
+    :width="windowWidth"
     v-touch-swipe.left="nextPaper"
     v-touch-swipe.right="previousPaper"
   >
     <PaperInformation />
   </q-drawer>
   <q-page-container>
-    <q-page ref="container" class="items-center">
+    <q-page class="items-center">
       <PaperList v-if="paperDataStore.allData" />
       <div class="q-ma-lg" v-else>loading...</div>
     </q-page>
