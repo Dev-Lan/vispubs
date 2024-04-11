@@ -357,25 +357,106 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   const regexErrorString = ref<string>('');
 
   const papers = computed<PaperInfo[]>(() => {
-    if (searchText.value === '') return allPapers.value;
-    const ignoreCase = matchCase.value === null;
-    let regex: RegExp | null = null;
-    if (useRegex.value !== null) {
-      try {
-        regex = ignoreCase
-          ? new RegExp(searchText.value, 'mi')
-          : new RegExp(searchText.value, 'm');
-      } catch (e) {
-        return [];
+    let filteredPapers = allPapers.value;
+    if (searchText.value !== '') {
+      const ignoreCase = matchCase.value === null;
+      let regex: RegExp | null = null;
+      if (useRegex.value !== null) {
+        try {
+          regex = ignoreCase
+            ? new RegExp(searchText.value, 'mi')
+            : new RegExp(searchText.value, 'm');
+        } catch (e) {
+          return [];
+        }
       }
+      let query = searchText.value;
+      if (ignoreCase) {
+        query = query.toLowerCase();
+      }
+      filteredPapers = filteredPapers.filter((paper: PaperInfo) => {
+        return paperMatchesQuery(regex ?? query, paper);
+      });
     }
-    let query = searchText.value;
-    if (ignoreCase) {
-      query = query.toLowerCase();
+    if (yearFilterSet.value) {
+      // console.log('filtering by year');
+      // TODO: if year filter is set
+      filteredPapers = filteredPapers.filter((paper: PaperInfo) => {
+        return (
+          paper.year >= (yearFilter.value?.min ?? -Infinity) &&
+          paper.year <= (yearFilter.value?.max ?? Infinity)
+        );
+      });
     }
-    return allPapers.value.filter((paper: PaperInfo) => {
-      return paperMatchesQuery(regex ?? query, paper);
-    });
+    return filteredPapers;
+  });
+
+  const yearFilterSet = computed(() => {
+    if (
+      yearFilter.value.min === -Infinity &&
+      yearFilter.value.max === Infinity
+    ) {
+      return false;
+    }
+    if (
+      yearFilter.value.min === yearExtent.value[0] &&
+      yearFilter.value.max === yearExtent.value[1]
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+
+  interface PaperYearCount {
+    year: number;
+    count: number;
+  }
+
+  const paperYearCounts = computed<PaperYearCount[]>(() => {
+    const yearCountMap = new Map<number, number>();
+    if (papers.value == null) return [];
+    for (const paper of papers.value) {
+      const year = paper.year;
+      if (!yearCountMap.has(year)) {
+        yearCountMap.set(year, 0);
+      }
+      yearCountMap.set(year, yearCountMap.get(year)! + 1);
+    }
+    const yearCounts: PaperYearCount[] = [];
+    for (const [year, count] of yearCountMap.entries()) {
+      yearCounts.push({ year, count });
+    }
+    return yearCounts;
+  });
+
+  const yearExtent = computed<[number, number]>(() => {
+    // use all papers, since x-axis should show all possible years
+    if (papers.value == null) return [0, 0];
+    const years = allPapers.value.map((paper: PaperInfo) => paper.year);
+    return [Math.min(...years), Math.max(...years)];
+  });
+
+  const yearFilter = ref<{ min: number; max: number }>({
+    min: -Infinity,
+    max: Infinity,
+  });
+  watch(yearExtent, () => {
+    if (yearFilter.value.min === -Infinity) {
+      yearFilter.value.min = yearExtent.value[0];
+    }
+    if (yearFilter.value.max === Infinity) {
+      yearFilter.value.max = yearExtent.value[1];
+    }
+  });
+
+  const maxPapersInYear = computed<number>(() => {
+    if (papers.value == null) return 0;
+    // use filtered papers since the y-axis should be scaled to filtered data
+    const yearCounts = paperYearCounts.value.map(
+      (yearCount: PaperYearCount) => yearCount.count
+    );
+    return Math.max(...yearCounts);
   });
 
   const papersWithLinks = computed<PaperInfo[]>(() => {
@@ -473,6 +554,10 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     getConference,
     getAuthors,
     papers,
+    paperYearCounts,
+    maxPapersInYear,
+    yearFilter,
+    yearExtent,
     papersWithLinks,
     searchText,
     matchCase,

@@ -12,5 +12,7 @@ export const useGlobalStore = defineStore('globalStore', () => {
     sessionStorage.setItem('darkMode', value.toString());
     $q.dark.set(!darkMode.value);
   });
-  return { darkMode };
+
+  const filterPanelOpen = ref<boolean>(false);
+  return { darkMode, filterPanelOpen };
 });

@@ -181,6 +181,16 @@ function onSearhbarBlur() {
 <template>
   <q-toolbar>
     <!-- warning: if spacing is changed, offset will have to change -->
+    <q-btn
+      class="q-mr-sm"
+      padding="sm"
+      color="primary"
+      size="sm"
+      push
+      icon="filter_alt"
+      @click="globalStore.filterPanelOpen = !globalStore.filterPanelOpen"
+    />
+
     <q-input
       ref="searchbar"
       rounded

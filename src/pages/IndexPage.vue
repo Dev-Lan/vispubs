@@ -8,6 +8,10 @@ const paperDataStore = usePaperDataStore();
 
 import PaperInformation from 'src/components/PaperInformation.vue';
 import PaperList from 'src/components/PaperList.vue';
+import FilterPanel from 'src/components/FilterPanel.vue';
+
+import { useGlobalStore } from 'src/stores/globalStore';
+const globalStore = useGlobalStore();
 
 const rightDrawerOpen = computed(() => paperDataStore.selectedPaper !== null);
 
@@ -59,6 +63,10 @@ function focusNextPaper() {
 </script>
 
 <template>
+  <q-drawer v-model="globalStore.filterPanelOpen" side="left">
+    <FilterPanel />
+  </q-drawer>
+
   <q-drawer
     no-swipe-open
     no-swipe-close
