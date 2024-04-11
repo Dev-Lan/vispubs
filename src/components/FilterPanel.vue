@@ -51,7 +51,7 @@ const scaleX = computed(() => {
   </q-toolbar>
   <template v-if="paperDataStore.allData">
     <q-card flat>
-      <q-card-section>
+      <q-card-section class="q-pb-none">
         <div class="text-h6">
           Year
           <q-btn
@@ -61,6 +61,7 @@ const scaleX = computed(() => {
             flat
             no-caps
             @click="paperDataStore.clearYearFilter()"
+            class="text-caption"
             >(clear filter)</q-btn
           >
         </div>
@@ -111,30 +112,76 @@ const scaleX = computed(() => {
     </q-card>
 
     <q-card flat>
-      <q-card-section>
+      <q-card-section class="q-pb-none">
         <div class="text-h6">
           Venue
-          <q-btn padding="xs" size="sm" flat no-caps>(clear filter)</q-btn>
+          <q-btn
+            v-if="paperDataStore.venueFilter.size > 0"
+            padding="xs"
+            size="sm"
+            flat
+            no-caps
+            @click="paperDataStore.clearVenueFilter()"
+            class="text-caption"
+            >(clear filter)</q-btn
+          >
         </div>
       </q-card-section>
-      <q-card-section> TODO </q-card-section>
+      <q-card-section>
+        <div
+          v-for="venueCount in paperDataStore.venueCounts"
+          :key="venueCount.venue"
+          class="q-mb-sm"
+        >
+          <q-btn
+            dense
+            flat
+            align="left"
+            class="full-width"
+            no-caps
+            @click="paperDataStore.toggleVenueFilter(venueCount.venue)"
+          >
+            <span
+              :class="
+                paperDataStore.venueFilter.has(venueCount.venue)
+                  ? 'text-weight-bolder'
+                  : 'text-weight-regular'
+              "
+              >{{ venueCount.venue }}</span
+            >
+            <span class="q-ml-xs text-caption"> ({{ venueCount.count }})</span>
+          </q-btn>
+          <div class="underline">
+            <div
+              class="underline-data"
+              :style="`width: ${
+                (100 * venueCount.count) / paperDataStore.maxVenueCount
+              }%`"
+            ></div>
+          </div>
+        </div>
+      </q-card-section>
     </q-card>
 
     <q-card flat>
-      <q-card-section>
+      <q-card-section class="q-pb-none">
         <div class="text-h6">
           Awards
-          <q-btn padding="xs" size="sm" flat no-caps>(clear filter)</q-btn>
+          <q-btn padding="xs" size="sm" flat no-caps class="text-caption"
+            >(clear filter)</q-btn
+          >
         </div>
       </q-card-section>
       <q-card-section> TODO </q-card-section>
     </q-card>
 
     <q-card flat>
-      <q-card-section>
+      <q-card-section class="q-pb-none">
         <div class="text-h6">
           Resources
-          <q-btn padding="xs" size="sm" flat no-caps>(clear filter)</q-btn>
+          <q-btn padding="xs" size="sm" flat no-caps class="text-caption"
+            >(clear filter)</q-btn
+          >
         </div>
       </q-card-section>
       <q-card-section> TODO </q-card-section>
@@ -161,5 +208,15 @@ line {
 text {
   font-size: 10pt;
   fill: rgb(125, 125, 125);
+}
+
+.underline {
+  background: rgba(125, 125, 125, 0.2);
+  height: 2px;
+}
+
+.underline-data {
+  background-color: $primary;
+  height: 2px;
 }
 </style>

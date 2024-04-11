@@ -407,6 +407,11 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
         );
       });
     }
+    if (venueFilter.value.size > 0) {
+      filteredPapers = filteredPapers.filter((paper: PaperInfo) => {
+        return venueFilter.value.has(getConference(paper));
+      });
+    }
     return filteredPapers;
   });
 
@@ -520,6 +525,58 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     );
     return Math.max(...yearCounts);
   });
+
+  const venues = computed<string[]>(() => {
+    if (allPapers.value == null) return [];
+    const venuesSet = new Set<string>();
+    for (const paper of allPapers.value) {
+      venuesSet.add(getConference(paper));
+    }
+    return Array.from(venuesSet);
+  });
+
+  interface VenueCount {
+    venue: string;
+    count: number;
+  }
+  const venueCounts = computed<VenueCount[]>(() => {
+    const venueCountMap = new Map<string, number>();
+    for (const venue of venues.value) {
+      venueCountMap.set(venue, 0);
+    }
+
+    for (const paper of papers.value ?? []) {
+      const venue = getConference(paper);
+      venueCountMap.set(venue, venueCountMap.get(venue)! + 1);
+    }
+
+    const venueCounts: VenueCount[] = [];
+    for (const [venue, count] of venueCountMap.entries()) {
+      venueCounts.push({ venue, count });
+    }
+    return venueCounts;
+  });
+
+  const maxVenueCount = computed<number>(() => {
+    if (venueCounts.value.length === 0) return 0;
+    return Math.max(
+      ...venueCounts.value.map((venueCount: VenueCount) => venueCount.count)
+    );
+  });
+
+  const venueFilter = ref<Set<string>>(new Set<string>()); // TODO: url parms
+
+  function toggleVenueFilter(venue: string): void {
+    if (venueFilter.value.has(venue)) {
+      venueFilter.value.delete(venue);
+    } else {
+      venueFilter.value.add(venue);
+    }
+  }
+
+  function clearVenueFilter(): void {
+    venueFilter.value.clear();
+  }
 
   const papersWithLinks = computed<PaperInfo[]>(() => {
     if (papers.value === null) return [];
@@ -641,5 +698,10 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     validRegex,
     regexErrorString,
     filterPanelOpen,
+    venueCounts,
+    maxVenueCount,
+    venueFilter,
+    toggleVenueFilter,
+    clearVenueFilter,
   };
 });
