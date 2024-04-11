@@ -9,10 +9,10 @@ const globalStore = useGlobalStore();
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
 
-const yearVisHeight = 50;
-const yearVisWidth = 220;
+const yearVisHeight = 40;
+const yearVisWidth = 240;
 const rightLabelWidth = 20;
-const betweenBarsPadding = 2;
+const betweenBarsPadding = 3;
 const barWidth = computed(() => {
   if (paperDataStore.yearExtent === null) {
     return 0;
@@ -59,10 +59,20 @@ const scaleX = computed(() => {
     </q-card-section>
     <q-card-section>
       <svg :width="yearVisWidth + rightLabelWidth" :height="yearVisHeight">
-        <g class="right-label">
+        <g v-if="paperDataStore.papers.length > 0" class="right-label">
           <line x1="0" :x2="yearVisWidth + 2" y1="0" y2="0" />
           <text :x="yearVisWidth + 4" y="0" alignment-baseline="middle">
             {{ paperDataStore.maxPapersInYear }}
+          </text>
+        </g>
+        <g v-else>
+          <text
+            :x="yearVisWidth / 2"
+            :y="yearVisHeight / 2"
+            alignment-baseline="middle"
+            text-anchor="middle"
+          >
+            No papers
           </text>
         </g>
         <g class="bars">
