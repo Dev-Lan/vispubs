@@ -188,7 +188,7 @@ function onSearhbarBlur() {
       size="sm"
       push
       icon="filter_alt"
-      @click="globalStore.filterPanelOpen = !globalStore.filterPanelOpen"
+      @click="paperDataStore.filterPanelOpen = !paperDataStore.filterPanelOpen"
     />
 
     <q-input

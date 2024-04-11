@@ -63,7 +63,7 @@ function focusNextPaper() {
 </script>
 
 <template>
-  <q-drawer v-model="globalStore.filterPanelOpen" side="left">
+  <q-drawer v-model="paperDataStore.filterPanelOpen" side="left">
     <FilterPanel />
   </q-drawer>
 

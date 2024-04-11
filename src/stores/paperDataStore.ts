@@ -108,6 +108,11 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
           yearFilter.value.max = yearExtent.value?.[1] ?? Infinity;
         }
       }
+
+      // changes to filterPanelOpen
+      if (to.query.filterPanelOpen !== from.query.filterPanelOpen) {
+        filterPanelOpen.value = to.query.filterPanelOpen === 'true';
+      }
     },
     { deep: true }
   );
@@ -579,6 +584,18 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     updateQueryState({ useRegex: useRegex.value });
   });
 
+  const filterPanelOpen = ref<boolean>(
+    currentRoute.value.query.filterPanelOpen === 'true'
+  );
+
+  watch(filterPanelOpen, () => {
+    if (!filterPanelOpen.value) {
+      updateQueryState({ filterPanelOpen: null });
+      return;
+    }
+    updateQueryState({ filterPanelOpen: filterPanelOpen.value.toString() });
+  });
+
   function getKeyList(string?: string): string[] {
     if (!string) {
       return [];
@@ -623,5 +640,6 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     useRegex,
     validRegex,
     regexErrorString,
+    filterPanelOpen,
   };
 });

@@ -46,98 +46,100 @@ const scaleX = computed(() => {
       round
       size="sm"
       icon="close"
-      @click="globalStore.filterPanelOpen = false"
+      @click="paperDataStore.filterPanelOpen = false"
     />
   </q-toolbar>
-
-  <!-- <div>{{ paperDataStore.yearExtent }}</div> -->
-  <q-card flat>
-    <q-card-section>
-      <div class="text-h6">
-        Year
-        <q-btn
-          v-if="paperDataStore.yearFilterSet"
-          padding="xs"
-          size="sm"
-          flat
-          no-caps
-          @click="paperDataStore.clearYearFilter()"
-          >(clear filter)</q-btn
-        >
-      </div>
-    </q-card-section>
-    <q-card-section>
-      <svg :width="yearVisWidth + rightLabelWidth" :height="yearVisHeight">
-        <g v-if="paperDataStore.papers.length > 0" class="right-label">
-          <line x1="0" :x2="yearVisWidth + 2" y1="0" y2="0" />
-          <text :x="yearVisWidth + 4" y="0" alignment-baseline="middle">
-            {{ paperDataStore.maxPapersInYear }}
-          </text>
-        </g>
-        <g v-else>
-          <text
-            :x="yearVisWidth / 2"
-            :y="yearVisHeight / 2"
-            alignment-baseline="middle"
-            text-anchor="middle"
+  <template v-if="paperDataStore.allData">
+    <q-card flat>
+      <q-card-section>
+        <div class="text-h6">
+          Year
+          <q-btn
+            v-if="paperDataStore.yearFilterSet"
+            padding="xs"
+            size="sm"
+            flat
+            no-caps
+            @click="paperDataStore.clearYearFilter()"
+            >(clear filter)</q-btn
           >
-            No papers
-          </text>
-        </g>
-        <g class="bars">
-          <rect
-            v-for="yearCount in paperDataStore.paperYearCounts"
-            :key="yearCount.year"
-            :x="scaleX(yearCount.year)"
-            :y="yearVisHeight - scaleHeight(yearCount.count)"
-            :width="barWidth"
-            :height="scaleHeight(yearCount.count)"
-          />
-        </g>
-      </svg>
-      <q-range
-        v-if="paperDataStore.yearExtent !== null"
-        v-model="paperDataStore.yearFilter"
-        :min="paperDataStore.yearExtent[0]"
-        :max="paperDataStore.yearExtent[1]"
-        :step="1"
-        drag-range
-        dense
-        label
-        switch-label-side
-        snap
-        :style="`width: ${yearVisWidth}px;`"
-      />
-    </q-card-section>
-  </q-card>
+        </div>
+      </q-card-section>
+      <q-card-section>
+        <svg :width="yearVisWidth + rightLabelWidth" :height="yearVisHeight">
+          <g v-if="paperDataStore.papers.length > 0" class="right-label">
+            <line x1="0" :x2="yearVisWidth + 2" y1="0" y2="0" />
+            <text :x="yearVisWidth + 4" y="0" alignment-baseline="middle">
+              {{ paperDataStore.maxPapersInYear }}
+            </text>
+          </g>
+          <g v-else>
+            <text
+              :x="yearVisWidth / 2"
+              :y="yearVisHeight / 2"
+              alignment-baseline="middle"
+              text-anchor="middle"
+            >
+              No papers
+            </text>
+          </g>
+          <g class="bars">
+            <rect
+              v-for="yearCount in paperDataStore.paperYearCounts"
+              :key="yearCount.year"
+              :x="scaleX(yearCount.year)"
+              :y="yearVisHeight - scaleHeight(yearCount.count)"
+              :width="barWidth"
+              :height="scaleHeight(yearCount.count)"
+            />
+          </g>
+        </svg>
+        <q-range
+          v-if="paperDataStore.yearExtent !== null"
+          v-model="paperDataStore.yearFilter"
+          :min="paperDataStore.yearExtent[0]"
+          :max="paperDataStore.yearExtent[1]"
+          :step="1"
+          drag-range
+          dense
+          label
+          switch-label-side
+          snap
+          :style="`width: ${yearVisWidth}px;`"
+        />
+      </q-card-section>
+    </q-card>
 
-  <q-card flat>
-    <q-card-section>
-      <div class="text-h6">
-        Venue <q-btn padding="xs" size="sm" flat no-caps>(clear filter)</q-btn>
-      </div>
-    </q-card-section>
-    <q-card-section> TODO </q-card-section>
-  </q-card>
+    <q-card flat>
+      <q-card-section>
+        <div class="text-h6">
+          Venue
+          <q-btn padding="xs" size="sm" flat no-caps>(clear filter)</q-btn>
+        </div>
+      </q-card-section>
+      <q-card-section> TODO </q-card-section>
+    </q-card>
 
-  <q-card flat>
-    <q-card-section>
-      <div class="text-h6">
-        Awards <q-btn padding="xs" size="sm" flat no-caps>(clear filter)</q-btn>
-      </div>
-    </q-card-section>
-    <q-card-section> TODO </q-card-section>
-  </q-card>
+    <q-card flat>
+      <q-card-section>
+        <div class="text-h6">
+          Awards
+          <q-btn padding="xs" size="sm" flat no-caps>(clear filter)</q-btn>
+        </div>
+      </q-card-section>
+      <q-card-section> TODO </q-card-section>
+    </q-card>
 
-  <q-card flat>
-    <q-card-section>
-      <div class="text-h6">
-        Resources
-        <q-btn padding="xs" size="sm" flat no-caps>(clear filter)</q-btn>
-      </div>
-    </q-card-section>
-    <q-card-section> TODO </q-card-section>
-  </q-card>
+    <q-card flat>
+      <q-card-section>
+        <div class="text-h6">
+          Resources
+          <q-btn padding="xs" size="sm" flat no-caps>(clear filter)</q-btn>
+        </div>
+      </q-card-section>
+      <q-card-section> TODO </q-card-section>
+    </q-card>
+  </template>
 </template>
 
 <style scoped lang="scss">
