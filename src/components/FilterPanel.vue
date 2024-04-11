@@ -127,11 +127,12 @@ const scaleX = computed(() => {
           >
         </div>
       </q-card-section>
-      <q-card-section class="q-pt-none">
+      <q-card-section class="q-pt-none flex justify-between">
         <div
           v-for="venueCount in paperDataStore.venueCounts"
           :key="venueCount.venue"
           class="q-mb-xs"
+          style="width: 45%"
         >
           <q-btn
             dense
