@@ -743,7 +743,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     const resourcesSet = new Set<string>();
     for (const paper of allPapers.value) {
       for (const resourceKey of getKeyList(paper.resources)) {
-        resourcesSet.add(getResourceName(resourceKey));
+        resourcesSet.add(resourceKey);
       }
     }
     return Array.from(resourcesSet);
@@ -752,6 +752,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   interface ResourceCount {
     resource: string;
     count: number;
+    key: string;
   }
   const resourceCounts = computed<ResourceCount[]>(() => {
     const resourceCountMap = new Map<string, number>();
@@ -761,14 +762,18 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
 
     for (const paper of papers.value ?? []) {
       for (const resourceKey of getKeyList(paper.resources)) {
-        const resource = getResourceName(resourceKey);
-        resourceCountMap.set(resource, resourceCountMap.get(resource)! + 1);
+        resourceCountMap.set(
+          resourceKey,
+          resourceCountMap.get(resourceKey)! + 1
+        );
       }
     }
 
     const resourceCountList: ResourceCount[] = [];
-    for (const [resource, count] of resourceCountMap.entries()) {
-      resourceCountList.push({ resource, count });
+    for (const [key, count] of resourceCountMap.entries()) {
+      const resource = getResourceName(key);
+
+      resourceCountList.push({ resource, count, key });
     }
 
     return resourceCountList;

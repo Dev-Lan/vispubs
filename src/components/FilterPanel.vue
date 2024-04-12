@@ -192,6 +192,7 @@ const scaleX = computed(() => {
           :count="resourceCount.count"
           :maxCount="paperDataStore.maxResourceCount"
           :selected="paperDataStore.resourceFilter.has(resourceCount.resource)"
+          :icon="resourceCount.key"
           @click="paperDataStore.toggleResourceFilter(resourceCount.resource)"
         />
       </q-card-section>
