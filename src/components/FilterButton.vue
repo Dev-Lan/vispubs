@@ -4,6 +4,7 @@ const props = defineProps<{
   count: number;
   maxCount: number;
   selected: boolean;
+  width?: number;
 }>();
 
 const emit = defineEmits(['click']);
@@ -15,7 +16,7 @@ function onClick(event: Event) {
 </script>
 
 <template>
-  <div class="q-mb-xs" style="width: 45%">
+  <div class="q-mb-xs" :style="`width: ${props.width ?? 45}%`">
     <q-btn
       dense
       flat
