@@ -427,7 +427,12 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
 
     if (awardFilter.value.size > 0) {
       filteredPapers = filteredPapers.filter((paper: PaperInfo) => {
-        return awardFilter.value.has(getAward(paper.award));
+        for (const awardKey of getKeyList(paper.award)) {
+          if (awardFilter.value.has(getAward(awardKey))) {
+            return true;
+          }
+        }
+        return false;
       });
     }
     return filteredPapers;
@@ -617,7 +622,9 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     if (allPapers.value == null) return [];
     const awardsSet = new Set<string>();
     for (const paper of allPapers.value) {
-      awardsSet.add(getAward(paper.award));
+      for (const awardKey of getKeyList(paper.award)) {
+        awardsSet.add(getAward(awardKey));
+      }
     }
     awardsSet.delete('Unknown Award');
     return Array.from(awardsSet);
@@ -634,8 +641,10 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     }
 
     for (const paper of papers.value ?? []) {
-      const award = getAward(paper.award);
-      awardCountMap.set(award, awardCountMap.get(award)! + 1);
+      for (const awardKey of getKeyList(paper.award)) {
+        const award = getAward(awardKey);
+        awardCountMap.set(award, awardCountMap.get(award)! + 1);
+      }
     }
     awardCountMap.delete('Unknown Award');
 
