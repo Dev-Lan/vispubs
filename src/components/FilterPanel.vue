@@ -34,6 +34,10 @@ const scaleX = computed(() => {
     .domain(paperDataStore.yearExtent)
     .range([0, yearVisWidth - barWidth.value]);
 });
+
+function closePanel() {
+  paperDataStore.filterPanelOpen = false;
+}
 </script>
 
 <template>
@@ -41,12 +45,7 @@ const scaleX = computed(() => {
     <q-icon class="q-mr-sm" size="sm" name="filter_alt" />
     <span class="text-h5">Filter by...</span>
     <q-space />
-    <q-btn
-      round
-      size="sm"
-      icon="close"
-      @click="paperDataStore.filterPanelOpen = false"
-    />
+    <q-btn round size="sm" icon="close" @click="closePanel" />
   </q-toolbar>
   <template v-if="paperDataStore.allData">
     <q-card flat>
