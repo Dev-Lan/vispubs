@@ -34,7 +34,9 @@ function onClick(event: Event) {
     <div class="underline">
       <div
         class="underline-data"
-        :style="`width: ${(100 * props.count) / props.maxCount}%`"
+        :style="`width: ${
+          props.maxCount === 0 ? 0 : (100 * props.count) / props.maxCount
+        }%`"
       ></div>
     </div>
   </div>
