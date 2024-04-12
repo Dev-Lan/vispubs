@@ -644,12 +644,6 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
       awardCountList.push({ award, count });
     }
 
-    // awardCountList.sort((a: AwardCount, b: AwardCount) => {
-    //   if (a.award < b.award) return -1;
-    //   if (a.award > b.award) return 1;
-    //   return 0;
-    // });
-
     const awardOrder = [
       getAward('TT'),
       getAward('BP'),
@@ -657,7 +651,6 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
       getAward('BA'),
       getAward('BCS'),
     ];
-    console.log('sorting');
     awardCountList.sort((a: AwardCount, b: AwardCount) => {
       return awardOrder.indexOf(a.award) - awardOrder.indexOf(b.award);
     });
