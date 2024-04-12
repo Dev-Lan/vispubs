@@ -127,6 +127,13 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
           (to.query.awardFilter as string)?.split(',') ?? []
         );
       }
+
+      // changes to resourceFilter
+      if (to.query.resourceFilter !== from.query.resourceFilter) {
+        resourceFilter.value = new Set<string>(
+          (to.query.resourceFilter as string)?.split(',') ?? []
+        );
+      }
     },
     { deep: true }
   );
@@ -299,6 +306,28 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     }
   }
 
+  function getResourceName(icon: string): string {
+    switch (icon) {
+      case 'paper':
+      case 'P':
+        return 'Paper';
+      case 'video':
+      case 'V':
+        return 'Video';
+      case 'code':
+      case 'C':
+        return 'Code';
+      case 'data':
+      case 'D':
+        return 'Data';
+      case 'project_website':
+      case 'PW':
+        return 'Website';
+      default:
+        return 'Other';
+    }
+  }
+
   function getConference(paperInfo: PaperInfo): string {
     const key = paperInfo.conference;
     if (key === 'Vis') return 'VIS';
@@ -429,6 +458,17 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
       filteredPapers = filteredPapers.filter((paper: PaperInfo) => {
         for (const awardKey of getKeyList(paper.award)) {
           if (awardFilter.value.has(getAward(awardKey))) {
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+
+    if (resourceFilter.value.size > 0) {
+      filteredPapers = filteredPapers.filter((paper: PaperInfo) => {
+        for (const resourceKey of getKeyList(paper.resources)) {
+          if (resourceFilter.value.has(getResourceName(resourceKey))) {
             return true;
           }
         }
@@ -698,6 +738,76 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     updateQueryState({ awardFilter: null });
   }
 
+  const resources = computed<string[]>(() => {
+    if (allPapers.value == null) return [];
+    const resourcesSet = new Set<string>();
+    for (const paper of allPapers.value) {
+      for (const resourceKey of getKeyList(paper.resources)) {
+        resourcesSet.add(getResourceName(resourceKey));
+      }
+    }
+    return Array.from(resourcesSet);
+  });
+
+  interface ResourceCount {
+    resource: string;
+    count: number;
+  }
+  const resourceCounts = computed<ResourceCount[]>(() => {
+    const resourceCountMap = new Map<string, number>();
+    for (const resource of resources.value) {
+      resourceCountMap.set(resource, 0);
+    }
+
+    for (const paper of papers.value ?? []) {
+      for (const resourceKey of getKeyList(paper.resources)) {
+        const resource = getResourceName(resourceKey);
+        resourceCountMap.set(resource, resourceCountMap.get(resource)! + 1);
+      }
+    }
+
+    const resourceCountList: ResourceCount[] = [];
+    for (const [resource, count] of resourceCountMap.entries()) {
+      resourceCountList.push({ resource, count });
+    }
+
+    return resourceCountList;
+  });
+
+  const maxResourceCount = computed<number>(() => {
+    if (resourceCounts.value.length === 0) return 0;
+    return Math.max(
+      ...resourceCounts.value.map(
+        (resourceCount: ResourceCount) => resourceCount.count
+      )
+    );
+  });
+
+  const resourceFilter = ref<Set<string>>(
+    new Set<string>(
+      (currentRoute.value.query.resourceFilter as string)?.split(',') ?? []
+    )
+  );
+
+  function toggleResourceFilter(resource: string): void {
+    if (resourceFilter.value.has(resource)) {
+      resourceFilter.value.delete(resource);
+    } else {
+      resourceFilter.value.add(resource);
+    }
+    const resourceFilterList = Array.from(resourceFilter.value).sort();
+    if (resourceFilterList.length === 0) {
+      updateQueryState({ resourceFilter: null });
+      return;
+    }
+    updateQueryState({ resourceFilter: resourceFilterList.join(',') });
+  }
+
+  function clearResourceFilter(): void {
+    resourceFilter.value.clear();
+    updateQueryState({ resourceFilter: null });
+  }
+
   const papersWithLinks = computed<PaperInfo[]>(() => {
     if (papers.value === null) return [];
     if (papers.value.length === 0) return [];
@@ -829,5 +939,11 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     awardFilter,
     toggleAwardFilter,
     clearAwardFilter,
+
+    resourceCounts,
+    maxResourceCount,
+    resourceFilter,
+    toggleResourceFilter,
+    clearResourceFilter,
   };
 });

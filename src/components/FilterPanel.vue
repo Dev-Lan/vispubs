@@ -172,13 +172,28 @@ const scaleX = computed(() => {
       <q-card-section class="q-pb-none q-pt-none">
         <div class="text-h6">
           Resources
-          <q-btn padding="xs" size="sm" flat no-caps class="text-caption"
+          <q-btn
+            v-if="paperDataStore.resourceFilter.size > 0"
+            padding="xs"
+            size="sm"
+            flat
+            no-caps
+            class="text-caption"
+            @click="paperDataStore.clearResourceFilter()"
             >(clear filter)</q-btn
           >
         </div>
       </q-card-section>
       <q-card-section class="q-pt-none flex justify-between">
-        TODO
+        <FilterButton
+          v-for="resourceCount in paperDataStore.resourceCounts"
+          :key="resourceCount.resource"
+          :text="resourceCount.resource"
+          :count="resourceCount.count"
+          :maxCount="paperDataStore.maxResourceCount"
+          :selected="paperDataStore.resourceFilter.has(resourceCount.resource)"
+          @click="paperDataStore.toggleResourceFilter(resourceCount.resource)"
+        />
       </q-card-section>
     </q-card>
   </template>
