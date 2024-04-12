@@ -143,12 +143,29 @@ const scaleX = computed(() => {
       <q-card-section class="q-pb-none q-pt-none">
         <div class="text-h6">
           Awards
-          <q-btn padding="xs" size="sm" flat no-caps class="text-caption"
+          <q-btn
+            v-if="paperDataStore.awardFilter.size > 0"
+            padding="xs"
+            size="sm"
+            flat
+            no-caps
+            class="text-caption"
+            @click="paperDataStore.clearAwardFilter()"
             >(clear filter)</q-btn
           >
         </div>
       </q-card-section>
-      <q-card-section class="q-pt-none"> TODO </q-card-section>
+      <q-card-section class="q-pt-none">
+        <FilterButton
+          v-for="awardCount in paperDataStore.awardCounts"
+          :key="awardCount.award"
+          :text="awardCount.award"
+          :count="awardCount.count"
+          :maxCount="paperDataStore.maxAwardCount"
+          :selected="paperDataStore.awardFilter.has(awardCount.award)"
+          :width="100"
+          @click="paperDataStore.toggleAwardFilter(awardCount.award)"
+      /></q-card-section>
     </q-card>
 
     <q-card flat>
@@ -160,7 +177,9 @@ const scaleX = computed(() => {
           >
         </div>
       </q-card-section>
-      <q-card-section class="q-pt-none"> TODO </q-card-section>
+      <q-card-section class="q-pt-none flex justify-between">
+        TODO
+      </q-card-section>
     </q-card>
   </template>
 </template>
