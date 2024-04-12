@@ -554,6 +554,12 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     for (const [venue, count] of venueCountMap.entries()) {
       venueCounts.push({ venue, count });
     }
+
+    venueCounts.sort((a: VenueCount, b: VenueCount) => {
+      if (a.venue < b.venue) return -1;
+      if (a.venue > b.venue) return 1;
+      return 0;
+    });
     return venueCounts;
   });
 
