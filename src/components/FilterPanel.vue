@@ -100,7 +100,6 @@ const scaleX = computed(() => {
           :min="paperDataStore.yearExtent[0]"
           :max="paperDataStore.yearExtent[1]"
           :step="1"
-          drag-range
           dense
           label
           switch-label-side
