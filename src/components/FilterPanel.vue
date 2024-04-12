@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import { computed } from 'vue';
+
+import FilterButton from 'src/components/FilterButton.vue';
 
 import { scaleLinear } from 'd3-scale';
-
-import { useGlobalStore } from 'src/stores/globalStore';
-const globalStore = useGlobalStore();
 
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
@@ -128,39 +127,15 @@ const scaleX = computed(() => {
         </div>
       </q-card-section>
       <q-card-section class="q-pt-none flex justify-between">
-        <div
+        <FilterButton
           v-for="venueCount in paperDataStore.venueCounts"
           :key="venueCount.venue"
-          class="q-mb-xs"
-          style="width: 45%"
-        >
-          <q-btn
-            dense
-            flat
-            align="left"
-            class="full-width"
-            no-caps
-            @click="paperDataStore.toggleVenueFilter(venueCount.venue)"
-          >
-            <span
-              :class="
-                paperDataStore.venueFilter.has(venueCount.venue)
-                  ? 'text-weight-bolder'
-                  : 'text-weight-regular'
-              "
-              >{{ venueCount.venue }}</span
-            >
-            <span class="q-ml-xs text-caption"> ({{ venueCount.count }})</span>
-          </q-btn>
-          <div class="underline">
-            <div
-              class="underline-data"
-              :style="`width: ${
-                (100 * venueCount.count) / paperDataStore.maxVenueCount
-              }%`"
-            ></div>
-          </div>
-        </div>
+          :text="venueCount.venue"
+          :count="venueCount.count"
+          :maxCount="paperDataStore.maxVenueCount"
+          :selected="paperDataStore.venueFilter.has(venueCount.venue)"
+          @click="paperDataStore.toggleVenueFilter(venueCount.venue)"
+        />
       </q-card-section>
     </q-card>
 
@@ -209,15 +184,5 @@ line {
 text {
   font-size: 10pt;
   fill: rgb(125, 125, 125);
-}
-
-.underline {
-  background: rgba(125, 125, 125, 0.2);
-  height: 2px;
-}
-
-.underline-data {
-  background-color: $primary;
-  height: 2px;
 }
 </style>
