@@ -63,6 +63,7 @@ function focusNextPaper() {
     no-swipe-close
     no-swipe-backdrop
     v-model="paperDataStore.filterPanelOpen"
+    persistent
     side="left"
   >
     <FilterPanel />
