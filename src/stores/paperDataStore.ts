@@ -113,6 +113,13 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
       if (to.query.filterPanelOpen !== from.query.filterPanelOpen) {
         filterPanelOpen.value = to.query.filterPanelOpen === 'true';
       }
+
+      // changes to venueFilter
+      if (to.query.venueFilter !== from.query.venueFilter) {
+        venueFilter.value = new Set<string>(
+          (to.query.venueFilter as string)?.split(',') ?? []
+        );
+      }
     },
     { deep: true }
   );
@@ -570,7 +577,11 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     );
   });
 
-  const venueFilter = ref<Set<string>>(new Set<string>()); // TODO: url parms
+  const venueFilter = ref<Set<string>>(
+    new Set<string>(
+      (currentRoute.value.query.venueFilter as string)?.split(',') ?? []
+    )
+  );
 
   function toggleVenueFilter(venue: string): void {
     if (venueFilter.value.has(venue)) {
@@ -578,10 +589,17 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     } else {
       venueFilter.value.add(venue);
     }
+    const venueFilterList = Array.from(venueFilter.value).sort();
+    if (venueFilterList.length === 0) {
+      updateQueryState({ venueFilter: null });
+      return;
+    }
+    updateQueryState({ venueFilter: venueFilterList.join(',') });
   }
 
   function clearVenueFilter(): void {
     venueFilter.value.clear();
+    updateQueryState({ venueFilter: null });
   }
 
   const papersWithLinks = computed<PaperInfo[]>(() => {
