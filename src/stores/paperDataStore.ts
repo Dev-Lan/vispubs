@@ -120,6 +120,13 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
           (to.query.venueFilter as string)?.split(',') ?? []
         );
       }
+
+      // changes to awardFilter
+      if (to.query.awardFilter !== from.query.awardFilter) {
+        awardFilter.value = new Set<string>(
+          (to.query.awardFilter as string)?.split(',') ?? []
+        );
+      }
     },
     { deep: true }
   );
@@ -405,8 +412,6 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
       });
     }
     if (yearFilterSet.value) {
-      // console.log('filtering by year');
-      // TODO: if year filter is set
       filteredPapers = filteredPapers.filter((paper: PaperInfo) => {
         return (
           paper.year >= (yearFilter.value?.min ?? -Infinity) &&
@@ -417,6 +422,12 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     if (venueFilter.value.size > 0) {
       filteredPapers = filteredPapers.filter((paper: PaperInfo) => {
         return venueFilter.value.has(getConference(paper));
+      });
+    }
+
+    if (awardFilter.value.size > 0) {
+      filteredPapers = filteredPapers.filter((paper: PaperInfo) => {
+        return awardFilter.value.has(getAward(paper.award));
       });
     }
     return filteredPapers;
@@ -602,6 +613,89 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     updateQueryState({ venueFilter: null });
   }
 
+  const awards = computed<string[]>(() => {
+    if (allPapers.value == null) return [];
+    const awardsSet = new Set<string>();
+    for (const paper of allPapers.value) {
+      awardsSet.add(getAward(paper.award));
+    }
+    awardsSet.delete('Unknown Award');
+    return Array.from(awardsSet);
+  });
+
+  interface AwardCount {
+    award: string;
+    count: number;
+  }
+  const awardCounts = computed<AwardCount[]>(() => {
+    const awardCountMap = new Map<string, number>();
+    for (const award of awards.value) {
+      awardCountMap.set(award, 0);
+    }
+
+    for (const paper of papers.value ?? []) {
+      const award = getAward(paper.award);
+      awardCountMap.set(award, awardCountMap.get(award)! + 1);
+    }
+    awardCountMap.delete('Unknown Award');
+
+    const awardCountList: AwardCount[] = [];
+    for (const [award, count] of awardCountMap.entries()) {
+      awardCountList.push({ award, count });
+    }
+
+    // awardCountList.sort((a: AwardCount, b: AwardCount) => {
+    //   if (a.award < b.award) return -1;
+    //   if (a.award > b.award) return 1;
+    //   return 0;
+    // });
+
+    const awardOrder = [
+      getAward('TT'),
+      getAward('BP'),
+      getAward('HM'),
+      getAward('BA'),
+      getAward('BCS'),
+    ];
+    console.log('sorting');
+    awardCountList.sort((a: AwardCount, b: AwardCount) => {
+      return awardOrder.indexOf(a.award) - awardOrder.indexOf(b.award);
+    });
+    return awardCountList;
+  });
+
+  const maxAwardCount = computed<number>(() => {
+    if (awardCounts.value.length === 0) return 0;
+    return Math.max(
+      ...awardCounts.value.map((awardCount: AwardCount) => awardCount.count)
+    );
+  });
+
+  const awardFilter = ref<Set<string>>(
+    new Set<string>(
+      (currentRoute.value.query.awardFilter as string)?.split(',') ?? []
+    )
+  );
+
+  function toggleAwardFilter(award: string): void {
+    if (awardFilter.value.has(award)) {
+      awardFilter.value.delete(award);
+    } else {
+      awardFilter.value.add(award);
+    }
+    const awardFilterList = Array.from(awardFilter.value).sort();
+    if (awardFilterList.length === 0) {
+      updateQueryState({ awardFilter: null });
+      return;
+    }
+    updateQueryState({ awardFilter: awardFilterList.join(',') });
+  }
+
+  function clearAwardFilter(): void {
+    awardFilter.value.clear();
+    updateQueryState({ awardFilter: null });
+  }
+
   const papersWithLinks = computed<PaperInfo[]>(() => {
     if (papers.value === null) return [];
     if (papers.value.length === 0) return [];
@@ -727,5 +821,11 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     venueFilter,
     toggleVenueFilter,
     clearVenueFilter,
+
+    awardCounts,
+    maxAwardCount,
+    awardFilter,
+    toggleAwardFilter,
+    clearAwardFilter,
   };
 });
