@@ -9,8 +9,7 @@ import { usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
 
 const yearVisHeight = 40;
-const yearVisWidth = 240;
-const rightLabelWidth = 20;
+const yearVisWidth = 250;
 const betweenBarsPadding = 3;
 const barWidth = computed(() => {
   if (paperDataStore.yearExtent === null) {
@@ -22,7 +21,7 @@ const barWidth = computed(() => {
 });
 const scaleHeight = computed(() => {
   return scaleLinear()
-    .domain([0, paperDataStore.maxPapersInYear])
+    .domain([0, paperDataStore.maxPapersInYear.count])
     .range([0, yearVisHeight]);
 });
 
@@ -38,6 +37,10 @@ const scaleX = computed(() => {
 function closePanel() {
   paperDataStore.filterPanelOpen = false;
 }
+
+const barChartLabelX = computed(() => {
+  return scaleX.value(paperDataStore.maxPapersInYear.year) + barWidth.value / 2;
+});
 </script>
 
 <template>
@@ -64,12 +67,17 @@ function closePanel() {
           >
         </div>
       </q-card-section>
-      <q-card-section class="q-pt-xs q-pb-lg">
-        <svg :width="yearVisWidth + rightLabelWidth" :height="yearVisHeight">
+      <q-card-section class="q-pt-xs q-pb-lg q-pt-md q-pl-lg">
+        <svg :width="yearVisWidth" :height="yearVisHeight">
           <g v-if="paperDataStore.papers.length > 0" class="right-label">
-            <line x1="0" :x2="yearVisWidth + 2" y1="0" y2="0" />
-            <text :x="yearVisWidth + 4" y="0" alignment-baseline="middle">
-              {{ paperDataStore.maxPapersInYear }}
+            <line :x1="barChartLabelX" :x2="barChartLabelX" y1="-2" y2="-5" />
+            <text
+              :x="barChartLabelX"
+              y="-8"
+              alignment-baseline="baseline"
+              text-anchor="middle"
+            >
+              {{ paperDataStore.maxPapersInYear.count }}
             </text>
           </g>
           <g v-else>

@@ -580,13 +580,18 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     }
   }
 
-  const maxPapersInYear = computed<number>(() => {
+  // @ts-ignore
+  const maxPapersInYear = computed<PaperYearCount>(() => {
     if (papers.value == null) return 0;
     // use filtered papers since the y-axis should be scaled to filtered data
-    const yearCounts = paperYearCounts.value.map(
-      (yearCount: PaperYearCount) => yearCount.count
+    const maxCount = Math.max(
+      ...paperYearCounts.value.map(
+        (yearCount: PaperYearCount) => yearCount.count
+      )
     );
-    return Math.max(...yearCounts);
+    return paperYearCounts.value.find(
+      (yearCount: PaperYearCount) => yearCount.count === maxCount
+    );
   });
 
   const venues = computed<string[]>(() => {
