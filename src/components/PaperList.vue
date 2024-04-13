@@ -176,6 +176,8 @@ function onSearhbarBlur() {
   paperDataStore.searchFocused = false;
   paperDataStore.clearFocusedPaper();
 }
+
+const hoveredIndex = ref<number | null>();
 </script>
 
 <template>
@@ -356,9 +358,13 @@ function onSearhbarBlur() {
       clickable
       v-ripple
       @click="paperDataStore.selectPaper(index)"
-      :manual-focus="true"
-      :focused="index === paperDataStore.focusedPaperIndex"
+      :manual-focus="paperDataStore.focusedPaperIndex !== null"
+      :focused="
+        index === paperDataStore.focusedPaperIndex || index === hoveredIndex
+      "
       @focus="paperDataStore.focusPaper(index)"
+      @mouseover="hoveredIndex = index"
+      @mouseleave="hoveredIndex = null"
     >
       <q-item-section>
         <q-item-label>
