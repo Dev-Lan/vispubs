@@ -74,7 +74,7 @@ const barChartLabelX = computed(() => {
             <text
               :x="barChartLabelX"
               y="-8"
-              alignment-baseline="baseline"
+              alignment-baseline="bottom"
               text-anchor="middle"
             >
               {{ paperDataStore.maxPapersInYear.count }}
