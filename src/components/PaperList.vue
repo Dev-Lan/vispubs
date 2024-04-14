@@ -7,6 +7,7 @@ import { unparse } from 'papaparse';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
 import { storeToRefs } from 'pinia';
+import SimpleBar from './SimpleBar.vue';
 
 const globalStore = useGlobalStore();
 const paperDataStore = usePaperDataStore();
@@ -248,12 +249,14 @@ const hoveredIndex = ref<number | null>();
       </template>
     </q-input>
 
-    <q-badge
-      :color="globalStore.darkMode ? 'dark' : 'light'"
-      outline
-      class="q-mr-md"
-      >{{ paperDataStore.papers.length }} papers</q-badge
-    >
+    <div class="paper-count q-mr-md">
+      <span>{{ paperDataStore.papers.length }} papers</span>
+      <SimpleBar
+        v-if="paperDataStore.allData !== null"
+        :count="paperDataStore.papers.length"
+        :maxCount="paperDataStore.allData.length"
+      />
+    </div>
 
     <q-btn
       class="xs"
@@ -449,5 +452,9 @@ const hoveredIndex = ref<number | null>();
 .error-message {
   border: solid $red-10 1px;
   background-color: $red-1;
+}
+
+.paper-count {
+  width: 80px;
 }
 </style>
