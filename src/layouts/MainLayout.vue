@@ -7,8 +7,8 @@ const globalStore = useGlobalStore();
   <q-layout view="hHh lpR fFf">
     <q-header class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-        <q-tabs align="left">
-          <q-route-tab to="/" label="Vis Publications" />
+        <q-tabs inline-label align="left">
+          <q-route-tab to="/" label="Vis Publications" icon="img:logo.svg" />
           <q-route-tab to="/about" label="About" />
         </q-tabs>
         <q-space></q-space>
