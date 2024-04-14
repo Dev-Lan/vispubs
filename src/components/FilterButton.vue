@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import SimpleBar from './SimpleBar.vue';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
 
@@ -43,29 +44,12 @@ function onClick(event: Event) {
       >
       <span class="q-ml-xs text-caption"> ({{ props.count }})</span>
     </q-btn>
-    <div class="vispubs-underline">
-      <div
-        class="vispubs-underline-data"
-        :style="`width: ${
-          props.maxCount === 0 ? 0 : (100 * props.count) / props.maxCount
-        }%`"
-      ></div>
-    </div>
+    <SimpleBar :count="props.count" :maxCount="props.maxCount"></SimpleBar>
   </div>
 </template>
 
 <style lang="scss">
-.vispubs-underline {
-  background: rgba(125, 125, 125, 0.2);
-  height: 2px;
-}
-
-.vispubs-underline-data {
-  background-color: $primary;
-  height: 2px;
-}
-// this is also requires this style to not be scoped (in order to grab the q-icon class)
-// hence the vispubs- prefix.
+// the style must not be scoped (in order to grab the q-icon class)
 .font-size-override .q-icon {
   // Quasar probably doesn't expect avatars in buttons and they have
   // specific font sizes for icons in buttons we need to override
