@@ -397,7 +397,7 @@ const hoveredIndex = ref<number | null>();
 
       <q-item-section side top>
         <q-item-label caption
-          ><span>{{
+          ><span class="conference-year-label">{{
             `${paperDataStore.getConference(item)}, ${item.year}`
           }}</span>
           [{{ index + 1 }}]</q-item-label
@@ -456,5 +456,13 @@ const hoveredIndex = ref<number | null>();
 
 .paper-count {
   width: 80px;
+}
+
+.body--light .conference-year-label {
+  color: black;
+}
+
+.body--dark .conference-year-label {
+  color: white;
 }
 </style>
