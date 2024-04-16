@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### Apr 16, 2024
+
+- add hompage links for ~20 authors
+
 ###### Mar 17, 2024
 
 - add a few paper resource links
