@@ -1,4 +1,3 @@
-from unittest import skip
 import urllib.request
 from datetime import datetime
 from bs4 import BeautifulSoup, NavigableString
