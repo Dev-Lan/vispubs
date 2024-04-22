@@ -161,12 +161,21 @@ function selectAuthor(displayName: string, dedupedName: string): void {
             Search for author on:
             <q-card-actions>
               <q-btn
+                :href="`https://scholar.google.com/scholar?q=${selectedAuthor.displayName}`"
+                target="_blank"
+                no-caps
+                flat
+                >Google Scholar</q-btn
+              >
+              <q-btn
                 :href="`https://www.google.com/search?q=${selectedAuthor.displayName}`"
                 target="_blank"
                 no-caps
                 flat
                 >Google</q-btn
               >
+            </q-card-actions>
+            <q-card-actions>
               <q-btn
                 :href="`https://www.bing.com/search?q=${selectedAuthor.displayName}`"
                 target="_blank"
@@ -253,6 +262,15 @@ function selectAuthor(displayName: string, dedupedName: string): void {
           Search for paper on:
           <q-card-actions>
             <q-btn
+              :href="`https://scholar.google.com/scholar?q=${quoteText(
+                paperDataStore.selectedPaper.title
+              )}`"
+              target="_blank"
+              no-caps
+              flat
+              >Google Scholar</q-btn
+            >
+            <q-btn
               :href="`https://www.google.com/search?q=${quoteText(
                 paperDataStore.selectedPaper.title
               )}`"
@@ -261,6 +279,8 @@ function selectAuthor(displayName: string, dedupedName: string): void {
               flat
               >Google</q-btn
             >
+          </q-card-actions>
+          <q-card-actions>
             <q-btn
               :href="`https://www.bing.com/search?q=${quoteText(
                 paperDataStore.selectedPaper.title
