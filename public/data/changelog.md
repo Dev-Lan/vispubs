@@ -3,6 +3,7 @@
 ###### Apr 22, 2024
 
 - add homepage links for ~20 authors
+- add paper resource links
 
 ###### Apr 16, 2024
 
