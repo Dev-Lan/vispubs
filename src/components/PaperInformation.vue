@@ -144,7 +144,6 @@ function selectAuthor(displayName: string, dedupedName: string): void {
         <q-btn
           v-else
           @click="selectAuthor(displayName, dedupedName)"
-          icon-right="help"
           flat
           no-caps
           size="md"
