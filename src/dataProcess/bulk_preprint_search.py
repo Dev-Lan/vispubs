@@ -1,7 +1,5 @@
 import csv
-from tabnanny import check
 from pyparsing import C
-import requests
 import os
 import urllib
 import feedparser

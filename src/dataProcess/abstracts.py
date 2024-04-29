@@ -3,8 +3,8 @@ import csv
 import re
 import time
 
-INPUT_FILENAME = './temp/eurovis23-dedup-manual.csv'
-OUTPUT_FILENAME = './temp/eurovis23-abstracted.csv'
+INPUT_FILENAME = './chi.csv'
+OUTPUT_FILENAME = './chi-abstracted.csv'
 
 def strip_xml_tags(text):
 	'''Remove XML tags from a string'''
