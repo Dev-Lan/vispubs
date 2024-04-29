@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### Apr 29, 2024
+
+- add CHI publications that include various visualization keywords
+
 ###### Apr 22, 2024
 
 - add homepage links for ~20 authors
