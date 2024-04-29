@@ -152,7 +152,8 @@ def search_arxiv_api(title):
         for entry in feed.entries:
             candidate_title = entry.title.strip()
             if close_enough(candidate_title, title):
-                return entry.link
+                link = entry.link
+                return link.replace(f"arxiv.org/abs/", f"arxiv.org/pdf/")
 
         # If no close enough match is found, return None
         return None
