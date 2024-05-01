@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### Apr 30, 2024
+
+- add "visualising" to keyword filter list and add ~5 additional CHI publications that include this keyword
+
 ###### Apr 29, 2024
 
 - add CHI publications that include various visualization keywords
