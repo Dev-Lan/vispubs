@@ -11,7 +11,7 @@ This filters the list of papers in a csv file by keywords. Only papers that
 # Example usage
 input_file = './chi-abstracted.csv'
 output_file = './chi-filtered.csv'
-include_keywords = {'visualization','visualisation','visualizing','visual analytics','visual analysis','visual analyses','visual data', 'physical data', 'data physical'}
+include_keywords = {'visualization','visualisation','visualizing', 'visualising', 'visual analytics','visual analysis','visual analyses','visual data', 'physical data', 'data physical'}
 exclude_keywords = {'(abstract only)'}
 
 
