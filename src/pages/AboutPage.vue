@@ -68,11 +68,11 @@ const resourceExplanations = [
       <div class="q-ma-lg">
         <p>
           Vispubs was created by
-          <a href="https://www.devinlange.com/">Devin Lange</a> to aggregate all
-          visualization publications into a single website, and make it easy to
-          find resources related to publications. These resources can be
-          anything to help explain the paper, use the related tool, or reproduce
-          the results. Common types of resources include:
+          <a href="https://www.devinlange.com/">Devin Lange</a> to aggregate
+          visualization publications from multiple venues into a single website,
+          and make it easy to find resources related to publications. These
+          resources can be anything to help explain the paper, use the related
+          tool, or reproduce the results. Common types of resources include:
         </p>
         <q-list class="q-mb-md">
           <q-item
@@ -116,9 +116,10 @@ const resourceExplanations = [
         </p>
 
         <p>
-          Currently this site includes IEEE Visualization (IEEE VIS)
-          publications from 1990–2023 and EuroVis publications from 1999–2023.
-          The VIS papers are based on a subset of data from this
+          Currently this site includes IEEE Visualization (<b>IEEE VIS</b>)
+          publications from 1990–2023, <b>EuroVis</b> publications from
+          1999–2023, and <b>CHI</b> publications from 1986–2023. The VIS papers
+          are based on a subset of data from this
           <a href="https://sites.google.com/site/vispubdata/home"
             >visualization publication dataset</a
           >. Thank you to all the creators/maintainers of this dataset!
