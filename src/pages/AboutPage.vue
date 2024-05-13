@@ -68,12 +68,14 @@ const resourceExplanations = [
       <div class="q-ma-lg">
         <p>
           Vispubs was created by
-          <a href="https://www.devinlange.com/">Devin Lange</a> to aggregate
-          visualization publications from multiple venues (VIS, EuroVis, CHI)
-          into a single website, and make it easy to find resources related to
-          publications. These resources can be anything to help explain the
-          paper, use the related tool, or reproduce the results. Common types of
-          resources include:
+          <a href="https://www.devinlange.com/"
+            >Devin Lange <q-icon name="open_in_new"
+          /></a>
+          to aggregate visualization publications from multiple venues (VIS,
+          EuroVis, CHI) into a single website, and make it easy to find
+          resources related to publications. These resources can be anything to
+          help explain the paper, use the related tool, or reproduce the
+          results. Common types of resources include:
         </p>
         <q-list class="q-mb-md">
           <q-item
@@ -122,14 +124,14 @@ const resourceExplanations = [
           1999–2023, and <b>CHI</b> publications from 1986–2023. The VIS papers
           are based on a subset of data from this
           <a href="https://sites.google.com/site/vispubdata/home"
-            >visualization publication dataset</a
+            >visualization publication dataset <q-icon name="open_in_new" /></a
           >. Thank you to all the creators/maintainers of this dataset!
         </p>
         <p>
           If you notice any mistakes, or would like to make a suggestion, please
           <a href="https://github.com/Dev-Lan/vispubs/issues"
-            >let me know here.</a
-          >
+            >let me know<q-icon name="open_in_new" /></a
+          >.
         </p>
         <vue-markdown :source="changeLogText" />
       </div>
@@ -137,11 +139,16 @@ const resourceExplanations = [
   </q-page-container>
 </template>
 
-<style>
+<style lang="scss">
 h4,
 h5,
 h6 {
   margin-top: 1em;
   margin-bottom: 1em;
+}
+
+a {
+  color: $primary;
+  font-size: 1.1em;
 }
 </style>
