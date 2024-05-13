@@ -47,5 +47,5 @@ def update_chi_csv(program_file, csv_file):
 # Call the update_chi_csv function for each program file
 for year in range(2018, 2024):
     program_file = f'./temp/CHI/CHI_{year}_program.json'
-    csv_file = 'chi.csv'
+    csv_file = 'chi-abstracted.csv'
     update_chi_csv(program_file, csv_file)
