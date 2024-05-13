@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### May 13, 2024
+
+- add awards to CHI publications from 2018–2023
+
 ###### Apr 30, 2024
 
 - add "visualising" to keyword filter list and add ~5 additional CHI publications that include this keyword
