@@ -1,5 +1,9 @@
 ##### Dataset Changelog
 
+###### May 14, 2024
+
+- add a few author homepage links
+
 ###### May 13, 2024
 
 - add awards to CHI publications from 2018–2023
