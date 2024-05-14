@@ -73,9 +73,26 @@ const resourceExplanations = [
           /></a>
           to aggregate visualization publications from multiple venues (VIS,
           EuroVis, CHI) into a single website, and make it easy to find
-          resources related to publications. These resources can be anything to
-          help explain the paper, use the related tool, or reproduce the
-          results. Common types of resources include:
+          resources related to publications.
+        </p>
+
+        <div class="fancy-header q-pa-sm q-pr-lg text-h4">
+          Citation Information
+        </div>
+        <p>todo, content</p>
+        <div class="fancy-header q-pa-sm q-pr-lg text-h4">Data Format</div>
+        <p>todo, content</p>
+
+        <div class="fancy-subheader text-h5">Data Columns</div>
+        <p>todo, content</p>
+
+        <div class="fancy-subheader text-h5">Data Collection</div>
+        filtering CHI / papers, other brief explanation for collection
+        <div class="fancy-subheader text-h5">Publication Resources</div>
+        <p>
+          These resources can be anything to help explain the paper, use the
+          related tool, or reproduce the results. Common types of resources
+          include:
         </p>
         <q-list class="q-mb-md">
           <q-item
@@ -133,6 +150,17 @@ const resourceExplanations = [
             >let me know<q-icon name="open_in_new" /></a
           >.
         </p>
+        <div class="fancy-subheader text-h5">
+          How is this different from the Visualization Publication Dataset?
+        </div>
+        <p>todo, content</p>
+
+        <div class="fancy-header q-pa-sm q-pr-lg text-h4">RegEx Tips</div>
+        <p>todo, content</p>
+
+        <div class="fancy-header q-pa-sm q-pr-lg text-h4">
+          Dataset Changelog
+        </div>
         <vue-markdown :source="changeLogText" />
       </div>
     </q-page>
@@ -140,6 +168,23 @@ const resourceExplanations = [
 </template>
 
 <style lang="scss">
+.fancy-header {
+  // outline: 5px solid $primary;
+  background: $primary;
+  color: white;
+  display: inline-block;
+  // circular border on right side
+  border-top-right-radius: 1em;
+  border-bottom-right-radius: 1em;
+  // slight roundness on left side
+  border-top-left-radius: 0.1em;
+  border-bottom-left-radius: 0.1em;
+}
+
+.fancy-subheader {
+  // outline: 1px solid $primary;
+}
+
 h4,
 h5,
 h6 {
