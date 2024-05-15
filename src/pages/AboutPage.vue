@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { debounce } from 'quasar';
 import VueMarkdown from 'vue-markdown-render';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 const paperDataStore = usePaperDataStore();
@@ -60,6 +61,30 @@ const resourceExplanations = [
     explanation: 'Presentation slides, blog posts, podcasts, etc.',
   },
 ];
+
+const bibTexString = `@preprint{2024_preprint_vispubs,
+  title = {VisPubs: A Visualization Publications Repository},
+  author = {Devin Lange},
+  booktitle = {Preprint},
+  doi = {10.31219/osf.io/dg3p2},
+  year = {2024}
+}`;
+
+function copyCitationInfo() {
+  navigator.clipboard.writeText(bibTexString);
+  showCopiedToClipboardMessage.value = true;
+  hideCopiedToClipboardMessageDebounced();
+}
+const hideCopiedToClipboardMessageDebounced = debounce(
+  hideCopiedToClipboardMessage,
+  1500
+);
+
+function hideCopiedToClipboardMessage() {
+  showCopiedToClipboardMessage.value = false;
+}
+
+const showCopiedToClipboardMessage = ref(false);
 </script>
 
 <template>
@@ -80,8 +105,46 @@ const resourceExplanations = [
           <div class="fancy-header q-pa-sm q-pr-lg text-h4">
             Citation Information
           </div>
-          <p>https://osf.io/preprints/osf/dg3p2</p>
-          <p>button to download</p>
+          <p>
+            I have written a short paper with more information about data
+            aquisition, data format, and the website. A
+            <a href="https://osf.io/preprints/osf/dg3p2">
+              preprint of this short paper <q-icon name="open_in_new"
+            /></a>
+            is available on OSF. If you use the data or find the website to be
+            useful, please cite this paper.
+          </p>
+
+          <q-card
+            flat
+            bordered
+            class="q-mb-md"
+            :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
+          >
+            <q-card-section>
+              <div class="row items-center no-wrap">
+                <div class="col">
+                  <div class="text-h6">BibTeX</div>
+                </div>
+
+                <div class="col-auto">
+                  <Transition>
+                    <q-badge v-if="showCopiedToClipboardMessage"
+                      >Copied to clipboard</q-badge
+                    >
+                  </Transition>
+                  <q-btn
+                    round
+                    flat
+                    icon="content_copy"
+                    @click="copyCitationInfo"
+                  />
+                </div>
+              </div>
+              <pre>{{ bibTexString }}</pre>
+            </q-card-section>
+          </q-card>
+
           <div class="fancy-header q-pa-sm q-pr-lg text-h4">Data Format</div>
           <p>todo, content</p>
 
@@ -227,5 +290,15 @@ h6 {
 a {
   color: $primary;
   font-size: 1.1em;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
