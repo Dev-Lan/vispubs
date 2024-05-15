@@ -79,7 +79,8 @@ const resourceExplanations = [
         <div class="fancy-header q-pa-sm q-pr-lg text-h4">
           Citation Information
         </div>
-        <p>todo, content</p>
+        <p>https://osf.io/preprints/osf/dg3p2</p>
+        <p>button to download</p>
         <div class="fancy-header q-pa-sm q-pr-lg text-h4">Data Format</div>
         <p>todo, content</p>
 
