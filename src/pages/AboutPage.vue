@@ -187,7 +187,7 @@ const datasetComparisonColumns = ref([
             resources related to publications.
           </p>
 
-          <div class="fancy-header q-pa-sm q-pr-lg text-h4">
+          <div class="fancy-header q-pa-sm q-pr-lg text-h4 q-mb-md q-mt-sm">
             Citation Information
           </div>
           <p>
@@ -231,7 +231,7 @@ const datasetComparisonColumns = ref([
             </q-card-section>
           </q-card>
 
-          <div class="fancy-header q-pa-sm q-pr-lg text-h4">Data Format</div>
+          <div class="fancy-header q-pa-sm q-pr-lg text-h4 q-mb-md q-mt-sm">Data Format</div>
           <p>
             Currently this site includes IEEE Visualization (<b>VIS</b>)
             publications from 1990–2023, <b>EuroVis</b> publications from
@@ -243,7 +243,7 @@ const datasetComparisonColumns = ref([
               >submit a new issue <q-icon name="open_in_new" /></a
             >.
           </p>
-          <div class="fancy-subheader text-h5">
+          <div class="fancy-subheader text-h5 q-mb-sm">
             How is this different from the Visualization Publication Dataset?
           </div>
           <p>
@@ -267,11 +267,7 @@ const datasetComparisonColumns = ref([
             flat
             bordered
           />
-          <div class="fancy-subheader text-h5">Data Columns</div>
-          <p>
-            The data columns closely match the visualization publications
-            dataset.
-          </p>
+          <div class="fancy-subheader text-h5 ">Data Columns</div>
           <q-list class="q-mb-md">
             <q-item
               v-for="dataColumnExplanation in dataColumnExplanations"
@@ -285,7 +281,7 @@ const datasetComparisonColumns = ref([
               </q-item-section>
             </q-item>
           </q-list>
-          <div class="fancy-subheader text-h5">Publication Resources</div>
+          <div class="fancy-subheader text-h5 q-mb-sm">Publication Resources</div>
           <p>
             These resources can be anything to help explain the paper, use the
             related tool, or reproduce the results. Common types of resources
@@ -336,7 +332,7 @@ const datasetComparisonColumns = ref([
             <span class="q-ml-sm q-mr-sm">Add Resources</span> button.
           </p>
 
-          <div class="fancy-subheader text-h5">Filtering CHI Papers</div>
+          <div class="fancy-subheader text-h5 q-mb-sm">Filtering CHI Papers</div>
           <p>
             VisPubs does not include every paper from CHI. Instead it attempts
             to select "visualization" papers. Papers that include at least one
