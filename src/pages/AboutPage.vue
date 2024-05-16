@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { debounce } from 'quasar';
 import VueMarkdown from 'vue-markdown-render';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
@@ -100,6 +100,11 @@ const bibTexString = `@preprint{2024_preprint_vispubs,
   doi = {10.31219/osf.io/dg3p2},
   year = {2024}
 }`;
+
+
+const clipboardSupported = computed(() => {
+  return navigator.clipboard && navigator.clipboard.writeText;
+});
 
 function copyCitationInfo() {
   navigator.clipboard.writeText(bibTexString);
@@ -214,6 +219,7 @@ const datasetComparisonColumns = ref([
                     >
                   </Transition>
                   <q-btn
+                  v-if="clipboardSupported"
                     round
                     flat
                     icon="content_copy"
