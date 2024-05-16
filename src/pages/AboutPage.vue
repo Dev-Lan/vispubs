@@ -14,50 +14,81 @@ fetch(window.location.origin + '/data/changelog.md')
     changeLogText.value = data;
   });
 
+const dataColumnExplanations = [
+  { name: 'Title', explanation: 'The title of the paper in plain text.' },
+  {
+    name: 'AuthorNames-Deduped',
+    explanation:
+      'The authors of the paper in the same order as the paper, separated by semicolon. Names are deduplicated with the same convention as dblp.',
+  },
+  { name: 'Abstract', explanation: 'The abstract of the paper.' },
+  { name: 'DOI', explanation: 'The DOI of the paper.' },
+  {
+    name: 'Venue',
+    explanation:
+      'The venue of the paper. [vis, InfoVis, SciVis, VAST, CHI, or EuroVis]',
+  },
+  {
+    name: 'Year',
+    explanation:
+      'The year the paper was published, not to be confused with the year the paper was presented.',
+  },
+  {
+    name: 'Award',
+    explanation:
+      'The awards the paper received, separated by semicolon. Past records for these are unreliable, so these are incomplete. TT: Test of Time, BP: Best Paper, HM: Honorable Mention, BA: Best Application, BCS: Best Case Study.',
+  },
+  {
+    name: 'Resources',
+    explanation:
+      'A list of resource keys, separated by semicolon. Examples of resource types are listed below.',
+  },
+];
+
 const resourceExplanations = [
   {
     icon: 'paper',
-    name: 'Paper Preprint',
+    name: 'Paper Preprint (V)',
     explanation:
       'A version of the paper that is nearly identical to the final version, but not formatted by the publisher. This version is usually hosted on a preprint server and is always free to access.',
   },
   {
     icon: 'video',
-    name: 'Fast Forward',
+    name: 'Fast Forward (V)',
     explanation:
       'A short 30 second video that summarizes the main idea of the paper.',
   },
   {
     icon: 'video',
-    name: 'Prerecorded Talk',
+    name: 'Prerecorded Talk (V)',
     explanation:
       'A precorded version of the talk that was given at the conference',
   },
   {
     icon: 'project_website',
-    name: 'Project Website',
+    name: 'Project Website (PW)',
     explanation:
       'A landing page for the project that the paper is about. This often contains other resources such as videos, demos, and source code.',
   },
   {
     icon: 'code',
-    name: 'Source Code',
+    name: 'Source Code (C)',
     explanation: 'The source code for the software that the paper is about.',
   },
   {
     icon: 'code',
-    name: 'Analysis Code',
+    name: 'Analysis Code (C)',
     explanation:
       'Data analysis code used to generate the results in the paper.',
   },
   {
     icon: 'data',
-    name: 'Data',
+    name: 'Data (D)',
     explanation: 'Data collected or presented in the paper.',
   },
   {
     icon: 'other',
-    name: 'Other',
+    name: 'Other (O)',
     explanation: 'Presentation slides, blog posts, podcasts, etc.',
   },
 ];
@@ -235,8 +266,19 @@ const datasetComparisonColumns = ref([
             The data columns closely match the visualization publications
             dataset.
           </p>
-          <div class="fancy-subheader text-h5">Data Collection</div>
-          filtering CHI / papers, other brief explanation for collection
+          <q-list class="q-mb-md">
+            <q-item
+              v-for="dataColumnExplanation in dataColumnExplanations"
+              :key="dataColumnExplanation.name"
+            >
+              <q-item-section>
+                <q-item-label>{{ dataColumnExplanation.name }}</q-item-label>
+                <q-item-label caption>{{
+                  dataColumnExplanation.explanation
+                }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
           <div class="fancy-subheader text-h5">Publication Resources</div>
           <p>
             These resources can be anything to help explain the paper, use the
@@ -288,9 +330,19 @@ const datasetComparisonColumns = ref([
             <span class="q-ml-sm q-mr-sm">Add Resources</span> button.
           </p>
 
-          <div class="fancy-header q-pa-sm q-pr-lg text-h4">RegEx Tips</div>
-          <p>todo, content</p>
-
+          <div class="fancy-subheader text-h5">Filtering CHI Papers</div>
+          <p>
+            VisPubs does not include every paper from CHI. Instead it attempts
+            to select "visualization" papers. Papers that include at least one
+            of the following keywords in the title or abstract are included.
+            <ul>
+              <li>"visualization", "visualisation"</li>
+              <li>"visualizing", "visualising"</li>
+              <li>"visual analytics", "visual analysis", "visual analyses"</li>
+              <li>"visual data"</li>
+              <li>"physical data", "data physical"</li>
+            </ul>
+          </p>
           <div class="fancy-header q-pa-sm q-pr-lg text-h4">
             Dataset Changelog
           </div>
