@@ -85,6 +85,55 @@ function hideCopiedToClipboardMessage() {
 }
 
 const showCopiedToClipboardMessage = ref(false);
+
+const datasetComparisonRows = ref([
+  {
+    name: 'IEEE VIS',
+    vispubdata: '✅',
+    vispubs: '✅',
+  },
+  {
+    name: 'Title, Authors, Abstract, DOI, Venue, Year, Award',
+    vispubdata: '✅',
+    vispubs: '✅',
+  },
+  {
+    name: 'Citations, Internal References, Author Affiliations, Author Keywords, First/Last Page',
+    vispubdata: '✅',
+    vispubs: '',
+  },
+  {
+    name: 'EuroVis, CHI',
+    vispubdata: '',
+    vispubs: '✅',
+  },
+
+  {
+    name: 'Paper Resource Links (Preprint, Code, Data, ...)',
+    vispubdata: '',
+    vispubs: '✅',
+  },
+]);
+const datasetComparisonColumns = ref([
+  {
+    name: 'name',
+    label: '',
+    align: 'left',
+    field: 'name',
+  },
+  {
+    name: 'vispubdata',
+    label: 'Vispubdata',
+    align: 'center',
+    field: 'vispubdata',
+  },
+  {
+    name: 'vispubs',
+    label: 'VisPubs',
+    align: 'center',
+    field: 'vispubs',
+  },
+]);
 </script>
 
 <template>
@@ -146,11 +195,46 @@ const showCopiedToClipboardMessage = ref(false);
           </q-card>
 
           <div class="fancy-header q-pa-sm q-pr-lg text-h4">Data Format</div>
-          <p>todo, content</p>
-
+          <p>
+            Currently this site includes IEEE Visualization (<b>VIS</b>)
+            publications from 1990–2023, <b>EuroVis</b> publications from
+            1999–2023, and <b>CHI</b> publications from 1986–2023. To download
+            the full dataset, select the EXPORT button without any filters or
+            search term. If you notice any mistakes, or would like to make a
+            suggestion, please
+            <a href="https://github.com/Dev-Lan/vispubs/issues"
+              >submit a new issue <q-icon name="open_in_new" /></a
+            >.
+          </p>
+          <div class="fancy-subheader text-h5">
+            How is this different from the Visualization Publication Dataset?
+          </div>
+          <p>
+            The
+            <a href="https://sites.google.com/site/vispubdata/home"
+              >Visualization Publications Dataset <q-icon name="open_in_new"
+            /></a>
+            is an amazing resource that made this website possible. The main
+            difference is that Visualization Publications Dataset
+            (<b>Vispubdata</b>) contains more metadata about each paper, but
+            this dataset (<b>VisPubs</b>) contains more papers, and includes
+            resources related to papers.
+          </p>
+          <q-table
+            wrap-cells
+            class="q-mb-md"
+            :rows="datasetComparisonRows"
+            :columns="datasetComparisonColumns"
+            row-key="name"
+            hide-bottom
+            flat
+            bordered
+          />
           <div class="fancy-subheader text-h5">Data Columns</div>
-          <p>todo, content</p>
-
+          <p>
+            The data columns closely match the visualization publications
+            dataset.
+          </p>
           <div class="fancy-subheader text-h5">Data Collection</div>
           filtering CHI / papers, other brief explanation for collection
           <div class="fancy-subheader text-h5">Publication Resources</div>
@@ -204,28 +288,6 @@ const showCopiedToClipboardMessage = ref(false);
             <span class="q-ml-sm q-mr-sm">Add Resources</span> button.
           </p>
 
-          <p>
-            Currently this site includes IEEE Visualization (<b>VIS</b>)
-            publications from 1990–2023, <b>EuroVis</b> publications from
-            1999–2023, and <b>CHI</b> publications from 1986–2023. The VIS
-            papers are based on a subset of data from this
-            <a href="https://sites.google.com/site/vispubdata/home"
-              >visualization publication dataset
-              <q-icon name="open_in_new" /></a
-            >. Thank you to all the creators/maintainers of this dataset!
-          </p>
-          <p>
-            If you notice any mistakes, or would like to make a suggestion,
-            please
-            <a href="https://github.com/Dev-Lan/vispubs/issues"
-              >let me know<q-icon name="open_in_new" /></a
-            >.
-          </p>
-          <div class="fancy-subheader text-h5">
-            How is this different from the Visualization Publication Dataset?
-          </div>
-          <p>todo, content</p>
-
           <div class="fancy-header q-pa-sm q-pr-lg text-h4">RegEx Tips</div>
           <p>todo, content</p>
 
@@ -241,10 +303,7 @@ const showCopiedToClipboardMessage = ref(false);
 
 <style lang="scss">
 .text-container {
-  // outline: solid red 4px;
   max-width: 750px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .body--light .outer-container {
@@ -300,5 +359,9 @@ a {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+pre {
+  white-space: pre-wrap;
 }
 </style>
