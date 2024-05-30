@@ -69,6 +69,20 @@ function mouseMoveInSvg(event: MouseEvent) {
   }
   selectedPapersByVenue.value = venueCounts;
 }
+
+function mouseOutSvg() {
+  selectedYear.value = null;
+}
+
+function clickInSvg() {
+  if (selectedYear.value === null) {
+    return;
+  }
+  paperDataStore.yearFilter = {
+    min: selectedYear.value,
+    max: selectedYear.value,
+  };
+}
 </script>
 
 <template>
@@ -101,6 +115,8 @@ function mouseMoveInSvg(event: MouseEvent) {
             :width="yearVisWidth"
             :height="yearVisHeight"
             @mousemove="mouseMoveInSvg"
+            @mouseleave="mouseOutSvg"
+            @click="clickInSvg"
             ref="svgContainer"
           >
             <g v-if="paperDataStore.papers.length > 0" class="right-label">
@@ -132,6 +148,11 @@ function mouseMoveInSvg(event: MouseEvent) {
                 :y="yearVisHeight - scaleHeight(yearCount.count)"
                 :width="barWidth"
                 :height="scaleHeight(yearCount.count)"
+                :class="
+                  yearCount.year === selectedYear || selectedYear === null
+                    ? 'selected'
+                    : ''
+                "
               ></rect>
             </g>
           </svg>
@@ -259,8 +280,11 @@ svg {
   //   background-color: bisque;
   //   outline: solid tomato 0px;
 }
-
 .bars {
+  fill: $grey;
+}
+
+.bars .selected {
   fill: $primary;
 }
 
