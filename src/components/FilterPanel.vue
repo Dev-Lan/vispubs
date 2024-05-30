@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 
 import FilterButton from 'src/components/FilterButton.vue';
 
@@ -41,6 +41,34 @@ function closePanel() {
 const barChartLabelX = computed(() => {
   return scaleX.value(paperDataStore.maxPapersInYear.year) + barWidth.value / 2;
 });
+
+const selectedYear = ref<number | null>(null);
+const totalSelectedPapers = ref<number>(0);
+const selectedPapersByVenue = ref<Map<string, number>>(new Map());
+
+const svgContainer = ref<SVGElement | null>(null);
+function mouseMoveInSvg(event: MouseEvent) {
+  if (!svgContainer.value) {
+    return;
+  }
+  const svgRect = svgContainer.value.getBoundingClientRect();
+  const x = event.clientX - svgRect.left;
+  const year = Math.floor(scaleX.value.invert(x));
+  selectedYear.value = year;
+  const count = paperDataStore.paperYearCounts.find(
+    (yearCount) => yearCount.year === year
+  )?.count;
+  totalSelectedPapers.value = count ?? 0;
+  const papersInYear = paperDataStore.papers.filter(
+    (paper) => paper.year === year
+  );
+  const venueCounts = new Map<string, number>();
+  for (const paper of papersInYear) {
+    const count = venueCounts.get(paper.conference) ?? 0;
+    venueCounts.set(paper.conference, count + 1);
+  }
+  selectedPapersByVenue.value = venueCounts;
+}
 </script>
 
 <template>
@@ -68,39 +96,58 @@ const barChartLabelX = computed(() => {
         </div>
       </q-card-section>
       <q-card-section class="q-pt-xs q-pb-lg q-pt-md q-pl-lg">
-        <svg :width="yearVisWidth" :height="yearVisHeight">
-          <g v-if="paperDataStore.papers.length > 0" class="right-label">
-            <line :x1="barChartLabelX" :x2="barChartLabelX" y1="-2" y2="-5" />
-            <text
-              :x="barChartLabelX"
-              y="-8"
-              alignment-baseline="bottom"
-              text-anchor="middle"
+        <div>
+          <svg
+            :width="yearVisWidth"
+            :height="yearVisHeight"
+            @mousemove="mouseMoveInSvg"
+            ref="svgContainer"
+          >
+            <g v-if="paperDataStore.papers.length > 0" class="right-label">
+              <line :x1="barChartLabelX" :x2="barChartLabelX" y1="-2" y2="-5" />
+              <text
+                :x="barChartLabelX"
+                y="-8"
+                alignment-baseline="bottom"
+                text-anchor="middle"
+              >
+                {{ paperDataStore.maxPapersInYear.count }}
+              </text>
+            </g>
+            <g v-else>
+              <text
+                :x="yearVisWidth / 2"
+                :y="yearVisHeight / 2"
+                alignment-baseline="middle"
+                text-anchor="middle"
+              >
+                No papers
+              </text>
+            </g>
+            <g class="bars">
+              <rect
+                v-for="yearCount in paperDataStore.paperYearCounts"
+                :key="yearCount.year"
+                :x="scaleX(yearCount.year)"
+                :y="yearVisHeight - scaleHeight(yearCount.count)"
+                :width="barWidth"
+                :height="scaleHeight(yearCount.count)"
+              ></rect>
+            </g>
+          </svg>
+          <q-tooltip v-if="tooltipLabel !== ''">
+            <div class="text-h6">
+              {{ selectedYear }}: {{ totalSelectedPapers }}
+            </div>
+            <div
+              class="text-subtitle1"
+              v-for="[venue, count] in selectedPapersByVenue.entries()"
+              :key="venue"
             >
-              {{ paperDataStore.maxPapersInYear.count }}
-            </text>
-          </g>
-          <g v-else>
-            <text
-              :x="yearVisWidth / 2"
-              :y="yearVisHeight / 2"
-              alignment-baseline="middle"
-              text-anchor="middle"
-            >
-              No papers
-            </text>
-          </g>
-          <g class="bars">
-            <rect
-              v-for="yearCount in paperDataStore.paperYearCounts"
-              :key="yearCount.year"
-              :x="scaleX(yearCount.year)"
-              :y="yearVisHeight - scaleHeight(yearCount.count)"
-              :width="barWidth"
-              :height="scaleHeight(yearCount.count)"
-            />
-          </g>
-        </svg>
+              {{ venue }}: {{ count }}
+            </div>
+          </q-tooltip>
+        </div>
         <q-range
           v-if="paperDataStore.yearExtent !== null"
           v-model="paperDataStore.yearFilter"
