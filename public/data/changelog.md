@@ -1,3 +1,7 @@
+###### Jun 24, 2024
+
+- add submitted author hompage link
+
 ###### May 16, 2024
 
 - add a few author homepage links
