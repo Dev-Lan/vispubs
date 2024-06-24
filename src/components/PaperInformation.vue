@@ -161,6 +161,12 @@ function selectAuthor(displayName: string, dedupedName: string): void {
             Search for author on:
             <q-card-actions>
               <q-btn
+                :href="`./?searchText=${selectedAuthor.displayName}`"
+                no-caps
+                flat
+                >This site</q-btn
+              >
+              <q-btn
                 :href="`https://scholar.google.com/scholar?q=${selectedAuthor.displayName}`"
                 target="_blank"
                 no-caps
