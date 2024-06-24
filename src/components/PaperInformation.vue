@@ -40,19 +40,39 @@ function quoteText(text: string): string {
 }
 
 const addResourcesShown = ref(false);
-const authorModalShown = ref(false);
-const selectedAuthor = ref<{ displayName: string; dedupedName: string }>({
-  displayName: '',
-  dedupedName: '',
-});
 
-function selectAuthor(displayName: string, dedupedName: string): void {
-  selectedAuthor.value = {
-    displayName,
-    dedupedName,
-  };
-  authorModalShown.value = true;
+interface AuthorSearchOption {
+  label: string;
+  url: string;
+  external: boolean;
 }
+const authorSearchOptions: AuthorSearchOption[] = [
+  {
+    label: 'This site',
+    url: './?searchText=',
+    external: false,
+  },
+  {
+    label: 'Google Scholar',
+    url: 'https://scholar.google.com/scholar?q=',
+    external: true,
+  },
+  {
+    label: 'Google',
+    url: 'https://www.google.com/search?q=',
+    external: true,
+  },
+  {
+    label: 'Bing',
+    url: 'https://www.bing.com/search?q=',
+    external: true,
+  },
+  {
+    label: 'DuckDuckGo',
+    url: 'https://www.duckduckgo.com/?q=',
+    external: true,
+  },
+];
 </script>
 
 <template>
@@ -126,97 +146,74 @@ function selectAuthor(displayName: string, dedupedName: string): void {
         ) in paperDataStore.getAuthors(paperDataStore.selectedPaper)"
         :key="index"
       >
-        <q-btn
-          v-if="authorHasWebsite(dedupedName)"
-          :href="getAuthorWebsite(dedupedName)"
-          target="_blank"
-          icon-right="open_in_new"
-          flat
-          no-caps
-        >
-          <Highlighter
-            highlightClassName="highlight"
-            :searchWords="searchWords"
-            :autoEscape="autoEscape"
-            :caseSensitive="caseSensitive"
-            :textToHighlight="displayName"
-        /></q-btn>
-        <q-btn
-          v-else
-          @click="selectAuthor(displayName, dedupedName)"
-          flat
-          no-caps
-          size="md"
-          ><Highlighter
-            highlightClassName="highlight"
-            :searchWords="searchWords"
-            :autoEscape="autoEscape"
-            :textToHighlight="displayName"
-        /></q-btn>
+        <q-btn flat no-caps size="md">
+          <template:label>
+            <Highlighter
+              highlightClassName="highlight"
+              :searchWords="searchWords"
+              :autoEscape="autoEscape"
+              :textToHighlight="displayName"
+            />
+          </template:label>
+          <q-menu>
+            <q-list style="min-width: 100px">
+              <template v-if="authorHasWebsite(dedupedName)">
+                <q-item
+                  clickable
+                  :href="getAuthorWebsite(dedupedName)"
+                  target="_blank"
+                >
+                  <q-item-section>Homepage</q-item-section>
+                  <q-item-section avatar>
+                    <q-avatar size="sm" icon="open_in_new" />
+                  </q-item-section>
+                </q-item>
+                <q-separator />
+              </template>
+              <q-item dense>
+                <q-item-section class="text-caption">Search:</q-item-section>
+              </q-item>
+              <template
+                v-for="option in authorSearchOptions"
+                :key="option.label"
+              >
+                <q-item
+                  clickable
+                  dense
+                  :href="option.url + displayName"
+                  :target="option.external ? '_blank' : ''"
+                >
+                  <q-item-section>
+                    {{ option.label }}
+                  </q-item-section>
+                  <q-item-section avatar v-if="option.external">
+                    <q-avatar size="sm" icon="open_in_new" />
+                  </q-item-section>
+                </q-item>
+              </template>
+              <template v-if="!authorHasWebsite(dedupedName)">
+                <q-separator />
+                <q-item dense>
+                  <q-item-section class="text-caption"
+                    >Submit Homepage:</q-item-section
+                  >
+                </q-item>
+                <q-item
+                  dense
+                  clickable
+                  :href="getAuthorFormLink(dedupedName)"
+                  target="_blank"
+                >
+                  <q-item-section>Google Form</q-item-section>
+                  <q-item-section avatar>
+                    <q-avatar size="sm" icon="open_in_new" />
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-list>
+          </q-menu>
+        </q-btn>
       </template>
-
-      <q-dialog v-model="authorModalShown">
-        <q-card>
-          <q-card-section>
-            Search for author on:
-            <q-card-actions>
-              <q-btn
-                :href="`./?searchText=${selectedAuthor.displayName}`"
-                no-caps
-                flat
-                >This site</q-btn
-              >
-              <q-btn
-                :href="`https://scholar.google.com/scholar?q=${selectedAuthor.displayName}`"
-                target="_blank"
-                no-caps
-                flat
-                >Google Scholar</q-btn
-              >
-              <q-btn
-                :href="`https://www.google.com/search?q=${selectedAuthor.displayName}`"
-                target="_blank"
-                no-caps
-                flat
-                >Google</q-btn
-              >
-            </q-card-actions>
-            <q-card-actions>
-              <q-btn
-                :href="`https://www.bing.com/search?q=${selectedAuthor.displayName}`"
-                target="_blank"
-                no-caps
-                flat
-                >Bing</q-btn
-              >
-              <q-btn
-                :href="`https://www.duckduckgo.com/?q=${selectedAuthor.displayName}`"
-                target="_blank"
-                no-caps
-                flat
-                >DuckDuckGo</q-btn
-              >
-            </q-card-actions>
-          </q-card-section>
-
-          <q-card-section class="q-pb-none">
-            Submit author information:
-            <q-card-actions>
-              <q-btn
-                :href="getAuthorFormLink(selectedAuthor.dedupedName)"
-                target="_blank"
-                no-caps
-                flat
-                >Google Form</q-btn
-              >
-            </q-card-actions>
-          </q-card-section>
-
-          <q-card-actions align="right">
-            <q-btn label="Done" color="primary" v-close-popup />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
     </div>
     <div class="flex flex-center">
       <q-card flat bordered class="q-ml-md q-mr-md q-mb-md align-self-start">
