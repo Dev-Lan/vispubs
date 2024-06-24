@@ -43,18 +43,23 @@ const barChartLabelX = computed(() => {
 });
 
 const selectedYear = ref<number | null>(null);
+const selectedYearLabel = ref<string>('');
 const totalSelectedPapers = ref<number>(0);
 const selectedPapersByVenue = ref<Map<string, number>>(new Map());
 
 const svgContainer = ref<SVGElement | null>(null);
-function mouseMoveInSvg(event: MouseEvent) {
+function mouseMoveInSvg(event: PointerEvent) {
   if (!svgContainer.value) {
+    return;
+  }
+  if (event.pointerType !== 'mouse') {
     return;
   }
   const svgRect = svgContainer.value.getBoundingClientRect();
   const x = event.clientX - svgRect.left;
   const year = Math.floor(scaleX.value.invert(x));
   selectedYear.value = year;
+  selectedYearLabel.value = year.toString();
   const count = paperDataStore.paperYearCounts.find(
     (yearCount) => yearCount.year === year
   )?.count;
@@ -70,8 +75,12 @@ function mouseMoveInSvg(event: MouseEvent) {
   selectedPapersByVenue.value = venueCounts;
 }
 
-function mouseOutSvg() {
+function mouseOutSvg(event: PointerEvent) {
+  if (event.pointerType !== 'mouse') {
+    return;
+  }
   selectedYear.value = null;
+  // do NOT reset the label, as it will still be used to display the tooltip
 }
 
 function clickInSvg() {
@@ -114,8 +123,8 @@ function clickInSvg() {
           <svg
             :width="yearVisWidth"
             :height="yearVisHeight"
-            @mousemove="mouseMoveInSvg"
-            @mouseleave="mouseOutSvg"
+            @pointermove="mouseMoveInSvg"
+            @pointerleave="mouseOutSvg"
             @click="clickInSvg"
             ref="svgContainer"
           >
@@ -156,9 +165,9 @@ function clickInSvg() {
               ></rect>
             </g>
           </svg>
-          <q-tooltip v-if="tooltipLabel !== ''">
+          <q-tooltip>
             <div class="text-h6">
-              {{ selectedYear }}: {{ totalSelectedPapers }}
+              {{ selectedYearLabel }}: {{ totalSelectedPapers }}
             </div>
             <div
               class="text-subtitle1"
