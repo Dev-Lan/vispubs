@@ -370,7 +370,10 @@ const allAuthorsQuery = computed(() => {
               <q-item-section>{{ resourceLink.name }}</q-item-section>
             </q-item>
 
-            <q-separator class="q-mt-md q-mb-md" />
+            <q-separator
+              v-if="paperDataStore.selectedPaperResourceLinks.length > 0"
+              class="q-mt-md q-mb-md"
+            />
 
             <q-item clickable v-ripple @click="addResourcesShown = true">
               <q-item-section avatar>
