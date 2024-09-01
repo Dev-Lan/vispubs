@@ -188,7 +188,7 @@ const clipboardSupported = computed(() => {
               v-close-popup
               @click="copyToClipboard(paperDataStore.selectedPaper.title)"
             >
-              <q-item-section>Copy</q-item-section>
+              <q-item-section>Copy Title</q-item-section>
               <q-item-section avatar>
                 <q-avatar size="sm" icon="content_copy" />
               </q-item-section>
@@ -276,7 +276,7 @@ const clipboardSupported = computed(() => {
                 v-close-popup
                 @click="copyToClipboard(displayName)"
               >
-                <q-item-section>Copy</q-item-section>
+                <q-item-section>Copy Author</q-item-section>
                 <q-item-section avatar>
                   <q-avatar size="sm" icon="content_copy" />
                 </q-item-section>
