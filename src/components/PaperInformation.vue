@@ -340,8 +340,8 @@ const allAuthorsQuery = computed(() => {
         </q-btn>
       </template>
     </div>
-    <div class="flex flex-center">
-      <q-card flat bordered class="q-ml-md q-mr-md q-mb-md align-self-start">
+    <div class="flex flex-center reverse-wrap">
+      <q-card flat bordered class="q-ml-md q-mr-md q-mb-md self-end">
         <q-card-section>
           <div class="text-h6">Resources</div>
         </q-card-section>
@@ -419,7 +419,7 @@ const allAuthorsQuery = computed(() => {
           </q-card-actions>
         </q-card>
       </q-dialog>
-      <div class="mw-600 align-self-start">
+      <div class="mw-600 q-mb-lg self-end">
         <Highlighter
           highlightClassName="highlight"
           :searchWords="searchWords"
@@ -435,9 +435,5 @@ const allAuthorsQuery = computed(() => {
 <style scoped lang="scss">
 .mw-600 {
   max-width: 600px;
-}
-
-.align-self-start {
-  align-self: flex-start;
 }
 </style>
