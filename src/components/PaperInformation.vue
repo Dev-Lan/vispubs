@@ -3,6 +3,9 @@ import { computed, ref } from 'vue';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
 import { useAuthorStore } from 'src/stores/authorStore';
 import Highlighter from 'vue-highlight-words';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 const paperDataStore = usePaperDataStore();
 const authorStore = useAuthorStore();
 function authorHasWebsite(author: string): boolean {
@@ -34,10 +37,6 @@ const autoEscape = computed(() => {
 const searchWords = computed(() => {
   return [paperDataStore.searchText];
 });
-
-function quoteText(text: string): string {
-  return `"${text}"`;
-}
 
 const addResourcesShown = ref(false);
 
@@ -100,6 +99,20 @@ const paperSearchOptions: LabeledLink[] = [
 function quoted(text: string): string {
   return `"${text}"`;
 }
+
+function copyToClipboard(text: string): void {
+  navigator.clipboard.writeText(text);
+  $q.notify({
+    message: `Copied "${text}" to clipboard.`,
+    position: 'bottom',
+    icon: 'content_copy',
+    timeout: 2500,
+  });
+}
+
+const clipboardSupported = computed(() => {
+  return navigator.clipboard && navigator.clipboard.writeText;
+});
 </script>
 
 <template>
@@ -168,6 +181,18 @@ function quoted(text: string): string {
                 </q-item-section>
               </q-item>
             </template>
+            <q-item
+              v-if="clipboardSupported"
+              clickable
+              dense
+              v-close-popup
+              @click="copyToClipboard(paperDataStore.selectedPaper.title)"
+            >
+              <q-item-section>Copy</q-item-section>
+              <q-item-section avatar>
+                <q-avatar size="sm" icon="content_copy" />
+              </q-item-section>
+            </q-item>
           </q-list>
         </q-menu>
       </q-btn>
@@ -244,6 +269,18 @@ function quoted(text: string): string {
                   </q-item-section>
                 </q-item>
               </template>
+              <q-item
+                v-if="clipboardSupported"
+                clickable
+                dense
+                v-close-popup
+                @click="copyToClipboard(displayName)"
+              >
+                <q-item-section>Copy</q-item-section>
+                <q-item-section avatar>
+                  <q-avatar size="sm" icon="content_copy" />
+                </q-item-section>
+              </q-item>
               <template v-if="!authorHasWebsite(dedupedName)">
                 <q-separator />
                 <q-item dense>
