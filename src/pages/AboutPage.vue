@@ -175,7 +175,7 @@ const datasetComparisonColumns = ref([
 <template>
   <q-page-container>
     <q-page>
-      <div class="flex justify-center outer-container">
+      <div class="flex justify-center outer-container text-body1">
         <div class="q-pa-lg text-container">
           <p>
             Vispubs was created by

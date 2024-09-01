@@ -162,7 +162,7 @@ const allAuthorsQuery = computed(() => {
 
   <div v-if="paperDataStore.selectedPaper" class="q-mt-sm q-mx-lg q-mb-lg">
     <div class="text-h5 text-center">
-      <q-btn flat no-caps size="lg">
+      <q-btn flat no-caps :size="$q.screen.gt.xs ? 'lg' : 'md'">
         <Highlighter
           highlightClassName="highlight"
           :searchWords="searchWords"
@@ -231,7 +231,7 @@ const allAuthorsQuery = computed(() => {
       </q-btn>
     </div>
     <div class="q-mb-sm q-mx-sm flex justify-center items-center">
-      <div>
+      <div :class="$q.screen.gt.xs ? 'text-body2' : 'text-caption'">
         {{
           `${paperDataStore.getConference(paperDataStore.selectedPaper)}, ${
             paperDataStore.selectedPaper.year
@@ -255,7 +255,7 @@ const allAuthorsQuery = computed(() => {
         v-for="({ displayName, dedupedName }, index) in authors"
         :key="index"
       >
-        <q-btn flat no-caps size="md">
+        <q-btn flat no-caps :size="$q.screen.gt.xs ? 'md' : 'sm'">
           <template:label>
             <Highlighter
               highlightClassName="highlight"
@@ -419,7 +419,7 @@ const allAuthorsQuery = computed(() => {
           </q-card-actions>
         </q-card>
       </q-dialog>
-      <div class="mw-600 q-mb-lg self-end">
+      <div class="mw-600 q-mb-lg self-end text-body1">
         <Highlighter
           highlightClassName="highlight"
           :searchWords="searchWords"
