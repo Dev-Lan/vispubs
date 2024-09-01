@@ -263,6 +263,17 @@ const hoveredIndex = ref<number | null>();
         <!-- -9.6 is hack to get btn to match width of q-icon -->
       </template>
     </q-input>
+    <q-btn
+      class="q-mr-md"
+      padding="sm"
+      color="primary"
+      size="sm"
+      push
+      icon="casino"
+      title="Get Random Paper"
+      :disable="!paperDataStore.papers || paperDataStore.papers.length === 0"
+      @click="paperDataStore.selectRandomPaper"
+    />
 
     <div class="paper-count q-mr-md">
       <span>{{ paperDataStore.papers.length }} papers</span>

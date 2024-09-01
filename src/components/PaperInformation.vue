@@ -145,6 +145,18 @@ const allAuthorsQuery = computed(() => {
 
     <q-space />
 
+    <q-btn
+      class="q-mr-md"
+      padding="sm"
+      color="primary"
+      size="sm"
+      push
+      icon="casino"
+      title="Get Random Paper"
+      :disable="!paperDataStore.papers || paperDataStore.papers.length === 0"
+      @click="paperDataStore.selectRandomPaper"
+    />
+
     <span>{{ paperDataStore.progressDisplay }}</span>
     <q-btn
       round

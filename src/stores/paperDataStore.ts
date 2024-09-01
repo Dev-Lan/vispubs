@@ -214,6 +214,20 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     updateQueryState({ paper: null });
   }
 
+  function selectRandomPaper(): void {
+    if (papers.value.length <= 1) {
+      if (selectedPaperIndex.value === null) {
+        selectPaper(0);
+      }
+      return;
+    }
+    let randomIndex = selectedPaperIndex.value;
+    while (randomIndex === selectedPaperIndex.value) {
+      randomIndex = Math.floor(Math.random() * papers.value.length);
+    }
+    selectPaper(randomIndex as number);
+  }
+
   function clearFocusedPaper(): void {
     focusedPaperIndex.value = null;
   }
@@ -916,6 +930,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     progressDisplay,
     selectPaper,
     selectFocusedPaper,
+    selectRandomPaper,
     deselectPaper,
     getKeyList,
     getAward,
