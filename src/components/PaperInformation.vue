@@ -41,12 +41,12 @@ function quoteText(text: string): string {
 
 const addResourcesShown = ref(false);
 
-interface AuthorSearchOption {
+interface LabeledLink {
   label: string;
   url: string;
   external: boolean;
 }
-const authorSearchOptions: AuthorSearchOption[] = [
+const authorSearchOptions: LabeledLink[] = [
   {
     label: 'This site',
     url: './?searchText=',
@@ -73,6 +73,33 @@ const authorSearchOptions: AuthorSearchOption[] = [
     external: true,
   },
 ];
+
+const paperSearchOptions: LabeledLink[] = [
+  {
+    label: 'Google Scholar',
+    url: 'https://scholar.google.com/scholar?q=',
+    external: true,
+  },
+  {
+    label: 'Google',
+    url: 'https://www.google.com/search?q=',
+    external: true,
+  },
+  {
+    label: 'Bing',
+    url: 'https://www.bing.com/search?q=',
+    external: true,
+  },
+  {
+    label: 'DuckDuckGo',
+    url: 'https://www.duckduckgo.com/?q=',
+    external: true,
+  },
+];
+
+function quoted(text: string): string {
+  return `"${text}"`;
+}
 </script>
 
 <template>
@@ -102,14 +129,7 @@ const authorSearchOptions: AuthorSearchOption[] = [
 
   <div v-if="paperDataStore.selectedPaper" class="q-mt-sm q-mx-lg q-mb-lg">
     <div class="text-h5 text-center">
-      <q-btn
-        :href="`https://doi.org/${paperDataStore.selectedPaper.doi}`"
-        target="_blank"
-        icon-right="open_in_new"
-        flat
-        no-caps
-        size="lg"
-      >
+      <q-btn flat no-caps size="lg">
         <Highlighter
           highlightClassName="highlight"
           :searchWords="searchWords"
@@ -117,6 +137,39 @@ const authorSearchOptions: AuthorSearchOption[] = [
           :caseSensitive="caseSensitive"
           :textToHighlight="paperDataStore.selectedPaper.title"
         />
+        <q-menu touch-position>
+          <q-list style="min-width: 100px">
+            <q-item
+              clickable
+              :href="`https://doi.org/${paperDataStore.selectedPaper.doi}`"
+              target="_blank"
+            >
+              <q-item-section>Publication</q-item-section>
+              <q-item-section avatar>
+                <q-avatar size="sm" icon="open_in_new" />
+              </q-item-section>
+            </q-item>
+            <q-separator />
+            <q-item dense>
+              <q-item-section class="text-caption">Search:</q-item-section>
+            </q-item>
+            <template v-for="option in paperSearchOptions" :key="option.label">
+              <q-item
+                clickable
+                dense
+                :href="option.url + quoted(paperDataStore.selectedPaper.title)"
+                :target="option.external ? '_blank' : ''"
+              >
+                <q-item-section>
+                  {{ option.label }}
+                </q-item-section>
+                <q-item-section avatar v-if="option.external">
+                  <q-avatar size="sm" icon="open_in_new" />
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-list>
+        </q-menu>
       </q-btn>
     </div>
     <div class="q-mb-sm q-mx-sm flex justify-center items-center">
@@ -260,49 +313,6 @@ const authorSearchOptions: AuthorSearchOption[] = [
               <q-item-section>Add Resources</q-item-section>
             </q-item>
           </q-list>
-        </q-card-section>
-        <q-card-section>
-          Search for paper on:
-          <q-card-actions>
-            <q-btn
-              :href="`https://scholar.google.com/scholar?q=${quoteText(
-                paperDataStore.selectedPaper.title
-              )}`"
-              target="_blank"
-              no-caps
-              flat
-              >Google Scholar</q-btn
-            >
-            <q-btn
-              :href="`https://www.google.com/search?q=${quoteText(
-                paperDataStore.selectedPaper.title
-              )}`"
-              target="_blank"
-              no-caps
-              flat
-              >Google</q-btn
-            >
-          </q-card-actions>
-          <q-card-actions>
-            <q-btn
-              :href="`https://www.bing.com/search?q=${quoteText(
-                paperDataStore.selectedPaper.title
-              )}`"
-              target="_blank"
-              no-caps
-              flat
-              >Bing</q-btn
-            >
-            <q-btn
-              :href="`https://www.duckduckgo.com/?q=${quoteText(
-                paperDataStore.selectedPaper.title
-              )}`"
-              target="_blank"
-              no-caps
-              flat
-              >DuckDuckGo</q-btn
-            >
-          </q-card-actions>
         </q-card-section>
       </q-card>
       <q-dialog v-model="addResourcesShown">
