@@ -214,7 +214,7 @@ const hoveredIndex = ref<number | null>();
       rounded
       outlined
       dense
-      class="flex-grow-1 q-mr-md"
+      :class="`flex-grow-1 ${$q.screen.gt.xs ? 'q-mr-md' : 'q-mr-sm'}`"
       label="Search (Title, Author, Abstract)"
       v-model="paperDataStore.searchText"
       @keydown.enter="paperDataStore.selectFocusedPaper()"
@@ -264,7 +264,7 @@ const hoveredIndex = ref<number | null>();
       </template>
     </q-input>
     <q-btn
-      class="q-mr-md"
+      :class="$q.screen.gt.xs ? 'q-mr-md' : 'q-mr-sm'"
       padding="sm"
       color="primary"
       size="sm"
@@ -274,27 +274,17 @@ const hoveredIndex = ref<number | null>();
       :disable="!paperDataStore.papers || paperDataStore.papers.length === 0"
       @click="paperDataStore.selectRandomPaper"
     />
-
-    <div class="paper-count q-mr-md">
-      <span>{{ paperDataStore.papers.length }} papers</span>
+    <div :class="`paper-count ${$q.screen.gt.xs ? 'q-mr-md' : ''}`">
+      <span
+        >{{ paperDataStore.papers.length
+        }}{{ $q.screen.gt.xs ? ' papers' : '' }}</span
+      >
       <SimpleBar
         v-if="paperDataStore.allData !== null"
         :count="paperDataStore.papers.length"
         :maxCount="paperDataStore.allData.length"
       />
     </div>
-
-    <q-btn
-      class="xs"
-      color="primary"
-      push
-      size="sm"
-      round
-      :disable="!paperDataStore.papers || paperDataStore.papers.length === 0"
-      icon="file_download"
-      title="Export selected papers"
-      @click="exportShown = true"
-    />
     <q-btn
       class="gt-xs"
       color="primary"
@@ -482,6 +472,9 @@ const hoveredIndex = ref<number | null>();
 
 .paper-count {
   width: 80px;
+  @media (max-width: $breakpoint-xs-max) {
+    width: 32px;
+  }
 }
 
 .body--light .conference-year-label {
