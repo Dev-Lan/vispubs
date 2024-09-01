@@ -213,6 +213,19 @@ const allAuthorsQuery = computed(() => {
                 <q-avatar size="sm" icon="content_copy" />
               </q-item-section>
             </q-item>
+
+            <q-item
+              v-if="clipboardSupported"
+              clickable
+              dense
+              v-close-popup
+              @click="copyToClipboard(paperDataStore.selectedPaper.doi)"
+            >
+              <q-item-section>Copy DOI</q-item-section>
+              <q-item-section avatar>
+                <q-avatar size="sm" icon="content_copy" />
+              </q-item-section>
+            </q-item>
           </q-list>
         </q-menu>
       </q-btn>
