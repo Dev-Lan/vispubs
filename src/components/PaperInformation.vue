@@ -417,7 +417,7 @@ const allAuthorsQuery = computed(() => {
             <div class="text-h6">Add additional resources</div>
           </q-card-section>
 
-          <q-card-section class="q-pb-none flex column"
+          <q-card-section class="q-pb-none"
             >Review instructions for adding resources at
             <a
               href="https://github.com/Dev-Lan/vispubs/tree/main/public/data"
@@ -426,7 +426,7 @@ const allAuthorsQuery = computed(() => {
             ></q-card-section
           >
 
-          <q-card-section class="q-pb-none flex column"
+          <q-card-section class="q-pb-none"
             >Then update this paper's
             <a
               :href="`https://github.com/Dev-Lan/vispubs/tree/main/public/data/paperLinks/${paperDataStore.selectedPaper.doi}`"
