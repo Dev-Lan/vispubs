@@ -223,6 +223,7 @@ const datasetComparisonColumns = ref([
                     round
                     flat
                     icon="content_copy"
+                    title="Copy BibTeX to Clipboard"
                     @click="copyCitationInfo"
                   />
                 </div>

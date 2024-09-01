@@ -207,6 +207,11 @@ const hoveredIndex = ref<number | null>();
       push
       icon="filter_alt"
       @click="paperDataStore.filterPanelOpen = !paperDataStore.filterPanelOpen"
+      :title="
+        paperDataStore.filterPanelOpen
+          ? 'Close Filter Panel'
+          : 'Open Filter Panel'
+      "
     />
 
     <q-input
@@ -358,7 +363,12 @@ const hoveredIndex = ref<number | null>();
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn label="Done" color="primary" v-close-popup />
+          <q-btn
+            label="Done"
+            color="primary"
+            v-close-popup
+            title="Close Popup"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>

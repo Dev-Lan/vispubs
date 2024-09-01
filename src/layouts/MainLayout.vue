@@ -17,6 +17,7 @@ const globalStore = useGlobalStore();
           checked-icon="light_mode"
           color="yellow-8"
           unchecked-icon="dark_mode"
+          :title="`Switch to ${globalStore.darkMode ? 'dark' : 'light'} mode`"
         />
       </q-toolbar>
     </q-header>

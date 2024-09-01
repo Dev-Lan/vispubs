@@ -99,7 +99,13 @@ function clickInSvg() {
     <q-icon class="q-mr-sm" size="sm" name="filter_alt" />
     <span class="text-h5">Filter by...</span>
     <q-space />
-    <q-btn round size="sm" icon="close" @click="closePanel" />
+    <q-btn
+      round
+      size="sm"
+      icon="close"
+      title="Close Filter Panel"
+      @click="closePanel"
+    />
   </q-toolbar>
   <template v-if="paperDataStore.allData">
     <q-card flat>
@@ -114,6 +120,7 @@ function clickInSvg() {
             no-caps
             @click="paperDataStore.clearYearFilter()"
             class="text-caption"
+            title="Reset Year Filters"
             >(clear filter)</q-btn
           >
         </div>
@@ -205,6 +212,7 @@ function clickInSvg() {
             no-caps
             @click="paperDataStore.clearVenueFilter()"
             class="text-caption"
+            title="Reset Venue Filters"
             >(clear filter)</q-btn
           >
         </div>
@@ -234,6 +242,7 @@ function clickInSvg() {
             no-caps
             class="text-caption"
             @click="paperDataStore.clearAwardFilter()"
+            title="Reset Award Filters"
             >(clear filter)</q-btn
           >
         </div>
@@ -263,6 +272,7 @@ function clickInSvg() {
             no-caps
             class="text-caption"
             @click="paperDataStore.clearResourceFilter()"
+            title="Reset Resource Filters"
             >(clear filter)</q-btn
           >
         </div>

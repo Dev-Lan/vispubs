@@ -141,6 +141,7 @@ const allAuthorsQuery = computed(() => {
       round
       @click="paperDataStore.deselectPaper()"
       icon="arrow_back"
+      title="Go To List View"
     ></q-btn>
 
     <q-space />
@@ -163,18 +164,25 @@ const allAuthorsQuery = computed(() => {
       @click="paperDataStore.previousPaper()"
       icon="chevron_left"
       class="q-ml-md"
+      title="Go To Previous Paper"
     ></q-btn>
     <q-btn
       round
       @click="paperDataStore.nextPaper()"
       icon="chevron_right"
       class="q-ml-md"
+      title="Go To Next Paper"
     ></q-btn>
   </q-toolbar>
 
   <div v-if="paperDataStore.selectedPaper" class="q-mt-sm q-mx-lg q-mb-lg">
     <div class="text-h5 text-center">
-      <q-btn flat no-caps :size="$q.screen.gt.xs ? 'lg' : 'md'">
+      <q-btn
+        flat
+        no-caps
+        :size="$q.screen.gt.xs ? 'lg' : 'md'"
+        title="Open Paper Quick Links"
+      >
         <Highlighter
           highlightClassName="highlight"
           :searchWords="searchWords"
@@ -274,6 +282,7 @@ const allAuthorsQuery = computed(() => {
               :searchWords="searchWords"
               :autoEscape="autoEscape"
               :textToHighlight="displayName"
+              title="Open Author Quick Links"
             />
           </template:label>
           <q-menu>
@@ -427,7 +436,12 @@ const allAuthorsQuery = computed(() => {
           </q-card-section>
 
           <q-card-actions align="right">
-            <q-btn label="Done" color="primary" v-close-popup />
+            <q-btn
+              label="Done"
+              color="primary"
+              v-close-popup
+              Title="Close Popup"
+            />
           </q-card-actions>
         </q-card>
       </q-dialog>

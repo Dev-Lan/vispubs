@@ -28,6 +28,7 @@ function onClick(event: Event) {
       align="left"
       class="full-width"
       no-caps
+      :title="`${props.selected ? 'Remove' : 'Add'} Filter: ${props.text} `"
       @click="onClick($event)"
     >
       <q-avatar
