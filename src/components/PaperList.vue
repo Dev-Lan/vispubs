@@ -2,14 +2,14 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import Highlighter from 'vue-highlight-words';
 import { usePaperDataStore } from 'src/stores/paperDataStore';
-import { useGlobalStore } from 'src/stores/globalStore';
 import { unparse } from 'papaparse';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
 import { storeToRefs } from 'pinia';
 import SimpleBar from './SimpleBar.vue';
+import { useQuasar } from 'quasar';
 
-const globalStore = useGlobalStore();
+const $q = useQuasar();
 const paperDataStore = usePaperDataStore();
 const { selectedPaperIndex, focusedPaperIndex } = storeToRefs(paperDataStore);
 
@@ -36,7 +36,7 @@ function exportToJSON() {
 
 function copyJSON() {
   const json = JSON.stringify(paperDataStore.papersWithLinks);
-  navigator.clipboard.writeText(json);
+  copyToClipboard(json);
 }
 
 function exportToCSV() {
@@ -47,7 +47,22 @@ function exportToCSV() {
 
 function copyCSV() {
   const csv = unparse(paperDataStore.papersWithLinks);
-  navigator.clipboard.writeText(csv);
+  copyToClipboard(csv);
+}
+
+function copyToClipboard(text: string): void {
+  navigator.clipboard.writeText(text);
+
+  const maxLength = 100;
+  const displayText =
+    text.length < maxLength ? text : text.slice(0, maxLength - 3) + '...';
+
+  $q.notify({
+    message: `Copied "${displayText}" to clipboard.`,
+    position: 'bottom',
+    icon: 'content_copy',
+    timeout: 2500,
+  });
 }
 
 async function exportToXLSX() {
