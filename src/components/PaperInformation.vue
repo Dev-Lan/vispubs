@@ -45,11 +45,21 @@ interface LabeledLink {
   url: string;
   external: boolean;
 }
-const authorSearchOptions: LabeledLink[] = [
+
+interface AuthorLink extends LabeledLink {
+  allAuthors?: boolean;
+}
+const authorSearchOptions: AuthorLink[] = [
   {
     label: 'This site',
     url: './?searchText=',
     external: false,
+  },
+  {
+    label: 'This site (all authors)',
+    url: './?useRegex=true&searchText=',
+    external: false,
+    allAuthors: true,
   },
   {
     label: 'Google Scholar',
@@ -112,6 +122,16 @@ function copyToClipboard(text: string): void {
 
 const clipboardSupported = computed(() => {
   return navigator.clipboard && navigator.clipboard.writeText;
+});
+
+const authors = computed(() =>
+  paperDataStore.getAuthors(paperDataStore.selectedPaper)
+);
+
+const allAuthorsQuery = computed(() => {
+  return authors.value
+    .map((author) => author.displayName)
+    .reduce((x, y) => x + '|' + y);
 });
 </script>
 
@@ -219,9 +239,7 @@ const clipboardSupported = computed(() => {
     </div>
     <div class="q-mb-md q-mx-sm flex justify-center">
       <template
-        v-for="(
-          { displayName, dedupedName }, index
-        ) in paperDataStore.getAuthors(paperDataStore.selectedPaper)"
+        v-for="({ displayName, dedupedName }, index) in authors"
         :key="index"
       >
         <q-btn flat no-caps size="md">
@@ -258,7 +276,11 @@ const clipboardSupported = computed(() => {
                 <q-item
                   clickable
                   dense
-                  :href="option.url + displayName"
+                  :href="
+                    option.allAuthors
+                      ? option.url + allAuthorsQuery
+                      : option.url + displayName
+                  "
                   :target="option.external ? '_blank' : ''"
                 >
                   <q-item-section>
