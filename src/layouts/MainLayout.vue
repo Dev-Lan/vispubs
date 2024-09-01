@@ -19,6 +19,14 @@ const globalStore = useGlobalStore();
           unchecked-icon="dark_mode"
           :title="`Switch to ${globalStore.darkMode ? 'dark' : 'light'} mode`"
         />
+        <q-btn
+          href="https://github.com/Dev-Lan/vispubs"
+          target="_blank"
+          flat
+          round
+          size="md"
+          icon="fa-brands fa-github"
+        />
       </q-toolbar>
     </q-header>
     <router-view />
