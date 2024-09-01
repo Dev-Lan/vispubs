@@ -403,7 +403,6 @@ h6 {
 
 a {
   color: $primary;
-  font-size: 1.1em;
 }
 
 .v-enter-active,

@@ -89,3 +89,8 @@ function focusNextPaper() {
     </q-page>
   </q-page-container>
 </template>
+<style lang="scss">
+a {
+  color: $primary;
+}
+</style>
