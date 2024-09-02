@@ -3,7 +3,6 @@ from lxml import etree
 
 '''
 Used to filter large dblp xml file to only include relevant files.
-This is useful for developing changes and testing them on a smaller file.
 '''
 
 def parse_large_xml_with_dtd(xml_file, dtd_file, output_filename):
@@ -25,6 +24,8 @@ def parse_large_xml_with_dtd(xml_file, dtd_file, output_filename):
 
     tag_count = 0
     last_tag = None
+
+    output_file.write('<dblp>')
 
     for event, elem in context:
 
@@ -53,9 +54,22 @@ def parse_large_xml_with_dtd(xml_file, dtd_file, output_filename):
         element_string = etree.tostring(elem, pretty_print=True).decode()
         output_file.write(element_string)
 
+    output_file.write('</dblp>')
+
     output_file.close()
 
-# Replace 'your_large_file.xml' and 'your_dtd_file.dtd' with your actual file paths
-parse_large_xml_with_dtd('./input/dblp.xml', './input/dblp.dtd', './temp/vis_papers.xml')
+def test_entity_resolution(xml_file, dtd_file):
+    # Load the DTD
+    with open(dtd_file, 'rb') as f:
+        dtd = etree.DTD(f)
 
+    # Load the XML
+    parser = etree.XMLParser(dtd_validation=True, load_dtd=True)
+    try:
+        tree = etree.parse(xml_file, parser)
+        print("Entity resolution works correctly.")
+    except etree.XMLSyntaxError as e:
+        print("Error in entity resolution:", e)
 
+parse_large_xml_with_dtd('./input/dblp.xml', './input/dblp-2023-06-28.dtd', './temp/dblp_filtered.xml')
+# test_entity_resolution('./input/dblp.xml', './input/dblp-2023-06-28.dtd')
