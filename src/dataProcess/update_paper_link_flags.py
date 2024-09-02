@@ -10,7 +10,7 @@ The possible values are:
     P - paper
     V - video
     C - code
-    W - website
+    PW - website
     D - data
     O - other
 '''
@@ -45,7 +45,7 @@ def update_paper_link_flags():
                 flags.append('D')
             if 'other' in icons:
                 flags.append('O')
-            
+
             row['Resources'] = ';'.join(flags)
 
     with open(PAPER_LIST_FILENAME, 'w', newline='') as csvfile:
