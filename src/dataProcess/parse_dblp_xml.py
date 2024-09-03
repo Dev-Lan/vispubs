@@ -1,6 +1,7 @@
 from os import close
 from lxml import etree
 import pandas as pd
+import re
 
 def parse_large_xml_with_dtd(xml_file, output_filename):
 
@@ -26,11 +27,19 @@ def parse_large_xml_with_dtd(xml_file, output_filename):
             continue
 
         title = get_text(elem, 'title')
-        if title == '' or title == 'Front Matter':
+        if title == '':
+            # print('No title found:', elem) # TODO: check these elements
             continue
         if title[-1] == '.':
             title = title[:-1]
+
         year = get_text(elem, 'year')
+        if venue == 'Vis':
+            year = str(int(year) - 1)
+
+        if is_front_matter(elem):
+            continue
+
         authors = ';'.join(get_text_list(elem, 'author'))
         doi = get_doi(elem)
 
@@ -71,7 +80,9 @@ def get_venue(elem):
     year = int(get_text(elem, 'year'))
     number = get_text(elem, 'number')
     if journal == 'IEEE Trans. Vis. Comput. Graph.':
-        if number == '1':
+        if year == 2021 and number == '2':
+            return 'Vis'
+        if year > 2016 and year != 2021 and number == '1':
             return 'Vis'
         else:
             return 'TVCG'
@@ -90,4 +101,26 @@ def get_doi(elem):
             return link.replace(doi_org, '', 1)
     return None
 
-parse_large_xml_with_dtd('./temp/dblp_filtered.xml', './temp/new_papers.csv')
+def is_front_matter(elem):
+    title = get_text(elem, 'title').lower()
+    if title in {'editorial.', 'guest editorial.', 'front matter.', 'editorials.', 'guest editorials.'}:
+        return True
+    pages = get_text(elem, 'pages')
+    if pages is None:
+        return False
+    # 628:1-628:14 is valid
+    # 1-13 is valid
+    # 1 is invalid
+    # i-xiii is invalid
+
+    pages = re.split(r'[:\-]', pages) # split on ':' or '-'
+    # if (len(pages) > 2):
+    #   print(pages)
+    if len(pages) <= 1:
+        return True # Real papers will never be one page.
+
+    # If they aren't all numbers, then it's something like 'xvii-xxiv'
+    are_nums = [x.isdigit() for x in pages]
+    return not all(are_nums)
+
+parse_large_xml_with_dtd('./temp/dblp_filtered.xml', './temp/potential_new_papers.csv')
