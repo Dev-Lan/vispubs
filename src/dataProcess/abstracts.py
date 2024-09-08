@@ -12,23 +12,23 @@ def strip_xml_tags(text):
 	return re.sub(clean, '', text)
 
 def get_abstract_from_doi_crossref(doi):
-    base_url = "https://api.crossref.org/works/"
-    url = f"{base_url}{doi}"
+	base_url = "https://api.crossref.org/works/"
+	url = f"{base_url}{doi}"
 
-    # # sleep for 0.2 seconds to avoid rate limiting
-    # time.sleep(0.2)
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
-        result = response.json()
-        abstract = result['message']['abstract']
-        abstract = strip_xml_tags(abstract)
-        # the string "Abstract" is sometimes prepended to the abstract
-        abstract = abstract.removeprefix('Abstract')
-        return abstract
-    except Exception as e:
-        print(f"Error fetching abstract for DOI {doi}: {e}")
-        return None
+	# # sleep for 0.2 seconds to avoid rate limiting
+	# time.sleep(0.2)
+	try:
+		response = requests.get(url)
+		response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
+		result = response.json()
+		abstract = result['message']['abstract']
+		abstract = strip_xml_tags(abstract)
+		# the string "Abstract" is sometimes prepended to the abstract
+		abstract = abstract.removeprefix('Abstract')
+		return abstract
+	except Exception as e:
+		print(f"Error fetching abstract for DOI {doi}: {e}")
+		return None
 
 
 def get_abstract_from_doi_semantic(doi):
@@ -62,26 +62,28 @@ def get_abstract_from_doi(doi):
 # 4 Abstract
 # 5 AuthorNames-Deduped
 # 6 Award
-
-abstracts_found = 0
-abstracts_missing = 0
-with open(INPUT_FILENAME, "r") as source:
-	reader = csv.reader(source)
-	with open(OUTPUT_FILENAME, "w") as result:
-		writer = csv.writer(result)
-		for r in reader:
-			print(r[1], r[3])
-			if r[4] != '':
-				abstract = r[4]
-			else:
-				abstract = get_abstract_from_doi(r[3])
-				if abstract is None:
-					print('\tskipped')
-					abstracts_missing += 1
-					abstract = ''
+def main(input_filename, output_filename):
+	abstracts_found = 0
+	abstracts_missing = 0
+	with open(INPUT_FILENAME, "r") as source:
+		reader = csv.reader(source)
+		with open(OUTPUT_FILENAME, "w") as result:
+			writer = csv.writer(result)
+			for r in reader:
+				print(r[1], r[3])
+				if r[4] != '':
+					abstract = r[4]
 				else:
-					print('\tfound')
-					abstracts_found += 1
-			writer.writerow((r[0], r[1], r[2], r[3], abstract, r[5], r[6]))
-print(abstracts_found, ' of ' , abstracts_missing + abstracts_found)
+					abstract = get_abstract_from_doi(r[3])
+					if abstract is None:
+						print('\tskipped')
+						abstracts_missing += 1
+						abstract = ''
+					else:
+						print('\tfound')
+						abstracts_found += 1
+				writer.writerow((r[0], r[1], r[2], r[3], abstract, r[5], r[6]))
+	print(abstracts_found, ' of ' , abstracts_missing + abstracts_found)
 
+if __name__ == "__main__":
+	main(INPUT_FILENAME, OUTPUT_FILENAME)
