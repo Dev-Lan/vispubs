@@ -116,8 +116,8 @@ def is_front_matter(elem):
     pages = re.split(r'[:\-]', pages) # split on ':' or '-'
     # if (len(pages) > 2):
     #   print(pages)
-    if len(pages) <= 1:
-        return True # Real papers will never be one page.
+    # if len(pages) <= 1:
+    #     return True # Real papers will never be one page.
 
     # If they aren't all numbers, then it's something like 'xvii-xxiv'
     are_nums = [x.isdigit() for x in pages]
