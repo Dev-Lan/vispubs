@@ -1,10 +1,10 @@
 import requests
-import csv 
+import csv
 import re
 import time
 
-INPUT_FILENAME = './chi.csv'
-OUTPUT_FILENAME = './chi-abstracted.csv'
+INPUT_FILENAME = './intermediate/chi.csv'
+OUTPUT_FILENAME = './intermediate/chi-abstracted.csv'
 
 def strip_xml_tags(text):
 	'''Remove XML tags from a string'''
@@ -29,7 +29,7 @@ def get_abstract_from_doi_crossref(doi):
     except Exception as e:
         print(f"Error fetching abstract for DOI {doi}: {e}")
         return None
-	
+
 
 def get_abstract_from_doi_semantic(doi):
 	base_url = "https://api.semanticscholar.org/v1/paper/"
@@ -54,7 +54,7 @@ def get_abstract_from_doi(doi):
 	if abstract is None:
 		abstract = get_abstract_from_doi_crossref(doi)
 	return abstract
-    
+
 # 0 Conference
 # 1 Year
 # 2 Title
@@ -65,11 +65,11 @@ def get_abstract_from_doi(doi):
 
 abstracts_found = 0
 abstracts_missing = 0
-with open(INPUT_FILENAME, "r") as source: 
+with open(INPUT_FILENAME, "r") as source:
 	reader = csv.reader(source)
 	with open(OUTPUT_FILENAME, "w") as result:
-		writer = csv.writer(result) 
-		for r in reader: 
+		writer = csv.writer(result)
+		for r in reader:
 			print(r[1], r[3])
 			if r[4] != '':
 				abstract = r[4]
