@@ -22,7 +22,7 @@ based on the `doi` attribute.
 
 INPUT_PAPER_LIST_FILENAME = '../../public/data/papers.csv'
 ROOT_FOLDER = '../../public/data/paperLinks/'
-NOT_FOUND_LIST_FILENAME = './openSourceNotFoundList.CSV'
+NOT_FOUND_LIST_FILENAME = './intermediate/openSourceNotFoundList.CSV'
 CHECK_OSF = False
 
 def search_preprint_versions():
@@ -177,7 +177,7 @@ def preprint_already_added(doi):
             if 'Paper Preprint' in line:
                 return True
         return False
-    
+
 def preprint_already_searched_and_not_found(doi):
     with open(NOT_FOUND_LIST_FILENAME, 'r') as not_found_file:
         lines = not_found_file.readlines()
@@ -197,5 +197,7 @@ def add_link_to_file(link, doi):
         file.seek(0)
         file.writelines(lines)
 
-search_preprint_versions()
+
+if __name__ == '__main__':
+  search_preprint_versions()
 
