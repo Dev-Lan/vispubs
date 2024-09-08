@@ -3,8 +3,8 @@ import csv
 import re
 import time
 
-INPUT_FILENAME = './intermediate/chi.csv'
-OUTPUT_FILENAME = './intermediate/chi-abstracted.csv'
+INPUT_FILENAME = './temp/new_papers.csv'
+OUTPUT_FILENAME = './temp/new_papers_abstract.csv'
 
 def strip_xml_tags(text):
 	'''Remove XML tags from a string'''
@@ -15,8 +15,6 @@ def get_abstract_from_doi_crossref(doi):
 	base_url = "https://api.crossref.org/works/"
 	url = f"{base_url}{doi}"
 
-	# # sleep for 0.2 seconds to avoid rate limiting
-	# time.sleep(0.2)
 	try:
 		response = requests.get(url)
 		response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
@@ -35,8 +33,6 @@ def get_abstract_from_doi_semantic(doi):
 	base_url = "https://api.semanticscholar.org/v1/paper/"
 	url = f"{base_url}{doi}"
 
-	# # sleep for 0.2 seconds to avoid rate limiting
-	# time.sleep(0.2)
 	try:
 		response = requests.get(url)
 		response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
@@ -48,11 +44,18 @@ def get_abstract_from_doi_semantic(doi):
 		print(f"Error fetching abstract for DOI {doi}: {e}")
 		return None
 
+def replace_special_chars(text):
+  '''Replace special characters in a string'''
+  return text.replace('‐','-').replace('‘',"'").replace('’', "'").replace('“', '"').replace('”', '"').replace('…', '...')
 
 def get_abstract_from_doi(doi):
+	# sleep for 0.4 seconds to avoid rate limiting
+	time.sleep(0.4)
 	abstract = get_abstract_from_doi_semantic(doi)
 	if abstract is None:
 		abstract = get_abstract_from_doi_crossref(doi)
+	if abstract is not None:
+		abstract = replace_special_chars(abstract)
 	return abstract
 
 # 0 Conference
