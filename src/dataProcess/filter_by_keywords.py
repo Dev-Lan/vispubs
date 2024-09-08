@@ -3,28 +3,22 @@ import pandas as pd
 
 
 '''
-This filters the list of papers in a csv file by keywords. Only papers that 
+This filters the list of papers in a csv file by keywords. Only papers that
     include at least one of the include_keywords and
     none of the exclude_keywords are included in the output csv file.
 '''
 
 # Example usage
-input_file = './chi-abstracted.csv'
-output_file = './chi-filtered.csv'
+input_file = './intermediate/chi.csv'
+output_file = './intermediate/chi-filtered.csv'
+
+
+
+def filter_to_vis_papers(input_file, output_file):
+   filter_by_keywords(input_file, output_file, include_keywords, exclude_keywords)
+
 include_keywords = {'visualization','visualisation','visualizing', 'visualising', 'visual analytics','visual analysis','visual analyses','visual data', 'physical data', 'data physical'}
 exclude_keywords = {'(abstract only)'}
-
-
-# def filter_by_keywords(input_file, output_file, include_keywords, exclude_keywords):
-#     with open(input_file, 'r') as file:
-#         reader = csv.DictReader(file)
-#         papers = [paper for paper in reader if any(keyword in paper['Abstract'] for keyword in include_keywords) and not any(keyword in paper['Abstract'] for keyword in exclude_keywords)]
-
-#     with open(output_file, 'w', newline='') as file:
-#         writer = csv.DictWriter(file, fieldnames=reader.fieldnames)
-#         writer.writeheader()
-#         writer.writerows(papers)
-
 
 def filter_by_keywords(input_file, output_file, include_keywords, exclude_keywords):
     df = pd.read_csv(input_file, quotechar='"', skipinitialspace=True)
@@ -45,4 +39,5 @@ def filter_by_keywords(input_file, output_file, include_keywords, exclude_keywor
     filtered_df.to_csv(output_file, index=False)
 
 
-filter_by_keywords(input_file, output_file, include_keywords, exclude_keywords)
+if __name__ == '__main__':
+  filter_to_vis_papers(input_file, output_file)
