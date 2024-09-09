@@ -37,7 +37,7 @@ def filter_to_new(input_file, output_file):
   # remove Resources columns
   # filtered_df = filtered_df.drop(columns=['Resources'])
   # # remove columns with year 2024
-  filtered_df = filtered_df[filtered_df['Year'] != 2024]
+  # filtered_df = filtered_df[filtered_df['Year'] != 2024]
   # (end debugging)
 
   # Save the filtered dataframe to the output file
