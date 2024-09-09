@@ -52,8 +52,8 @@ def replace_special_chars(text):
   return text.replace('‐','-').replace('‘',"'").replace('’', "'").replace('“', '"').replace('”', '"').replace('…', '...')
 
 def get_abstract_from_doi(doi):
-	# sleep for 0.4 seconds to avoid rate limiting
-	time.sleep(0.4)
+	# sleep for 2 seconds to avoid rate limiting
+	time.sleep(2)
 	abstract = get_abstract_from_doi_semantic(doi)
 	if abstract is None:
 		abstract = get_abstract_from_doi_crossref(doi)
