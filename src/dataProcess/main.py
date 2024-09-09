@@ -21,65 +21,66 @@ def process_new_data_from_dblp():
   filtered_xml = './temp/dblp_filtered.xml'
   step = 1
   print_banner(f"🦉 {step}. parse_large_xml_with_dtd")
-  step += 1
   parse_large_xml_with_dtd(input_xml, input_dtd, filtered_xml)
 
   # Convert filtered dblp xml into CSV format and filter more precisely by conference
-  potential_new_papers = './temp/potential_new_papers.csv'
+  step += 1
   print_banner(f"🦉 {step}. dblp_to_csv")
+  potential_new_papers = './temp/potential_new_papers.csv'
   dblp_to_csv(filtered_xml, potential_new_papers)
 
   # Filter the potential new papers to only include the truly new ones
-  new_papers = './temp/new_papers.csv'
+  step += 1
   print_banner(f"🦉 {step}. filter_to_new")
+  new_papers = './temp/new_papers.csv'
   filter_to_new(potential_new_papers, new_papers)
 
   # Add awards information to the new papers
+  step += 1
+  print_banner(f"🦉 {step}. add_awards")
   award_filename = './input/awards.csv'
   new_papers_award = './temp/new_papers_award.csv'
-  print_banner(f"🦉 {step}. add_awards")
-  step += 1
   add_awards(award_filename, new_papers, new_papers_award)
 
   # Add abstracts to the new papers
-  new_papers_award_abstract = './temp/new_papers_award_abstract.csv'
-  print_banner(f"🦉 {step}. add_abstracts")
   step += 1
+  print_banner(f"🦉 {step}. add_abstracts")
+  new_papers_award_abstract = './temp/new_papers_award_abstract.csv'
   add_abstracts(new_papers_award, new_papers_award_abstract)
 
   # Update the intermediate files with the new papers
-  print_banner(f"🦉 {step}. update_intermediate")
   step += 1
+  print_banner(f"🦉 {step}. update_intermediate")
   update_intermediate(new_papers_award_abstract)
 
   # Filter the intermediate files to only include visualization papers
-  print_banner(f"🦉 {step}. filter_to_vis_papers")
   step += 1
+  print_banner(f"🦉 {step}. filter_to_vis_papers")
   filter_to_vis_papers('./intermediate/chi.csv', './intermediate/chi-filtered.csv')
 
   # Combine all the filtered files into a single file
-  print_banner(f"🦉 {step}. combine")
   step += 1
+  print_banner(f"🦉 {step}. combine")
   combine()
 
   # Create stub files for any new paper resource pages
-  print_banner(f"🦉 {step}. create_stub_files")
   step += 1
+  print_banner(f"🦉 {step}. create_stub_files")
   create_stub_files()
 
   # Search for preprint versions of the papers
-  print_banner(f"🦉 {step}. search_preprint_versions")
   step += 1
+  print_banner(f"🦉 {step}. search_preprint_versions")
   search_preprint_versions()
 
   # Update the link flags column in the paper list
-  print_banner(f"🦉 {step}. update_paper_link_flags")
   step += 1
+  print_banner(f"🦉 {step}. update_paper_link_flags")
   update_paper_link_flags()
 
   # Update the changelog file
-  print_banner(f"🦉 {step}. update_changelog")
   step += 1
+  print_banner(f"🦉 {step}. update_changelog")
   update_changelog(new_papers_award_abstract)
   return
 
