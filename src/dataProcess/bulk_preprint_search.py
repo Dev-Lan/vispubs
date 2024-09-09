@@ -1,3 +1,4 @@
+import logging
 import csv
 from pyparsing import C
 import os
@@ -26,6 +27,7 @@ NOT_FOUND_LIST_FILENAME = './intermediate/openSourceNotFoundList.csv'
 CHECK_OSF = False
 
 def search_preprint_versions():
+    logger = logging.getLogger('search_preprint_versions')
     if CHECK_OSF:
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
@@ -45,27 +47,29 @@ def search_preprint_versions():
             year = row[1]
             title = row[2]
             doi = row[3]
-            print(str(index) + ": " + conf + "-" + year + ", " + title[:45] + '...')
-
+            print_message = str(index) + ": " + conf + "-" + year + ", " + title[:45] + '...'
             index += 1
             already_added = preprint_already_added(doi)
             if already_added:
-                print('\t✅ Skipping, already added')
+                logger.debug(print_message)
+                logger.debug('\t✅ Skipping, already added')
                 found_links += 1
                 continue
 
             if preprint_already_searched_and_not_found(doi):
-                print('\t🤷 Skipping, searched in past and not found')
+                logger.debug(print_message)
+                logger.debug('\t🤷 Skipping, searched in past and not found')
                 continue
 
+            logger.info(print_message)
             link = search_arxiv_api(title)
             if link is not None:
-                print("\t🍺 Found arXiv")
+                logger.info("\t🍺 Found arXiv")
                 found_arxiv += 1
             elif CHECK_OSF:
                 link = search_osf_api(browser, title)
                 if link is not None:
-                    print("\t🍺 Found OSF")
+                    logger.info("\t🍺 Found OSF")
                     found_osf += 1
 
             if link is not None:
@@ -73,7 +77,7 @@ def search_preprint_versions():
                 found_links += 1
                 added_links += 1
             else:
-                print("\t❌ Not found")
+                logger.info("\t❌ Not found")
                 # add doi and title to end of OPEN_SOURCE_NOT_FOUND_LIST_FILENAME
                 with open(NOT_FOUND_LIST_FILENAME, 'a') as not_found_file:
                     not_found_file.write(doi + ',' + title + '\n')
@@ -81,9 +85,9 @@ def search_preprint_versions():
             wait_and_print(5)
     if CHECK_OSF:
         browser.quit()
-    print('Finished searching for preprint versions.')
-    print('Added', added_links, ', found', found_links, ', of', index, 'total papers.')
-    print('Found', found_osf, 'on OSF and', found_arxiv, 'on arXiv.')
+    logger.info('Finished searching for preprint versions.')
+    logger.info(f"Added {added_links}, found {found_links}, of {index} total papers.")
+    logger.info(f"Found {found_osf} on OSF and {found_arxiv} on arXiv.")
 
 def wait_and_print(seconds):
     for i in range(seconds, 0, -1):
@@ -97,6 +101,7 @@ def wait_and_print(seconds):
     return
 
 def search_osf_api(browser, title):
+    logger = logging.getLogger('search_preprint_versions')
     try:
         # Navigate to the OSF preprints search page
         browser.get('https://osf.io/search?resourceType=Preprint')
@@ -118,17 +123,13 @@ def search_osf_api(browser, title):
         # Extract the titles and links of the search results
         results = browser.find_elements(By.TAG_NAME, 'a')
         for result in results:
-            # print(result)
-            # print(result.get_attribute('innerHTML'))
-            # print(result.get_attribute('href'))
-            # print('='*20)
             if close_enough(result.text, title):
                 return result.get_attribute('href')
         return None
     except Exception as error:
         # print the error
-        print('🐛🐞 osf error 🐞🐛')
-        print(error)
+        logger.error('🐛🐞 osf error 🐞🐛')
+        logger.error(error)
         return None
 
 def close_enough(s1, s2):
@@ -136,6 +137,7 @@ def close_enough(s1, s2):
     return d <= 3
 
 def search_arxiv_api(title):
+    logger = logging.getLogger('search_preprint_versions')
     try:
         # URL encode the title
         title_query = title.replace(':', '\:') # arxiv api doesn't like colons
@@ -159,8 +161,8 @@ def search_arxiv_api(title):
         return None
     except Exception as error:
         # print the error
-        print('🐛🐞 arxiv error 🐞🐛')
-        print(error)
+        logger.error('🐛🐞 arxiv error 🐞🐛')
+        logger.error(error)
         return None
 
 

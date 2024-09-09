@@ -1,3 +1,4 @@
+import logging
 from filter_dblp_xml import parse_large_xml_with_dtd
 from parse_dblp_xml import dblp_to_csv
 from filter_to_new import filter_to_new
@@ -11,6 +12,8 @@ from bulk_preprint_search import search_preprint_versions
 from update_paper_link_flags import update_paper_link_flags
 from update_changelog import update_changelog
 
+
+
 def process_new_data_from_dblp():
   # Coarsly filter 4GB dblp xml file to only include potentially relevant files
   input_xml = './input/dblp.xml'
@@ -19,7 +22,7 @@ def process_new_data_from_dblp():
   step = 1
   print_banner(f"🦉 {step}. parse_large_xml_with_dtd")
   step += 1
-  # parse_large_xml_with_dtd(input_xml, input_dtd, filtered_xml)
+  parse_large_xml_with_dtd(input_xml, input_dtd, filtered_xml)
 
   # Convert filtered dblp xml into CSV format and filter more precisely by conference
   potential_new_papers = './temp/potential_new_papers.csv'
@@ -80,16 +83,27 @@ def process_new_data_from_dblp():
   update_changelog(new_papers_award_abstract)
   return
 
-
 def print_banner(message):
-  print()
-  print()
-  print(f"{'='*80}")
-  print(message)
-  print(f"{'='*80}")
-  print()
+  logger = logging.getLogger('main')
+  logger.info('')
+  logger.info(f"{'='*80}")
+  logger.info(message)
+  logger.info(f"{'='*80}")
+
+def configure_logging():
+  logging.basicConfig(level=logging.DEBUG,
+                      format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                      datefmt='%m-%d %H:%M',
+                      filename='./temp/data_ingestion.log',
+                      filemode='w')
+  console = logging.StreamHandler()
+  console.setLevel(logging.INFO)
+  formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+  console.setFormatter(formatter)
+  logging.getLogger().addHandler(console)
 
 if __name__ == '__main__':
+  configure_logging()
   process_new_data_from_dblp()
 
 # UPDATE WORKFLOWS

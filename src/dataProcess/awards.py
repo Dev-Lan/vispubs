@@ -1,3 +1,4 @@
+import logging
 import pandas as pd
 
 '''
@@ -15,6 +16,7 @@ OUTPUT_FILENAME = './temp/new_papers_award.csv'
 
 
 def add_awards(award_filename, paper_filename, output_filename):
+  logger = logging.getLogger('add_awards')
   # Read the award file and paper file into pandas DataFrames
   award_df = pd.read_csv(award_filename)
   paper_df = pd.read_csv(paper_filename)
@@ -23,8 +25,8 @@ def add_awards(award_filename, paper_filename, output_filename):
   # Find all the rows that exist in award_df, but not in paper_df
   missing_rows = award_df[~award_df.set_index(['Title']).index.isin(paper_df.set_index(['Title']).index)]
   if not missing_rows.empty:
-    print("ERROR: Rows in the award file not found in the paper file.")
-    print(missing_rows)
+    logger.error("ERROR: Rows in the award file not found in the paper file.")
+    logger.error(missing_rows)
 
   # Merge the award DataFrame with the paper DataFrame based and Title
   merged_df = pd.merge(paper_df, award_df, on=['Title'], how='left')

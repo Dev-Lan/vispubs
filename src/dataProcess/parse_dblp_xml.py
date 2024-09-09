@@ -2,9 +2,10 @@ from os import close
 from lxml import etree
 import pandas as pd
 import re
+import logging
 
 def dblp_to_csv(xml_file, output_filename):
-
+    logger = logging.getLogger('dblp_to_csv')
     columns = ['Conference', 'Year', 'Title', 'DOI', 'Abstract', 'AuthorNames-Deduped', 'Award', 'Resources']
     df = pd.DataFrame(columns=columns)
 
@@ -28,7 +29,8 @@ def dblp_to_csv(xml_file, output_filename):
 
         title = get_text(elem, 'title')
         if title == '':
-            # print('No title found:', elem) # TODO: check these elements
+            logger.error('missing title')
+            logger.debug(etree.tostring(elem, pretty_print=True).decode('utf-8'))
             continue
         if title[-1] == '.':
             title = title[:-1]
@@ -55,16 +57,15 @@ def dblp_to_csv(xml_file, output_filename):
             'Resources': ''
         }], columns=columns)
         df = pd.concat([df, new_df], ignore_index=True)
-
     df.to_csv(output_filename, index=False)
     return
 
 def get_text(elem, tag_name):
-    sub_elem = elem.find(tag_name)
-    if sub_elem is None:
-        return None
-    text = sub_elem.text if sub_elem.text is not None else ''
-    return text.strip()
+  sub_elem = elem.find(tag_name)
+  if sub_elem is None:
+    return None
+  text = etree.tostring(sub_elem, method='text', encoding='unicode')
+  return text.strip()
 
 def get_text_list(elem, tag_name):
     sub_elems = elem.findall(tag_name)

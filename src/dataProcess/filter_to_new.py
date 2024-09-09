@@ -1,4 +1,5 @@
 import pandas as pd
+import logging
 
 '''
 Given the input file in ./temp/potential_new_papers.csv and the
@@ -8,6 +9,7 @@ include papers that are not in the existing file. Save the output to ./temp/new_
 
 
 def filter_to_new(input_file, output_file):
+  logger = logging.getLogger('filter_to_new')
   # associated events (e.g. vizsec) that receive BP, and publish in TVCG in jan.
   df_assoc = pd.read_csv('./intermediate/associated_tvcg.csv')
 

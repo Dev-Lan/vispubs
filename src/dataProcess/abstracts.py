@@ -1,3 +1,4 @@
+import logging
 import requests
 import csv
 import re
@@ -12,6 +13,7 @@ def strip_xml_tags(text):
 	return re.sub(clean, '', text)
 
 def get_abstract_from_doi_crossref(doi):
+	logger = logging.getLogger('abstracts')
 	base_url = "https://api.crossref.org/works/"
 	url = f"{base_url}{doi}"
 
@@ -25,11 +27,12 @@ def get_abstract_from_doi_crossref(doi):
 		abstract = abstract.removeprefix('Abstract')
 		return abstract
 	except Exception as e:
-		print(f"Error fetching abstract for DOI {doi}: {e}")
+		logger.error(f"Error fetching abstract for DOI {doi}: {e}")
 		return None
 
 
 def get_abstract_from_doi_semantic(doi):
+	logger = logging.getLogger('abstracts')
 	base_url = "https://api.semanticscholar.org/v1/paper/"
 	url = f"{base_url}{doi}"
 
@@ -41,7 +44,7 @@ def get_abstract_from_doi_semantic(doi):
 		abstract = strip_xml_tags(abstract)
 		return abstract
 	except Exception as e:
-		print(f"Error fetching abstract for DOI {doi}: {e}")
+		logger.error(f"Error fetching abstract for DOI {doi}: {e}")
 		return None
 
 def replace_special_chars(text):
@@ -66,6 +69,7 @@ def get_abstract_from_doi(doi):
 # 5 AuthorNames-Deduped
 # 6 Award
 def add_abstracts(input_filename, output_filename):
+	logger = logging.getLogger('abstracts')
 	abstracts_found = 0
 	abstracts_missing = 0
 	with open(input_filename, "r") as source:
@@ -73,20 +77,21 @@ def add_abstracts(input_filename, output_filename):
 		with open(output_filename, "w") as result:
 			writer = csv.writer(result)
 			for r in reader:
-				print(r[1], r[3])
+				logger.debug(f"{r[1]}, {r[3]}")
 				if r[4] != '':
 					abstract = r[4]
 				else:
 					abstract = get_abstract_from_doi(r[3])
 					if abstract is None:
-						print('\tskipped')
+						logger.debug('\tskipped')
 						abstracts_missing += 1
 						abstract = ''
 					else:
-						print('\tfound')
+						logger.info(f"{r[1]}, {r[3]}")
+						logger.info('\tfound')
 						abstracts_found += 1
 				writer.writerow((r[0], r[1], r[2], r[3], abstract, r[5], r[6]))
-	print(abstracts_found, ' of ' , abstracts_missing + abstracts_found)
+	logger.info(f"{abstracts_found}, of , {abstracts_missing + abstracts_found}")
 
 if __name__ == "__main__":
 	add_abstracts(INPUT_FILENAME, OUTPUT_FILENAME)

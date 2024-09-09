@@ -1,9 +1,12 @@
 # thanks chatgpt for writing 95% of this.
 
 import pandas as pd
+import logging
+
 # Conference,Year,Title,DOI,Abstract,AuthorNames-Deduped,Award
 
 def combine():
+  logger = logging.getLogger('combine')
   # Load the CSV files into pandas DataFrames
   folder = './intermediate/'
   df1 = pd.read_csv(folder + 'VIS.csv')

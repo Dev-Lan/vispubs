@@ -1,3 +1,4 @@
+import logging
 from calendar import c
 import csv
 import os
@@ -18,6 +19,7 @@ ROOT_FOLDER = '../../public/data/paperLinks/'
 BASE_CONTENTS = 'name,url,icon'
 
 def create_stub_files():
+    logger = logging.getLogger('create_stub_files')
     with open(PAPER_LIST_FILENAME, 'r') as file:
         reader = csv.reader(file)
         next(reader)  # Skip header row
@@ -39,8 +41,7 @@ def create_stub_files():
                     created_count += 1
             else:
                 skipped_count += 1
-    print(f'Created {created_count} files and skipped {skipped_count} files.')
-
+    logger.info(f'Created {created_count} files and skipped {skipped_count} files.')
 
 if __name__ == '__main__':
     create_stub_files()

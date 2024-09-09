@@ -1,5 +1,6 @@
 import csv
 import pandas as pd
+import logging
 
 
 '''
@@ -21,12 +22,13 @@ include_keywords = {'visualization','visualisation','visualizing', 'visualising'
 exclude_keywords = {'(abstract only)'}
 
 def filter_by_keywords(input_file, output_file, include_keywords, exclude_keywords):
+    logger = logging.getLogger('filter_to_vis_papers')
     df = pd.read_csv(input_file, quotechar='"', skipinitialspace=True)
 
     # Fill NaN values with empty strings
     df.fillna('', inplace=True)
-    print(df)
-    print(df.head())
+    # print(df)
+    # print(df.head())
 
 
     filtered_df = df[df['Title'].str.contains('|'.join(include_keywords), case=False) |

@@ -1,5 +1,6 @@
 from os import close
 from lxml import etree
+import logging
 
 '''
 Used to filter large dblp xml file to only include relevant files.
@@ -10,6 +11,7 @@ INPUT_DTD = './input/dblp-2023-06-28.dtd'
 OUTPUT_XML = './temp/dblp_filtered.xml'
 
 def parse_large_xml_with_dtd(xml_file, dtd_file, output_filename):
+    logger = logging.getLogger('parse_large_xml_with_dtd')
     # Load the DTD
     with open(dtd_file, 'rb') as f:
         dtd = etree.DTD(f)
@@ -41,7 +43,7 @@ def parse_large_xml_with_dtd(xml_file, dtd_file, output_filename):
 
         count += 1
         if count % 100_000 == 0:
-            print(count / 1_000_000, 'M')
+            logger.info(f"{count / 1_000_000} M")
 
         journal = elem.find('journal')
         venue = elem.find('booktitle')
@@ -63,6 +65,7 @@ def parse_large_xml_with_dtd(xml_file, dtd_file, output_filename):
     output_file.close()
 
 def test_entity_resolution(xml_file, dtd_file):
+    logger = logging.getLogger('parse_large_xml_with_dtd')
     # Load the DTD
     with open(dtd_file, 'rb') as f:
         dtd = etree.DTD(f)
@@ -71,9 +74,10 @@ def test_entity_resolution(xml_file, dtd_file):
     parser = etree.XMLParser(dtd_validation=True, load_dtd=True)
     try:
         tree = etree.parse(xml_file, parser)
-        print("Entity resolution works correctly.")
+        logger.debug("Entity resolution works correctly.")
     except etree.XMLSyntaxError as e:
-        print("Error in entity resolution:", e)
+        logger.error("Error in entity resolution:")
+        logger.error(e)
 
 if __name__ == '__main__':
   parse_large_xml_with_dtd(INPUT_XML, INPUT_DTD, OUTPUT_XML)
