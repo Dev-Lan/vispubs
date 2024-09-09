@@ -22,7 +22,7 @@ based on the `doi` attribute.
 
 INPUT_PAPER_LIST_FILENAME = '../../public/data/papers.csv'
 ROOT_FOLDER = '../../public/data/paperLinks/'
-NOT_FOUND_LIST_FILENAME = './intermediate/openSourceNotFoundList.CSV'
+NOT_FOUND_LIST_FILENAME = './intermediate/openSourceNotFoundList.csv'
 CHECK_OSF = False
 
 def search_preprint_versions():

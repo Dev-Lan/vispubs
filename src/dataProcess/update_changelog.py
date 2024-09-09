@@ -15,9 +15,9 @@ The dataframe in that file is grouped by "Conference" and counted.
 
 filtered_conferences = {'CHI'}
 
-def main():
+def update_changelog(new_papers_filename):
   # Read the new_papers_abstract.csv file
-  df = pd.read_csv('./temp/new_papers_abstract.csv')
+  df = pd.read_csv(new_papers_filename)
 
   # Group the dataframe by "Conference" and count the number of entries
   grouped_df = df.groupby('Conference').size().reset_index(name='Count')
@@ -55,4 +55,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    update_changelog('./temp/new_papers_award_abstract.csv')

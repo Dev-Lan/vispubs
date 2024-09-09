@@ -5,6 +5,10 @@ from lxml import etree
 Used to filter large dblp xml file to only include relevant files.
 '''
 
+INPUT_XML = './input/dblp.xml'
+INPUT_DTD = './input/dblp-2023-06-28.dtd'
+OUTPUT_XML = './temp/dblp_filtered.xml'
+
 def parse_large_xml_with_dtd(xml_file, dtd_file, output_filename):
     # Load the DTD
     with open(dtd_file, 'rb') as f:
@@ -71,5 +75,5 @@ def test_entity_resolution(xml_file, dtd_file):
     except etree.XMLSyntaxError as e:
         print("Error in entity resolution:", e)
 
-parse_large_xml_with_dtd('./input/dblp.xml', './input/dblp-2023-06-28.dtd', './temp/dblp_filtered.xml')
-# test_entity_resolution('./input/dblp.xml', './input/dblp-2023-06-28.dtd')
+if __name__ == '__main__':
+  parse_large_xml_with_dtd(INPUT_XML, INPUT_DTD, OUTPUT_XML)

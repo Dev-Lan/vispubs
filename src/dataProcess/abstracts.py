@@ -65,12 +65,12 @@ def get_abstract_from_doi(doi):
 # 4 Abstract
 # 5 AuthorNames-Deduped
 # 6 Award
-def main(input_filename, output_filename):
+def add_abstracts(input_filename, output_filename):
 	abstracts_found = 0
 	abstracts_missing = 0
-	with open(INPUT_FILENAME, "r") as source:
+	with open(input_filename, "r") as source:
 		reader = csv.reader(source)
-		with open(OUTPUT_FILENAME, "w") as result:
+		with open(output_filename, "w") as result:
 			writer = csv.writer(result)
 			for r in reader:
 				print(r[1], r[3])
@@ -89,4 +89,4 @@ def main(input_filename, output_filename):
 	print(abstracts_found, ' of ' , abstracts_missing + abstracts_found)
 
 if __name__ == "__main__":
-	main(INPUT_FILENAME, OUTPUT_FILENAME)
+	add_abstracts(INPUT_FILENAME, OUTPUT_FILENAME)

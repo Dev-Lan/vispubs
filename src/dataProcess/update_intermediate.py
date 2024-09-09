@@ -10,7 +10,7 @@ The file it should be stored to is determined by the Conference column
 INPUT_FILENAME = './temp/new_papers_abstract.csv'
 
 
-def main(input_filename):
+def update_intermediate(input_filename):
   # Read the new papers CSV file
   new_papers = pd.read_csv(input_filename)
 
@@ -36,4 +36,4 @@ def main(input_filename):
   chi_new.to_csv(folder + 'chi.csv', index=False)
 
 if __name__ == "__main__":
-  main(INPUT_FILENAME)
+  update_intermediate(INPUT_FILENAME)

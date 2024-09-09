@@ -26,13 +26,13 @@ def create_stub_files():
         for row in reader:
             doi = row[3]
             doi_folder, doi_file = row[3].rsplit('/', 1)
-            
+
             folder_path = os.path.join(ROOT_FOLDER, doi_folder)
             file_path = os.path.join(folder_path, doi_file)
-            
+
             if not os.path.exists(folder_path):
                 os.makedirs(folder_path)
-            
+
             if not os.path.exists(file_path):
                 with open(file_path, 'w') as stub_file:
                     stub_file.write(BASE_CONTENTS)
@@ -41,4 +41,6 @@ def create_stub_files():
                 skipped_count += 1
     print(f'Created {created_count} files and skipped {skipped_count} files.')
 
-create_stub_files()
+
+if __name__ == '__main__':
+    create_stub_files()

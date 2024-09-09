@@ -3,7 +3,7 @@
 import pandas as pd
 # Conference,Year,Title,DOI,Abstract,AuthorNames-Deduped,Award
 
-def main():
+def combine():
   # Load the CSV files into pandas DataFrames
   folder = './intermediate/'
   df1 = pd.read_csv(folder + 'VIS.csv')
@@ -29,4 +29,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    combine()

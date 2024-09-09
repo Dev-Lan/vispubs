@@ -7,11 +7,7 @@ include papers that are not in the existing file. Save the output to ./temp/new_
 '''
 
 
-def filter_to_new():
-  input_file = './temp/potential_new_papers.csv'
-  output_file = './temp/new_papers.csv'
-
-
+def filter_to_new(input_file, output_file):
   # associated events (e.g. vizsec) that receive BP, and publish in TVCG in jan.
   df_assoc = pd.read_csv('./intermediate/associated_tvcg.csv')
 
@@ -39,14 +35,13 @@ def filter_to_new():
   # remove Resources columns
   # filtered_df = filtered_df.drop(columns=['Resources'])
   # # remove columns with year 2024
-  # filtered_df = filtered_df[filtered_df['Year'] != 2024]
+  filtered_df = filtered_df[filtered_df['Year'] != 2024]
   # (end debugging)
 
   # Save the filtered dataframe to the output file
   filtered_df.to_csv(output_file, index=False)
 
-def main():
-  filter_to_new()
-
 if __name__ == "__main__":
-  main()
+  input_filename = './temp/potential_new_papers.csv'
+  output_filename = './temp/new_papers.csv'
+  filter_to_new(input_filename, output_filename)

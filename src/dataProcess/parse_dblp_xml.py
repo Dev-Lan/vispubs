@@ -3,7 +3,7 @@ from lxml import etree
 import pandas as pd
 import re
 
-def parse_large_xml_with_dtd(xml_file, output_filename):
+def dblp_to_csv(xml_file, output_filename):
 
     columns = ['Conference', 'Year', 'Title', 'DOI', 'Abstract', 'AuthorNames-Deduped', 'Award', 'Resources']
     df = pd.DataFrame(columns=columns)
@@ -123,4 +123,6 @@ def is_front_matter(elem):
     are_nums = [x.isdigit() for x in pages]
     return not all(are_nums)
 
-parse_large_xml_with_dtd('./temp/dblp_filtered.xml', './temp/potential_new_papers.csv')
+
+if __name__ == '__main__':
+  dblp_to_csv('./temp/dblp_filtered.xml', './temp/potential_new_papers.csv')
