@@ -1,3 +1,9 @@
+###### Sep 08, 2024
+
+- Add CHI 2024
+- Add EuroVis 2024
+- Add EuroVisSTAR 2023
+
 ###### Jun 24, 2024
 
 - add submitted author hompage link

@@ -4940,3 +4940,73 @@ doi,title
 10.1145/3313831.3376148,From Data to Insights: A Layered Storytelling Approach for Multimodal Learning Analytics
 10.1145/3290605.3300269,Towards Collaboration Translucence: Giving Meaning to Multimodal Group Data
 10.1145/3173574.3173956,ThermoKiosk: Investigating Roles for Digital Surveys of Thermal Experience in Workplace Comfort Management
+10.1111/cgf.15111,A Systematic Literature Review of User Evaluation in Immersive Analytics
+10.1111/cgf.15077,An Experimental Evaluation of Viewpoint-Based 3D Graph Drawing
+10.1111/cgf.15088,Antarstick: Extracting Snow Height From Time-Lapse Photography
+10.1111/cgf.15099,AutoVizuA11y: A Tool to Automate Screen Reader Accessibility in Charts
+10.1111/cgf.15085,CAN: Concept-Aligned Neurons for Visual Comparison of Deep Neural Network Models
+10.1111/cgf.15083,Depth for Multi-Modal Contour Ensembles
+10.1111/cgf.15076,DynTrix: A Hybrid Representation for Dynamic Graphs
+10.1111/cgf.15109,Exploring Classifiers with Differentiable Decision Boundary Maps
+10.1111/cgf.15079,Exploring the Design Space of BioFabric Visualization for Multivariate Network Analysis
+10.1111/cgf.15089,Generating Euler Diagrams Through Combinatorial Optimization
+10.1111/cgf.15110,HORA 3D: Personalized Flood Risk Visualization as an Interactive Web Service
+10.1111/cgf.15087,Improving Temporal Treemaps by Minimizing Crossings
+10.1111/cgf.15090,Interactive Optimization for Cartographic Aggregation of Building Features
+10.1111/cgf.15092,Persist: Persistent and Reusable Interactions in Computational Notebooks
+10.1111/cgf.15078,ProtEGOnist: Visual Analysis of Interactions in Small World Networks Using Ego-graphs
+10.1111/cgf.15103,psudo: Exploring Multi-Channel Biomedical Image Data with Spatially and Perceptually Optimized Pseudocoloring
+10.1111/cgf.15091,RouteVis: Quantitative Visual Analytics of Various Factors to Understand Route Choice Preferences
+10.1111/cgf.15102,Should I make it round? Suitability of circular and linear layouts for comparative tasks with matrix and connective data
+10.1111/cgf.15082,Sparse q-ball imaging towards efficient visual exploration of HARDI data
+10.1111/cgf.15113,State of the Art of Graph Visualization in non-Euclidean Spaces
+10.1111/cgf.15084,Topological Characterization and Uncertainty Visualization of Atmospheric Rivers
+10.1111/cgf.15096,Transmittance-based Extinction and Viewpoint Optimization
+10.1111/cgf.15094,Transparent Risks: The Impact of the Specificity and Visual Encoding of Uncertainty on Decision Making
+10.1145/3613904.3642484,"Ah! I see" - Facilitating Process Reflection in Gameplay through a Novel Spatio-Temporal Visualization System
+10.1145/3613904.3641970,"Customization is Key": Reconfigurable Textual Tokens for Accessible Data Visualizations
+10.1145/3613904.3642126,"Is Text-Based Music Search Enough to Satisfy Your Needs?" A New Way to Discover Music with Images
+10.1145/3613904.3642448,"Yeah, this graph doesn't show that": Analysis of Online Engagement with Misleading Data Visualizations
+10.1145/3613904.3642368,'We Do Not Have the Capacity to Monitor All Media': A Design Case Study on Cyber Situational Awareness in Computer Emergency Response Teams
+10.1145/3613904.3642262,(Re)activate, (Re)direct, (Re)arrange: Exploring the Design Space of Direct Interactions with Flavobacteria
+10.1145/3613904.3642276,A Human Information Processing Theory of the Interpretation of Visualizations: Demonstrating Its Utility
+10.1145/3613904.3641957,Better Little People Pictures: Generative Creation of Demographically Diverse Anthropographics
+10.1145/3613904.3642105,CharacterMeet: Supporting Creative Writers' Entire Story Character Construction Processes Through Conversation with LLM-Powered Chatbot Avatars
+10.1145/3613904.3642618,Co-designing Customizable Clinical Dashboards with Multidisciplinary Teams: Bridging the Gap in Chronic Disease Care
+10.1145/3613904.3642575,CollageVis: Rapid Previsualization Tool for Indie Filmmaking using Video Collages
+10.1145/3613904.3642643,Damage Optimization in Video Games: A Player-Driven Co-Creative Approach
+10.1145/3613904.3642000,Data Probes as Boundary Objects for Technology Policy Design: Demystifying Technology for Policymakers and Aligning Stakeholder Objectives in Rideshare Gig Work
+10.1145/3613904.3642112,Discovering Accessible Data Visualizations for People with ADHD
+10.1145/3613904.3642346,DoodleTunes: Interactive Visual Analysis of Music-Inspired Children Doodles with Automated Feature Annotation
+10.1145/3613904.3642879,Doorways Do Not Always Cause Forgetting: Studying the Effect of Locomotion Technique and Doorway Visualization in Virtual Reality
+10.1145/3613904.3642127,Effects of Point Size and Opacity Adjustments in Scatterplots
+10.1145/3613904.3642935,Exploring Visualizations for Precisely Guiding Bare Hand Gestures in Virtual Reality
+10.1145/3613904.3642282,Functional Design Requirements to Facilitate Menstrual Health Data Exploration
+10.1145/3613904.3642742,Go-Go Biome: Evaluation of a Casual Game for Gut Health Engagement and Reflection
+10.1145/3613904.3642188,How Do Low-Vision Individuals Experience Information Visualization?
+10.1145/3613904.3642808,Input Visualization: Collecting and Modifying Data with Visual Representations
+10.1145/3613904.3642799,KnitScape: Computational Design and Yarn-Level Simulation of Slip and Tuck Colorwork Knitting Patterns
+10.1145/3613904.3641929,Looking Together ≠ Seeing the Same Thing: Understanding Surgeons' Visual Needs During Intra-operative Coordination and Instruction
+10.1145/3613904.3642375,Milliways: Taming Multiverses through Principled Evaluation of Data Analysis Paths
+10.1145/3613904.3641995,Odds and Insights: Decision Quality in Exploratory Data Analysis Under Uncertainty
+10.1145/3613904.3642925,On the Benefits of Image-Schematic Metaphors when Designing Mixed Reality Systems
+10.1145/3613904.3642815,PriviAware: Exploring Data Visualization and Dynamic Privacy Control Support for Data Collection in Mobile Sensing Research
+10.1145/3613904.3642527,ProInterAR: A Visual Programming Platform for Creating Immersive AR Interactions
+10.1145/3613904.3642957,Promoting Eco-Friendly Behaviour through Virtual Reality - Implementation and Evaluation of Immersive Feedback Conditions of a Virtual CO2 Calculator
+10.1145/3613904.3642760,Reading Between the Pixels: Investigating the Barriers to Visualization Literacy
+10.1145/3613904.3642911,Robot-Assisted Decision-Making: Unveiling the Role of Uncertainty Visualisation and Embodiment
+10.1145/3613904.3642942,SalChartQA: Question-driven Saliency on Information Visualisations
+10.1145/3613904.3642449,SolarClub: Supporting Renewable Energy Communities through an Interactive Coordination System
+10.1145/3613904.3642683,Taking ASCII Drawings Seriously: How Programmers Diagram Code
+10.1145/3613904.3641900,That's Rough! Encoding Data into Roughness for Physicalization
+10.1145/3613904.3642102,To Cut or Not To Cut? A Systematic Exploration of Y-Axis Truncation
+10.1145/3613904.3642750,V-FRAMER: Visualization Framework for Mitigating Reasoning Errors in Public Policy
+10.1145/3613904.3642857,VisTorch: Interacting with Situated Visualizations using Handheld Projectors
+10.1145/3613904.3642753,Visual Cues for Data Analysis Features Amplify Challenges for Blind Spreadsheet Users
+10.1145/3613904.3642145,WAVE: Anticipatory Movement Visualization for VR Dancing
+10.1111/cgf.14857,State-of-the-art in Large-Scale Volume Visualization Beyond Structured Data
+10.1111/cgf.14858,State-of-the-Art Report on Optimizing Particle Advection Performance
+10.1111/cgf.14856,The State of the Art in Visualizing Dynamic Multivariate Networks
+10.1111/cgf.14859,VA + Embeddings STAR: A State-of-the-Art Report on the Use of Embeddings in Visual Analytics
+10.1145/1518701.1519056,Topology-aware navigation in large networks
+10.1145/503376.503452,Polyarchy visualization: visualizing multiple intersecting hierarchies
