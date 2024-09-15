@@ -447,7 +447,7 @@ const hoveredIndex = ref<number | null>();
             color="positive"
             outline
             class="q-ml-xs"
-            >{{ paperDataStore.getAward(award) }}
+            ><span class="gt-xs">{{ paperDataStore.getAward(award) }}</span>
             <q-icon name="emoji_events" color="positive" size="xs" />
           </q-badge>
         </div>
