@@ -28,6 +28,12 @@ export interface PaperResourceLink {
   icon: 'paper' | 'video' | 'code' | 'project_website' | 'data' | 'other';
 }
 
+export interface PaperCollection {
+  title: string;
+  description: string;
+  papers: Set<string>; // DOIs in collection
+}
+
 export const usePaperDataStore = defineStore('paperDataStore', () => {
   const { currentRoute, push, replace } = useRouter();
 
@@ -67,6 +73,13 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   watch(
     currentRoute,
     (to, from) => {
+      // changes to collection
+      const toCollection = to.query.collection;
+      const fromCollection = from.query.collection;
+      if (toCollection !== fromCollection) {
+        collectionKey.value = (toCollection as string) ?? null;
+      }
+
       // changes to paper
       const toPaper = to.query.paper;
       const fromPaper = from.query.paper;
@@ -434,6 +447,13 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
   const papers = computed<PaperInfo[]>(() => {
     let filteredPapers = allPapers.value;
     if (filteredPapers == null) return [];
+
+    if (paperCollection.value != null) {
+      filteredPapers = filteredPapers.filter((paper: PaperInfo) => {
+        return paperCollection.value?.papers.has(paper.doi);
+      });
+    }
+
     if (searchText.value !== '') {
       const ignoreCase = matchCase.value === null;
       let regex: RegExp | null = null;
@@ -832,6 +852,45 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     updateQueryState({ resourceFilter: null });
   }
 
+  const collectionKey = ref<string | null>(
+    (currentRoute.value.query.collection as string) ?? null
+  );
+
+  const paperCollection = ref<PaperCollection | null>(null);
+
+  watch(collectionKey, async () => {
+    getCollection();
+  });
+
+  if (collectionKey.value) {
+    getCollection();
+  }
+
+  function setCollectionKey(key: string): void {
+    updateQueryState({ collection: key });
+  }
+
+  function clearCollectionKey(): void {
+    updateQueryState({ collection: null });
+  }
+
+  async function getCollection() {
+    const response = await fetch(
+      window.location.origin +
+        '/data/collections/' +
+        collectionKey.value +
+        '.json'
+    );
+    if (!response.ok) {
+      console.error('Failed to fetch collection');
+      paperCollection.value = null;
+      return;
+    }
+    const collection = await response.json();
+    collection.papers = new Set(collection.papers);
+    paperCollection.value = collection;
+  }
+
   const papersWithLinks = computed<PaperInfo[]>(() => {
     if (papers.value === null) return [];
     if (papers.value.length === 0) return [];
@@ -970,5 +1029,10 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     resourceFilter,
     toggleResourceFilter,
     clearResourceFilter,
+
+    collectionKey,
+    setCollectionKey,
+    clearCollectionKey,
+    paperCollection,
   };
 });

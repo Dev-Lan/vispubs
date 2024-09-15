@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 import FilterButton from 'src/components/FilterButton.vue';
 
@@ -92,6 +92,16 @@ function clickInSvg() {
     max: selectedYear.value,
   };
 }
+
+const collectionKeyOptions = ['example'];
+const collectionKeyMirror = ref<string | null>(paperDataStore.collectionKey);
+watch(collectionKeyMirror, (newValue: string | null) => {
+  if (newValue === null) {
+    paperDataStore.clearCollectionKey();
+  } else {
+    paperDataStore.setCollectionKey(newValue);
+  }
+});
 </script>
 
 <template>
@@ -288,6 +298,44 @@ function clickInSvg() {
           :icon="resourceCount.key"
           @click="paperDataStore.toggleResourceFilter(resourceCount.resource)"
         />
+      </q-card-section>
+    </q-card>
+    <q-card flat>
+      <q-card-section class="q-pb-none q-pt-none">
+        <div class="text-h6">
+          Collections
+          <q-btn
+            v-if="paperDataStore.collectionKey"
+            padding="xs"
+            size="sm"
+            flat
+            no-caps
+            class="text-caption"
+            @click="collectionKeyMirror = null"
+            title="Remove Collection Filter"
+            >(clear filter)</q-btn
+          >
+        </div>
+      </q-card-section>
+      <q-card-section class="q-pt-none flex justify-between">
+        <q-select
+          class="full-width"
+          dense
+          clearable
+          full-width
+          rounded
+          outlined
+          v-model="collectionKeyMirror"
+          :options="collectionKeyOptions"
+        />
+        <div class="q-mt-sm" v-if="paperDataStore.paperCollection">
+          <div class="text-subtitle2">
+            {{ paperDataStore.paperCollection.title }}
+          </div>
+          <div class="text-body2">
+            {{ paperDataStore.paperCollection.description }}
+          </div>
+        </div>
       </q-card-section>
     </q-card>
   </template>
