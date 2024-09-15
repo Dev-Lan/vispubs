@@ -93,7 +93,7 @@ function clickInSvg() {
   };
 }
 
-const collectionKeyOptions = ['example'];
+const collectionKeyOptions = ['example', 'EuroVisSTAR'];
 const collectionKeyMirror = ref<string | null>(paperDataStore.collectionKey);
 watch(collectionKeyMirror, (newValue: string | null) => {
   if (newValue === null) {

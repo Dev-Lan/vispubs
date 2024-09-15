@@ -1,0 +1,15 @@
+{
+  "title": "EuroVis STAR",
+  "description": "[WORK IN PROGRESS] The list of papers published in the EuroVis STAR journal. Currently only contains the papers from 2023 and 2024.",
+  "papers": [
+    "10.1111/cgf.15111",
+    "10.1111/cgf.15114",
+    "10.1111/cgf.15113",
+    "10.1111/cgf.15112",
+    "10.1111/cgf.14857",
+    "10.1111/cgf.14858",
+    "10.1111/cgf.14855",
+    "10.1111/cgf.14856",
+    "10.1111/cgf.14859"
+  ]
+}
