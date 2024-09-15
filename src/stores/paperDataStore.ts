@@ -858,6 +858,17 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
 
   const paperCollection = ref<PaperCollection | null>(null);
 
+  const missingPapersInCollection = computed<string[]>(() => {
+    if (paperCollection.value === null) return [];
+    if (allData.value === null) return [];
+    const allDOIs = new Set<string>(allData.value.map((paper) => paper.doi));
+    const collectionDOIs = new Set<string>(paperCollection.value.papers);
+    // ☝️ making this copy is needed. The proxy set is not working with the difference method
+    // and making a copy removes the vue proxy layer.
+    const missingPapers = collectionDOIs.difference(allDOIs);
+    return Array.from(missingPapers);
+  });
+
   watch(collectionKey, async () => {
     getCollection();
   });
@@ -1034,5 +1045,6 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     setCollectionKey,
     clearCollectionKey,
     paperCollection,
+    missingPapersInCollection,
   };
 });

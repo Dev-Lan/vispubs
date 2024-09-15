@@ -102,6 +102,10 @@ watch(collectionKeyMirror, (newValue: string | null) => {
     paperDataStore.setCollectionKey(newValue);
   }
 });
+
+const missingCount = computed(() => {
+  return paperDataStore.missingPapersInCollection.length;
+});
 </script>
 
 <template>
@@ -335,6 +339,18 @@ watch(collectionKeyMirror, (newValue: string | null) => {
           <div class="text-body2">
             {{ paperDataStore.paperCollection.description }}
           </div>
+          <div v-if="missingCount > 0" class="flex justify-center">
+            <q-chip
+              icon="info"
+              class="q-mt-sm"
+              outline
+              :clickable="false"
+              :ripple="false"
+            >
+              {{ missingCount }} paper{{ missingCount > 1 ? 's' : '' }}
+              {{ missingCount > 1 ? 'are' : 'is' }} not on VisPubs.
+            </q-chip>
+          </div>
         </div>
       </q-card-section>
     </q-card>
@@ -344,8 +360,6 @@ watch(collectionKeyMirror, (newValue: string | null) => {
 <style scoped lang="scss">
 svg {
   overflow: visible;
-  //   background-color: bisque;
-  //   outline: solid tomato 0px;
 }
 .bars {
   fill: $grey;
