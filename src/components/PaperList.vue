@@ -269,7 +269,7 @@ const hoveredIndex = ref<number | null>();
       </template>
     </q-input>
     <q-btn
-      :class="$q.screen.gt.xs ? 'q-mr-md' : 'q-mr-sm'"
+      class="gt-xs q-mr-md"
       padding="sm"
       color="primary"
       size="sm"
@@ -279,7 +279,7 @@ const hoveredIndex = ref<number | null>();
       :disable="!paperDataStore.papers || paperDataStore.papers.length === 0"
       @click="paperDataStore.selectRandomPaper"
     />
-    <div :class="`paper-count ${$q.screen.gt.xs ? 'q-mr-md' : ''}`">
+    <div :class="`paper-count ${$q.screen.gt.xs ? 'q-mr-md' : 'q-mr-sm'}`">
       <span
         >{{ paperDataStore.papers.length
         }}{{ $q.screen.gt.xs ? ' papers' : '' }}</span
@@ -291,14 +291,15 @@ const hoveredIndex = ref<number | null>();
       />
     </div>
     <q-btn
-      class="gt-xs"
+      class=""
       color="primary"
       push
       size="sm"
       :disable="!paperDataStore.papers || paperDataStore.papers.length === 0"
       icon="file_download"
       title="Export selected papers"
-      label="Export"
+      :round="!$q.screen.gt.xs"
+      :label="$q.screen.gt.xs ? 'Export' : ''"
       @click="exportShown = true"
     />
 
