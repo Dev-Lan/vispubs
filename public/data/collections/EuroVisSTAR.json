@@ -1,6 +1,6 @@
 {
   "title": "EuroVis STAR",
-  "description": "[WORK IN PROGRESS] The list of papers published in the EuroVis STAR journal. Currently only contains the papers from 2023 and 2024.",
+  "description": "Papers published in the EuroVis STAR track between 2016 and 2024. The 7 papers from 2015 are not available on vispubs.",
   "papers": [
     "10.1111/cgf.15111",
     "10.1111/cgf.15114",
