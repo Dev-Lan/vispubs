@@ -777,16 +777,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     updateQueryState({ awardFilter: null });
   }
 
-  const resources = computed<string[]>(() => {
-    if (allPapers.value == null) return [];
-    const resourcesSet = new Set<string>();
-    for (const paper of allPapers.value) {
-      for (const resourceKey of getKeyList(paper.resources)) {
-        resourcesSet.add(resourceKey);
-      }
-    }
-    return Array.from(resourcesSet);
-  });
+  const resources = ref(['P', 'V', 'PW', 'C', 'D', 'O']);
 
   interface ResourceCount {
     resource: string;
