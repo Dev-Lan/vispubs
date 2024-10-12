@@ -33,9 +33,12 @@ def update_resources(input_filename):
 def add_row_to_resource_files(doi, name, url, icon):
     with open(ROOT_FOLDER + doi, 'a+') as file:
       #  Check if the url is already in the file
-      for line in file:
+      file.seek(0)  # Reset file pointer to the beginning
+      for line in file.readlines():
         if url in line:
           return
+      # seek to the end of the file
+      file.seek(0, 2)
       file.write(f'\n{name},{url},{icon}')
     return
 
