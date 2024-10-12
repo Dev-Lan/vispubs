@@ -16,6 +16,8 @@ export interface PaperInfo {
   award: string;
   resources?: string;
   link?: string;
+  accessible: boolean;
+  early: boolean;
 }
 
 export interface PaperDataStoreState {

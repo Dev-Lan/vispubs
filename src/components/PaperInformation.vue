@@ -267,7 +267,24 @@ const allAuthorsQuery = computed(() => {
         outline
         class="q-ml-xs"
         >{{ paperDataStore.getAward(award) }}
-        <q-icon name="emoji_events" color="positive" size="xs" />
+        <q-icon
+          class="q-ml-xs"
+          name="emoji_events"
+          color="positive"
+          size="xs"
+        />
+      </q-badge>
+
+      <q-badge
+        v-if="paperDataStore.selectedPaper.early"
+        color="positive"
+        outline
+        class="q-ml-xs"
+        label="Early Access"
+        ><q-tooltip class="text-body2"
+          >Some features may not be available and some data may change slightly,
+          once the paper is officially published.</q-tooltip
+        ><q-icon class="q-ml-xs" name="info" color="positive" size="xs" />
       </q-badge>
     </div>
     <div class="q-mb-md q-mx-sm flex justify-center">
@@ -337,7 +354,12 @@ const allAuthorsQuery = computed(() => {
                   <q-avatar size="sm" icon="content_copy" />
                 </q-item-section>
               </q-item>
-              <template v-if="!authorHasWebsite(dedupedName)">
+              <template
+                v-if="
+                  !authorHasWebsite(dedupedName) &&
+                  !paperDataStore.selectedPaper.early
+                "
+              >
                 <q-separator />
                 <q-item dense>
                   <q-item-section class="text-caption"
