@@ -1,3 +1,7 @@
+###### Oct 12, 2024
+
+- add all 124 full papers for VIS 2024!
+
 ###### Sep 08, 2024
 
 - Add CHI 2024
