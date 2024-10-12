@@ -431,6 +431,14 @@ const hoveredIndex = ref<number | null>();
         >
         <div class="flex items-center">
           <q-avatar
+            v-if="item.accessible"
+            color="primary"
+            text-color="white"
+            icon="accessibility_new"
+            size="xs"
+            class="q-mr-xs"
+          />
+          <q-avatar
             v-for="(resourceLink, index) in paperDataStore.getKeyList(
               item.resources
             )"

@@ -287,6 +287,21 @@ const allAuthorsQuery = computed(() => {
         ><q-icon class="q-ml-xs" name="info" color="positive" size="xs" />
       </q-badge>
     </div>
+    <div
+      v-if="paperDataStore.selectedPaper.accessible"
+      class="q-mx-sm flex justify-center items-center text-body2"
+    >
+      <q-avatar
+        color="primary"
+        icon="accessibility_new"
+        text-color="white"
+        size="md"
+        class="q-mr-sm"
+      />
+      <span
+        >This publication has been tagged for screen-reader accessibility.</span
+      >
+    </div>
     <div class="q-mb-md q-mx-sm flex justify-center">
       <template
         v-for="({ displayName, dedupedName }, index) in authors"
