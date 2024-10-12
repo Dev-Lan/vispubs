@@ -3,7 +3,7 @@
 import pandas as pd
 import logging
 
-# Conference,Year,Title,DOI,Abstract,AuthorNames-Deduped,Award
+# Conference,Year,Title,DOI,Abstract,AuthorNames-Deduped,Award,Accessibility,Early
 
 def combine():
   logger = logging.getLogger('combine')
