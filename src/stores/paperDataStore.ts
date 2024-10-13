@@ -503,6 +503,9 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
 
     if (resourceFilter.value.size > 0) {
       filteredPapers = filteredPapers.filter((paper: PaperInfo) => {
+        if (paper.accessible && resourceFilter.value.has('Accessible')) {
+          return true;
+        }
         for (const resourceKey of getKeyList(paper.resources)) {
           if (resourceFilter.value.has(getResourceName(resourceKey))) {
             return true;
@@ -811,13 +814,24 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     return resourceCountList;
   });
 
+  const accessiblePDFCounts = computed<number>(() => {
+    let count = 0;
+    for (const paper of papers.value ?? []) {
+      if (paper.accessible) {
+        count += 1;
+      }
+    }
+    return count;
+  });
+
   const maxResourceCount = computed<number>(() => {
     if (resourceCounts.value.length === 0) return 0;
-    return Math.max(
+    const maxResourceCounts = Math.max(
       ...resourceCounts.value.map(
         (resourceCount: ResourceCount) => resourceCount.count
       )
     );
+    return Math.max(maxResourceCounts, accessiblePDFCounts.value);
   });
 
   const resourceFilter = ref<Set<string>>(
@@ -1033,6 +1047,7 @@ export const usePaperDataStore = defineStore('paperDataStore', () => {
     resourceFilter,
     toggleResourceFilter,
     clearResourceFilter,
+    accessiblePDFCounts,
 
     collectionKey,
     setCollectionKey,

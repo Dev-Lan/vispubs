@@ -293,6 +293,15 @@ const missingCount = computed(() => {
       </q-card-section>
       <q-card-section class="q-pt-none flex justify-between">
         <FilterButton
+          text="Accesssible PDF"
+          :count="paperDataStore.accessiblePDFCounts"
+          :maxCount="paperDataStore.maxResourceCount"
+          :selected="paperDataStore.resourceFilter.has('Accessible')"
+          icon="accessible_new"
+          @click="paperDataStore.toggleResourceFilter('Accessible')"
+          :width="100"
+        />
+        <FilterButton
           v-for="resourceCount in paperDataStore.resourceCounts"
           :key="resourceCount.resource"
           :text="resourceCount.resource"
