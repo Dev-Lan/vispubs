@@ -27,6 +27,11 @@ function getAuthorFormLink(author: string): string {
   return `https://docs.google.com/forms/d/e/1FAIpQLSfjSiQs92GtpDRItX69tFdmu0teSIFZPs5pXenoy3untsKV2Q/viewform?usp=pp_url&entry.1065422414=${encodedName}`;
 }
 
+function getPaperFormLink(DOI: string): string {
+  const encodedDOI = encodeURIComponent(DOI);
+  return `https://docs.google.com/forms/d/e/1FAIpQLScP3TIvHn2ci3wdJZrwWiy8viuhhVhIzJXGoVDuQc0GPLlP9g/viewform?usp=pp_url&entry.416478905=${encodedDOI}`;
+}
+
 const caseSensitive = computed(() => {
   return paperDataStore.matchCase ? true : false;
 });
@@ -449,27 +454,35 @@ const allAuthorsQuery = computed(() => {
         </q-card-section>
       </q-card>
       <q-dialog v-model="addResourcesShown">
-        <q-card>
+        <q-card class="text-body2">
           <q-card-section>
-            <div class="text-h6">Add additional resources</div>
+            <div class="text-h5">Add additional resources</div>
           </q-card-section>
 
-          <q-card-section class="q-pb-none"
-            >Review instructions for adding resources at
+          <q-card-section
+            ><span class="text-h6">Easy Mode: </span>
+            <a
+              :href="getPaperFormLink(paperDataStore.selectedPaper.doi)"
+              target="_blank"
+              >Submit resources through a Google Form.</a
+            >
+          </q-card-section>
+
+          <q-card-section class="q-pb-none">
+            <b>Want more control or have many resources to submit? </b>
             <a
               href="https://github.com/Dev-Lan/vispubs/tree/main/public/data"
               target="_blank"
-              >github.</a
-            ></q-card-section
-          >
+              >Review resource documentation on GitHub</a
+            >
+            then update
 
-          <q-card-section class="q-pb-none"
-            >Then update this paper's
             <a
               :href="`https://github.com/Dev-Lan/vispubs/tree/main/public/data/paperLinks/${paperDataStore.selectedPaper.doi}`"
               target="_blank"
-              >resource file.</a
+              >this paper's resource file</a
             >
+            and submit a pull request.
           </q-card-section>
 
           <q-card-actions align="right">
