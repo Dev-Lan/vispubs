@@ -65,6 +65,7 @@ function focusNextPaper() {
     v-model="paperDataStore.filterPanelOpen"
     persistent
     side="left"
+    class="no-scroll-x"
   >
     <FilterPanel />
   </q-drawer>
@@ -92,5 +93,9 @@ function focusNextPaper() {
 <style lang="scss">
 a {
   color: $primary;
+}
+
+.no-scroll-x {
+  overflow-x: hidden;
 }
 </style>
