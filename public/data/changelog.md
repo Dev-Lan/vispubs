@@ -1,6 +1,10 @@
 ###### Oct 12, 2024
 
 - add all 124 full papers for VIS 2024!
+- add Test of Time awards for papers that won in 2024 VIS
+- add accessibility tag (just for papers from VIS 2024)
+- add 'early' column for early access papers
+- add resource files for a couple papers
 
 ###### Sep 08, 2024
 
