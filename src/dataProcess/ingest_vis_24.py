@@ -14,7 +14,7 @@ To add the data there are three relevant files in ./input/vis24/
 # Load the data from the three files
 a11y_openpractices_path = './input/vis24/vis24_a11y_openpractices.csv'
 ieeexport_path = './input/vis24/ieeexport.csv'
-papers_json_path = './input/vis24/papers.json'
+papers_json_path = './input/vis24/papers_ff.json'
 
 # Load both csv files into pandas data frames
 a11y_openpractices_df = pd.read_csv(a11y_openpractices_path)
@@ -83,7 +83,7 @@ combined_df['AuthorNames-Deduped'] = combined_df['authors'].apply(extract_names)
 # print(combined_df['AuthorNames-Deduped'][0])
 
 # create copy of df with only relevant columns [Conference,Year,Title,DOI,Abstract,AuthorNames-Deduped,Award,Accessibility]
-vis24_df = combined_df[['Conference', 'Year', 'Title', 'DOI', 'Abstract', 'AuthorNames-Deduped', 'Award', 'Accessibility']]
+vis24_df = combined_df[['Conference', 'Year', 'Title', 'DOI', 'Abstract', 'AuthorNames-Deduped', 'Award', 'Accessibility', 'session_youtube_ff_link']]
 
 # Change 'Accessible' to 'true' and in the 'Accessibility' column
 vis24_df['Accessibility'] = vis24_df['Accessibility'].apply(lambda x: 'true' if x == 'Accessible' else '')
@@ -96,7 +96,7 @@ vis24_df.to_csv('./temp/vis24.csv', index=False)
 
 # print(combined_df.columns)
 # create copy of df with only relevant resource columns [DOI, Paper ID, Supplemtal Material Link, Preprint Link, Pre-registration]
-resource_df = combined_df[['DOI', 'Paper ID', 'Supplemental Material Link', 'Preprint Link', 'Pre-registration']]
+resource_df = combined_df[['DOI', 'Paper ID', 'Supplemental Material Link', 'Preprint Link', 'Pre-registration', 'session_youtube_ff_link']]
 
 # add the content URL by prepending 'https://ieeevis.org/year/2024/program/paper_' and adding '.html' to the 'Paper ID' column in resource_df
 resource_df['VIS_URL'] = 'https://ieeevis.org/year/2024/program/paper_' + resource_df['Paper ID'] + '.html'
@@ -118,6 +118,14 @@ for _, row in resource_df.iterrows():
       'icon': 'paper',
       'name': 'Paper Preprint',
       'url': row['Preprint Link']
+    })
+  # Append the preprint link
+  if pd.notna(row['session_youtube_ff_link']):
+    expanded_rows.append({
+      'DOI': row['DOI'],
+      'icon': 'video',
+      'name': 'Fast Forward Video',
+      'url': row['session_youtube_ff_link']
     })
   # Append the supplemental material link
   if pd.notna(row['Supplemental Material Link']):

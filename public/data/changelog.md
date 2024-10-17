@@ -1,3 +1,7 @@
+###### Oct 17, 2024
+
+- add FF Videos for VIS 2024.
+
 ###### Oct 12, 2024
 
 - add all 124 full papers for VIS 2024!
