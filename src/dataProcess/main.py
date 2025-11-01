@@ -13,111 +13,115 @@ from update_paper_link_flags import update_paper_link_flags
 from update_changelog import update_changelog
 
 
-
 def process_new_data_from_dblp():
-  # Coarsly filter 4GB dblp xml file to only include potentially relevant files
-  input_xml = './input/dblp.xml'
-  input_dtd = './input/dblp-2023-06-28.dtd'
-  filtered_xml = './temp/dblp_filtered.xml'
-  step = 1
-  print_banner(f"🦉 {step}. parse_large_xml_with_dtd")
-  parse_large_xml_with_dtd(input_xml, input_dtd, filtered_xml)
+    # Coarsly filter 4GB dblp xml file to only include potentially relevant files
+    input_xml = "./input/dblp.xml"
+    input_dtd = "./input/dblp.dtd"
+    filtered_xml = "./temp/dblp_filtered.xml"
+    step = 1
+    print_banner(f"🦉 {step}. parse_large_xml_with_dtd")
+    parse_large_xml_with_dtd(input_xml, input_dtd, filtered_xml)
 
-  # Convert filtered dblp xml into CSV format and filter more precisely by conference
-  step += 1
-  print_banner(f"🦉 {step}. dblp_to_csv")
-  potential_new_papers = './temp/potential_new_papers.csv'
-  dblp_to_csv(filtered_xml, potential_new_papers)
+    # Convert filtered dblp xml into CSV format and filter more precisely by conference
+    step += 1
+    print_banner(f"🦉 {step}. dblp_to_csv")
+    potential_new_papers = "./temp/potential_new_papers.csv"
+    dblp_to_csv(filtered_xml, potential_new_papers)
 
-  # Filter the potential new papers to only include the truly new ones
-  step += 1
-  print_banner(f"🦉 {step}. filter_to_new")
-  new_papers = './temp/new_papers.csv'
-  filter_to_new(potential_new_papers, new_papers)
+    # Filter the potential new papers to only include the truly new ones
+    step += 1
+    print_banner(f"🦉 {step}. filter_to_new")
+    new_papers = "./temp/new_papers.csv"
+    filter_to_new(potential_new_papers, new_papers)
 
-  # Add awards information to the new papers
-  step += 1
-  print_banner(f"🦉 {step}. add_awards")
-  award_filename = './input/awards.csv'
-  new_papers_award = './temp/new_papers_award.csv'
-  add_awards(award_filename, new_papers, new_papers_award)
+    # Add awards information to the new papers
+    step += 1
+    print_banner(f"🦉 {step}. add_awards")
+    award_filename = "./input/awards.csv"
+    new_papers_award = "./temp/new_papers_award.csv"
+    add_awards(award_filename, new_papers, new_papers_award)
 
-  # Add abstracts to the new papers
-  step += 1
-  print_banner(f"🦉 {step}. add_abstracts")
-  new_papers_award_abstract = './temp/new_papers_award_abstract.csv'
-  add_abstracts(new_papers_award, new_papers_award_abstract)
+    # Add abstracts to the new papers
+    step += 1
+    print_banner(f"🦉 {step}. add_abstracts")
+    new_papers_award_abstract = "./temp/new_papers_award_abstract.csv"
+    add_abstracts(new_papers_award, new_papers_award_abstract)
 
-  # Update the intermediate files with the new papers
-  step += 1
-  print_banner(f"🦉 {step}. update_intermediate")
-  update_intermediate(new_papers_award_abstract)
+    # Update the intermediate files with the new papers
+    step += 1
+    print_banner(f"🦉 {step}. update_intermediate")
+    update_intermediate(new_papers_award_abstract)
 
-  # Filter the intermediate files to only include visualization papers
-  step += 1
-  print_banner(f"🦉 {step}. filter_to_vis_papers")
-  filter_to_vis_papers('./intermediate/chi.csv', './intermediate/chi-filtered.csv')
+    # Filter the intermediate files to only include visualization papers
+    step += 1
+    print_banner(f"🦉 {step}. filter_to_vis_papers")
+    filter_to_vis_papers("./intermediate/chi.csv", "./intermediate/chi-filtered.csv")
 
-  # Combine all the filtered files into a single file
-  step += 1
-  print_banner(f"🦉 {step}. combine")
-  combine()
+    # Combine all the filtered files into a single file
+    step += 1
+    print_banner(f"🦉 {step}. combine")
+    combine()
 
-  # Create stub files for any new paper resource pages
-  step += 1
-  print_banner(f"🦉 {step}. create_stub_files")
-  create_stub_files()
+    # Create stub files for any new paper resource pages
+    step += 1
+    print_banner(f"🦉 {step}. create_stub_files")
+    create_stub_files()
 
-  # Search for preprint versions of the papers
-  step += 1
-  print_banner(f"🦉 {step}. search_preprint_versions")
-  search_preprint_versions()
+    # Search for preprint versions of the papers
+    step += 1
+    print_banner(f"🦉 {step}. search_preprint_versions")
+    search_preprint_versions()
 
-  # Update the link flags column in the paper list
-  step += 1
-  print_banner(f"🦉 {step}. update_paper_link_flags")
-  update_paper_link_flags()
+    # Update the link flags column in the paper list
+    step += 1
+    print_banner(f"🦉 {step}. update_paper_link_flags")
+    update_paper_link_flags()
 
-  # Update the changelog file
-  step += 1
-  print_banner(f"🦉 {step}. update_changelog")
-  update_changelog(new_papers_award_abstract)
-  return
+    # Update the changelog file
+    step += 1
+    print_banner(f"🦉 {step}. update_changelog")
+    update_changelog(new_papers_award_abstract)
+    return
+
 
 def print_banner(message):
-  logger = logging.getLogger('main')
-  logger.info('')
-  logger.info(f"{'='*80}")
-  logger.info(message)
-  logger.info(f"{'='*80}")
+    logger = logging.getLogger("main")
+    logger.info("")
+    logger.info(f"{'=' * 80}")
+    logger.info(message)
+    logger.info(f"{'=' * 80}")
+
 
 def configure_logging():
-  logging.basicConfig(level=logging.DEBUG,
-                      format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-                      datefmt='%m-%d %H:%M',
-                      filename='./temp/data_ingestion.log',
-                      filemode='w')
-  console = logging.StreamHandler()
-  console.setLevel(logging.INFO)
-  formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
-  console.setFormatter(formatter)
-  logging.getLogger().addHandler(console)
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+        datefmt="%m-%d %H:%M",
+        filename="./temp/data_ingestion.log",
+        filemode="w",
+    )
+    console = logging.StreamHandler()
+    console.setLevel(logging.INFO)
+    formatter = logging.Formatter("%(name)-12s: %(levelname)-8s %(message)s")
+    console.setFormatter(formatter)
+    logging.getLogger().addHandler(console)
 
-if __name__ == '__main__':
-  configure_logging()
-  process_new_data_from_dblp()
+
+if __name__ == "__main__":
+    configure_logging()
+    process_new_data_from_dblp()
 
 # UPDATE WORKFLOWS
 # new data from dblp
-  # get dblp xml snapshot
-  # run main.py, review, deploy
+# get dblp xml snapshot
+# run main.py, review, deploy
 
 # author submits homepage
-  # manual, update authors.csv, update changelog.md, deploy
+# manual, update authors.csv, update changelog.md, deploy
 
 # Author submits resource links
-  # update_paper_link_flags.py # to update the link flags column in paper list
-  # update_changelog.py # add to changelog file
+# update_paper_link_flags.py # to update the link flags column in paper list
+# update_changelog.py # add to changelog file
 
 # Add early access papers
-  # TBD
+# TBD
