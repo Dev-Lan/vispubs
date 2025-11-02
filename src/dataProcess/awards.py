@@ -13,8 +13,8 @@ If there are any rows in the award file that are not in the paper file, a warnin
 AWARD_FILENAME = "./input/awards.csv"
 # PAPERS_FILENAME = "../../public/data/papers.csv"
 # OUTPUT_FILENAME = "../../public/data/papers.csv"
-PAPERS_FILENAME = "./intermediate/VIS.csv"
-OUTPUT_FILENAME = "./intermediate/VIS.csv"
+PAPERS_FILENAME = "./intermediate/eurovis.csv"
+OUTPUT_FILENAME = "./intermediate/eurovis.csv"
 
 
 def add_awards(award_filename, paper_filename, output_filename):
@@ -31,11 +31,16 @@ def add_awards(award_filename, paper_filename, output_filename):
         logger.error("ERROR: Rows in the award file not found in the paper file.")
         logger.error(missing_rows)
 
-    # Merge the award DataFrame with the paper DataFrame based and Title
-    merged_df = pd.merge(paper_df, award_df, on=["Title"], how="left")
+    merged_df = pd.merge(
+        paper_df,
+        award_df[["Title", "Award"]],
+        on="Title",
+        how="left",
+        suffixes=("", "_award"),
+    )
 
-    # Update the Award column in the paper DataFrame with the values from the merged DataFrame
-    paper_df["Award"] = merged_df["Award_y"]
+    # Only update Award where a new value exists
+    paper_df.loc[merged_df["Award_award"].notna(), "Award"] = merged_df["Award_award"]
 
     # Save the updated paper DataFrame to a new file
     paper_df.to_csv(output_filename, index=False)
