@@ -138,6 +138,15 @@ const allAuthorsQuery = computed(() => {
     .map((author) => author.displayName)
     .reduce((x, y) => x + '|' + y);
 });
+
+function make_absolute(url: string): string {
+  // if url starts with http:// or https://, return as is
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  // else add to url, assume url was supposed to include it
+  return 'https://' + url;
+}
 </script>
 
 <template>
@@ -416,7 +425,7 @@ const allAuthorsQuery = computed(() => {
               :key="resourceLink.name"
               clickable
               v-ripple
-              :href="resourceLink.url"
+              :href="make_absolute(resourceLink.url)"
               target="_blank"
             >
               <q-item-section avatar>
