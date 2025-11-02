@@ -94,7 +94,7 @@ const resourceExplanations = [
 ];
 
 const bibTexString = `@preprint{2024_preprint_vispubs,
-  title = {VisPubs: A Visualization Publications Repository},
+  title = {VisPubs.com: A Visualization Publications Repository},
   author = {Devin Lange},
   booktitle = {Preprint},
   doi = {10.31219/osf.io/dg3p2},
