@@ -1,3 +1,8 @@
+###### Nov 01, 2025
+
+- check 1250 papers from CHI[2001–2025]
+- add 49 papers from EuroVis[2025]
+
 ###### Oct 17, 2024
 
 - add FF Videos for VIS 2024.
