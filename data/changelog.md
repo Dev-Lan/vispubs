@@ -1,7 +1,11 @@
+###### Nov 02, 2025
+
+- add 131 papers from VIS [2025]
+
 ###### Nov 01, 2025
 
-- check 1250 papers from CHI[2001–2025]
-- add 49 papers from EuroVis[2025]
+- add 89 papers from CHI [2025]
+- add 49 papers from EuroVis [2025]
 
 ###### Oct 17, 2024
 
