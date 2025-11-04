@@ -45,7 +45,11 @@ function onClick(event: Event) {
       >
       <span class="q-ml-xs text-caption"> ({{ props.count }})</span>
     </q-btn>
-    <SimpleBar :count="props.count" :maxCount="props.maxCount"></SimpleBar>
+    <SimpleBar
+      :show-grey="false"
+      :count="props.count"
+      :maxCount="props.maxCount"
+    ></SimpleBar>
   </div>
 </template>
 

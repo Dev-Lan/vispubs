@@ -4,11 +4,12 @@ import { ref, computed, watch, onMounted } from 'vue';
 const props = defineProps<{
   count: number;
   maxCount: number;
+  showGrey: boolean;
 }>();
 </script>
 
 <template>
-  <div class="underline">
+  <div :class="{ underline: true, 'bg-grey-transparent': props.showGrey }">
     <div
       class="underline-data"
       :style="`width: ${
@@ -20,8 +21,11 @@ const props = defineProps<{
 
 <style scoped lang="scss">
 .underline {
-  background: rgba(125, 125, 125, 0.2);
   height: 2px;
+}
+
+.bg-grey-transparent {
+  background: rgba(125, 125, 125, 0.2);
 }
 
 .underline-data {
