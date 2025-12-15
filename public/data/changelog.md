@@ -1,6 +1,7 @@
 ###### Dec 15, 2025
 
 - add user submitted resources for four papers.
+- update EuroVis STAR collection to include papers from 2025.
 
 ###### Nov 02, 2025
 
