@@ -1,3 +1,7 @@
+###### Dec 15, 2025
+
+- add user submitted resources for four papers.
+
 ###### Nov 02, 2025
 
 - add 131 papers from VIS [2025]
