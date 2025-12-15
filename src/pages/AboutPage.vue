@@ -236,9 +236,16 @@ const datasetComparisonColumns = ref([
           <p>
             Currently this site includes IEEE Visualization (<b>VIS</b>)
             publications from 1990–2023, <b>EuroVis</b> publications from
-            1999–2023, and <b>CHI</b> publications from 1986–2023. To download
-            the full dataset, select the EXPORT button without any filters or
-            search term. If you notice any mistakes, or would like to make a
+            1999–2023, and <b>CHI</b> publications from 1986–2023.
+
+            To download a <i>static</i> version of the full dataset, select the EXPORT button without any filters or
+            search term.
+
+            You can also access a <i>live</i> version of the dataset from <a href="https://vispubs.com/data/papers.csv">vispubs.com/data/papers.csv</a>.
+
+          </p>
+          <p>
+            If you notice a mistake, or would like to make a
             suggestion, please
             <a href="https://github.com/Dev-Lan/vispubs/issues"
               >submit a new issue <q-icon name="open_in_new" /></a
