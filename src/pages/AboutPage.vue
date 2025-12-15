@@ -134,20 +134,24 @@ const datasetComparisonRows = ref([
     vispubs: '✅',
   },
   {
-    name: 'Citations, Internal References, Author Affiliations, Author Keywords, First/Last Page',
-    vispubdata: '✅',
-    vispubs: '',
-  },
-  {
     name: 'EuroVis, CHI',
     vispubdata: '',
     vispubs: '✅',
   },
-
+  {
+    name: 'TVCG @ VIS, CG&A @ VIS',
+    vispubdata: '✅',
+    vispubs: '',
+  },
   {
     name: 'Paper Resource Links (Preprint, Code, Data, ...)',
     vispubdata: '',
     vispubs: '✅',
+  },
+  {
+    name: 'Citations, Internal References, Author Affiliations, Author Keywords, First/Last Page',
+    vispubdata: '✅',
+    vispubs: '',
   },
 ]);
 const datasetComparisonColumns = ref([
