@@ -1,4 +1,4 @@
-# Visualization Publications (vispubs)
+# Visualization Publications (VisPubs)
 
 This repo contains the code and data for the [vispubs.com](https://vispubs.com) website. The goal of this project is to create a nice interface for finding relevant visualization publications across multiple venues.
 
