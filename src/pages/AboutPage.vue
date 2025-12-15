@@ -178,7 +178,7 @@ const datasetComparisonColumns = ref([
       <div class="flex justify-center outer-container text-body1">
         <div class="q-pa-lg text-container">
           <p>
-            Vispubs was created by
+            VisPubs was created by
             <a href="https://www.devinlange.com/"
               >Devin Lange <q-icon name="open_in_new"
             /></a>

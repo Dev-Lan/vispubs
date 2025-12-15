@@ -12,7 +12,7 @@ the order on the webpage.
 - **icon**: The displayed icon key.
 
 Every paper already has a resource file. The easiest way to find it
-is by selecting the `Add Resources` button on the vispubs website and then selecting
+is by selecting the `Add Resources` button on the VisPubs website and then selecting
 the resource file link. The filename is directly based on the publication's DOI, so
 it is also possible to locate the file with the DOI in the `paperLinks` folder.
 
@@ -48,4 +48,3 @@ This work is licensed under a
 [cc-by]: http://creativecommons.org/licenses/by/4.0/
 [cc-by-image]: https://i.creativecommons.org/l/by/4.0/88x31.png
 [cc-by-shield]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg
-
