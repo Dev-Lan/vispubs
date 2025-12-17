@@ -239,8 +239,8 @@ const datasetComparisonColumns = ref([
           <div class="fancy-header q-pa-sm q-pr-lg text-h4 q-mb-md q-mt-sm">Data Format</div>
           <p>
             Currently this site includes IEEE Visualization (<b>VIS</b>)
-            publications from 1990–2023, <b>EuroVis</b> publications from
-            1999–2023, and <b>CHI</b> publications from 1986–2023.
+            publications from 1990–2025, <b>EuroVis</b> publications from
+            1999–2025, and <b>CHI</b> publications from 1986–2025.
 
             To download a <i>static</i> version of the full dataset, select the EXPORT button without any filters or
             search term.
