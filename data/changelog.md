@@ -1,6 +1,12 @@
+###### Feb 8, 2026
+
+- update VIS 2025 placeholder DOIs with real DOIs
+- Minor tweaks fo vis 2025 titles / abstracts to match published version
+
 ###### Dec 15, 2025
 
 - add user submitted resources for four papers.
+- update EuroVis STAR collection to include papers from 2025.
 
 ###### Nov 02, 2025
 
