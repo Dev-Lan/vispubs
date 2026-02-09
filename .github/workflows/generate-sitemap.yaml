@@ -1,0 +1,24 @@
+name: Generate Sitemap
+
+on:
+  push:
+    branches: [main]
+    paths: ['public/data/papers.csv']
+
+jobs:
+  generate-sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Generate sitemap
+        run: python src/dataProcess/generate_sitemap.py
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: regenerate sitemap.xml'
+          file_pattern: public/sitemap.xml
