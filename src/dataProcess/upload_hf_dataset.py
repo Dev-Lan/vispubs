@@ -61,6 +61,7 @@ A curated dataset of visualization research publications from IEEE VIS, EuroVis,
 | Accessible | bool | Tagged for screen-reader accessibility |
 | Early | bool | Early access publication |
 | Resources | list[string] | Available resource types (P, V, C, PW, D, O) |
+| ResourceLinks | list[struct] | Links for each resource: {name, url, icon} |
 
 ## Award Codes
 
