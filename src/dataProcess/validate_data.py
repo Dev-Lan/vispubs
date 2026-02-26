@@ -21,6 +21,10 @@ class CheckResult:
     name: str
     severity: str  # "error" or "warning"
     issues: list = field(default_factory=list)
+    count: int = None  # override len(issues) when issues contain grouped lines
+
+    def issue_count(self):
+        return self.count if self.count is not None else len(self.issues)
 
 
 # ---------------------------------------------------------------------------
@@ -28,15 +32,23 @@ class CheckResult:
 # ---------------------------------------------------------------------------
 
 def check_empty_abstracts(rows):
-    """Report papers with empty or missing abstracts."""
-    issues = []
+    """Report papers with empty or missing abstracts, grouped by year."""
+    by_year = {}
     for row in rows:
         abstract = (row.get("Abstract") or "").strip()
         if not abstract:
+            year = row.get("Year", "Unknown")
+            by_year.setdefault(year, []).append(row)
+    issues = []
+    for year in sorted(by_year, key=lambda y: (y != "Unknown", y), reverse=True):
+        papers = by_year[year]
+        issues.append(f"- **{year}** ({len(papers)} paper{'s' if len(papers) != 1 else ''})")
+        for row in papers:
             doi = row.get("DOI", "N/A")
             title = row.get("Title", "N/A")
-            issues.append(f"DOI `{doi}` — {title}")
-    return CheckResult("Empty or missing abstracts", "error", issues)
+            issues.append(f"  - DOI `{doi}` — {title}")
+    total = sum(len(papers) for papers in by_year.values())
+    return CheckResult("Empty or missing abstracts", "error", issues, count=total)
 
 
 def check_duplicate_dois(rows):
@@ -45,7 +57,7 @@ def check_duplicate_dois(rows):
     issues = []
     for doi, count in sorted(doi_counts.items()):
         if count > 1:
-            issues.append(f"DOI `{doi}` appears {count} times")
+            issues.append(f"- DOI `{doi}` appears {count} times")
     return CheckResult("Duplicate DOIs", "error", issues)
 
 
@@ -62,7 +74,7 @@ def check_duplicate_titles(rows):
             venues = ", ".join(
                 f"{r.get('Conference', '?')} {r.get('Year', '?')}" for r in matching
             )
-            issues.append(f"\"{title}\" — appears in: {venues}")
+            issues.append(f"- \"{title}\" — appears in: {venues}")
     return CheckResult("Duplicate paper titles", "warning", issues)
 
 
@@ -81,8 +93,8 @@ CHECKS = [
 def generate_report(rows):
     results = [check(rows) for check in CHECKS]
 
-    total_errors = sum(len(r.issues) for r in results if r.severity == "error")
-    total_warnings = sum(len(r.issues) for r in results if r.severity == "warning")
+    total_errors = sum(r.issue_count() for r in results if r.severity == "error")
+    total_warnings = sum(r.issue_count() for r in results if r.severity == "warning")
 
     lines = []
     lines.append("# Data Validation Report")
@@ -93,17 +105,16 @@ def generate_report(rows):
     lines.append("")
 
     for result in results:
-        icon = "x" if result.severity == "error" else "!"
         status = "PASS" if not result.issues else result.severity.upper()
         lines.append(f"## [{status}] {result.name}")
         lines.append("")
         if not result.issues:
             lines.append("No issues found.")
         else:
-            lines.append(f"{len(result.issues)} issue(s) found:")
+            lines.append(f"{result.issue_count()} issue(s) found:")
             lines.append("")
             for issue in result.issues:
-                lines.append(f"- {issue}")
+                lines.append(issue)
         lines.append("")
 
     return "\n".join(lines)
