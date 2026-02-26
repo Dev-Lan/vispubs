@@ -1,6 +1,7 @@
 """Generate Parquet files from papers.csv and authors.csv with optimized types."""
 
 import csv
+import csv
 import os
 import pandas as pd
 import pyarrow as pa
@@ -41,6 +42,23 @@ def read_paper_links(doi):
     return links
 
 
+def read_paper_links(doi):
+    """Read a paperLinks CSV file for the given DOI, returning a list of dicts."""
+    path = os.path.join(PAPER_LINKS_DIR, doi)
+    if not os.path.isfile(path):
+        return []
+    links = []
+    with open(path, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            name = (row.get("name") or "").strip()
+            url = (row.get("url") or "").strip()
+            icon = (row.get("icon") or "").strip()
+            if name or url:
+                links.append({"name": name, "url": url, "icon": icon})
+    return links
+
+
 def convert_papers(csv_path, parquet_path):
     df = pd.read_csv(csv_path, dtype=str)
 
@@ -60,29 +78,39 @@ def convert_papers(csv_path, parquet_path):
     df["Resources"] = df["Resources"].apply(split_semicolon_list)
 
     # Read paperLinks files for each DOI
-    paper_links_data = df["DOI"].apply(lambda doi: read_paper_links(doi) if pd.notna(doi) and doi else [])
+    paper_links_data = df["DOI"].apply(
+        lambda doi: read_paper_links(doi) if pd.notna(doi) and doi else []
+    )
 
     # Build pyarrow arrays for list/struct columns
-    authors_array = pa.array(df["AuthorNames-Deduped"].tolist(), type=pa.list_(pa.string()))
+    authors_array = pa.array(
+        df["AuthorNames-Deduped"].tolist(), type=pa.list_(pa.string())
+    )
     award_array = pa.array(
         df["Award"].tolist(), type=pa.list_(pa.dictionary(pa.int8(), pa.string()))
     )
     resources_array = pa.array(
         df["Resources"].tolist(), type=pa.list_(pa.dictionary(pa.int8(), pa.string()))
     )
-    paper_links_type = pa.list_(pa.struct([
-        ("name", pa.string()),
-        ("url", pa.string()),
-        ("icon", pa.string()),
-    ]))
+    paper_links_type = pa.list_(
+        pa.struct(
+            [
+                ("name", pa.string()),
+                ("url", pa.string()),
+                ("icon", pa.string()),
+            ]
+        )
+    )
     paper_links_array = pa.array(paper_links_data.tolist(), type=paper_links_type)
 
     # Convert base DataFrame to arrow table, then replace list columns
-    table = pa.Table.from_pandas(df.drop(columns=["AuthorNames-Deduped", "Award", "Resources"]))
+    table = pa.Table.from_pandas(
+        df.drop(columns=["AuthorNames-Deduped", "Award", "Resources"])
+    )
     table = table.append_column("AuthorNames-Deduped", authors_array)
     table = table.append_column("Award", award_array)
     table = table.append_column("Resources", resources_array)
-    table = table.append_column("PaperLinks", paper_links_array)
+    table = table.append_column("ResourceLinks", paper_links_array)
 
     pq.write_table(table, parquet_path)
     print(f"Wrote {len(df)} papers to {os.path.abspath(parquet_path)}")
