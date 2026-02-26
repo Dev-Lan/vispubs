@@ -109,12 +109,17 @@ def generate_report(rows):
     return "\n".join(lines)
 
 
+REPORT_FILE = os.path.join(os.path.dirname(__file__), "report.md")
+
+
 def main():
     with open(PAPERS_CSV, newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
 
     report = generate_report(rows)
-    print(report)
+    with open(REPORT_FILE, "w", encoding="utf-8") as f:
+        f.write(report)
+    print(f"Report written to {REPORT_FILE}")
 
 
 if __name__ == "__main__":
