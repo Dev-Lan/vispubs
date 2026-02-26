@@ -133,17 +133,16 @@ def get_existing_readme(api, repo_id):
 
 
 def update_changelog(readme_content, version, message):
-    """Append a new changelog entry to the README content."""
+    """Always use the current template, preserving existing changelog entries."""
     today = date.today().isoformat()
     entry = f"### {version} ({today})\n\n- {message}\n\n"
 
+    # Extract existing changelog entries from the remote README
+    existing_entries = ""
     if readme_content and "## Changelog" in readme_content:
-        # Insert after the Changelog heading
-        parts = readme_content.split("## Changelog", 1)
-        return parts[0] + "## Changelog\n\n" + entry + parts[1].lstrip("\n")
-    else:
-        # Use the template with the entry appended
-        return DATASET_CARD_TEMPLATE + entry
+        existing_entries = readme_content.split("## Changelog", 1)[1].lstrip("\n")
+
+    return DATASET_CARD_TEMPLATE + entry + existing_entries
 
 
 def main():
