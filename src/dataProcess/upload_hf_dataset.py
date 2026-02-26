@@ -1,28 +1,11 @@
 """Upload papers.parquet to Hugging Face dataset repo with version tagging.
 
-Upload Usage:
+Usage:
     python upload_hf_dataset.py --version v2026.0-alpha --message "Initial alpha release"
 
 Requirements:
     pip install huggingface_hub
     huggingface-cli login  (or set HF_TOKEN environment variable)
-
-Pulling Data:
-    To load the dataset from Hugging Face, use the `datasets` library:
-
-        pip install datasets
-
-    Load the most recent version:
-
-        from datasets import load_dataset
-        ds = load_dataset("DevLan/vispubs")
-        print(ds["train"].to_pandas().head())
-
-    Load a specific tagged version:
-
-        from datasets import load_dataset
-        ds = load_dataset("DevLan/vispubs", revision="v2026.0-alpha")
-        print(ds["train"].to_pandas().head())
 """
 
 import argparse
@@ -96,6 +79,28 @@ A curated dataset of visualization research publications from IEEE VIS, EuroVis,
 - **PW** — Project Website
 - **D** — Data
 - **O** — Other
+
+## Usage
+
+```bash
+pip install datasets
+```
+
+Load the most recent version:
+
+```python
+from datasets import load_dataset
+ds = load_dataset("DevLan/vispubs")
+print(ds["train"].to_pandas().head())
+```
+
+Load a specific tagged version:
+
+```python
+from datasets import load_dataset
+ds = load_dataset("DevLan/vispubs", revision="v2026.0-alpha")
+print(ds["train"].to_pandas().head())
+```
 
 ## Versioning
 
