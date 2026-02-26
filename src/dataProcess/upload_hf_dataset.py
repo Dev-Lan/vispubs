@@ -3,6 +3,9 @@
 Usage:
     python upload_hf_dataset.py --version v2026.0-alpha --message "Initial alpha release"
 
+    Update only the dataset card (no data upload or version tag):
+    python upload_hf_dataset.py --readme-only
+
 Requirements:
     pip install huggingface_hub
     huggingface-cli login  (or set HF_TOKEN environment variable)
@@ -147,15 +150,19 @@ def update_changelog(readme_content, version, message):
 
 def main():
     parser = argparse.ArgumentParser(description="Upload papers.parquet to Hugging Face")
-    parser.add_argument("--version", required=True, help="Version tag (e.g., v2026.0-alpha)")
-    parser.add_argument("--message", required=True, help="Changelog entry describing changes")
+    parser.add_argument("--version", help="Version tag (e.g., v2026.0-alpha)")
+    parser.add_argument("--message", help="Changelog entry describing changes")
+    parser.add_argument("--readme-only", action="store_true", help="Only update the dataset card (no data upload or version tag)")
     args = parser.parse_args()
 
-    validate_version(args.version)
+    if not args.readme_only:
+        if not args.version or not args.message:
+            parser.error("--version and --message are required unless using --readme-only")
+        validate_version(args.version)
 
-    if not os.path.isfile(PAPERS_PARQUET):
-        print(f"Error: {PAPERS_PARQUET} not found. Run generate_parquet.py first.")
-        sys.exit(1)
+        if not os.path.isfile(PAPERS_PARQUET):
+            print(f"Error: {PAPERS_PARQUET} not found. Run generate_parquet.py first.")
+            sys.exit(1)
 
     api = HfApi()
 
@@ -164,7 +171,14 @@ def main():
 
     # Get existing README or use template
     existing_readme = get_existing_readme(api, HF_REPO_ID)
-    readme_content = update_changelog(existing_readme, args.version, args.message)
+    if args.readme_only:
+        # Preserve existing changelog, just refresh the template
+        existing_entries = ""
+        if existing_readme and "## Changelog" in existing_readme:
+            existing_entries = existing_readme.split("## Changelog", 1)[1].lstrip("\n")
+        readme_content = DATASET_CARD_TEMPLATE + existing_entries
+    else:
+        readme_content = update_changelog(existing_readme, args.version, args.message)
 
     # Write temporary README
     readme_path = os.path.join(REPO_ROOT, ".hf_readme_tmp.md")
@@ -172,15 +186,16 @@ def main():
         with open(readme_path, "w", encoding="utf-8") as f:
             f.write(readme_content)
 
-        # Upload parquet file
-        print(f"Uploading papers.parquet to {HF_REPO_ID}...")
-        api.upload_file(
-            path_or_fileobj=PAPERS_PARQUET,
-            path_in_repo="papers.parquet",
-            repo_id=HF_REPO_ID,
-            repo_type="dataset",
-            commit_message=f"{args.version}: {args.message}",
-        )
+        if not args.readme_only:
+            # Upload parquet file
+            print(f"Uploading papers.parquet to {HF_REPO_ID}...")
+            api.upload_file(
+                path_or_fileobj=PAPERS_PARQUET,
+                path_in_repo="papers.parquet",
+                repo_id=HF_REPO_ID,
+                repo_type="dataset",
+                commit_message=f"{args.version}: {args.message}",
+            )
 
         # Upload README
         print("Uploading dataset card...")
@@ -189,19 +204,22 @@ def main():
             path_in_repo="README.md",
             repo_id=HF_REPO_ID,
             repo_type="dataset",
-            commit_message=f"{args.version}: Update dataset card",
+            commit_message="Update dataset card" if args.readme_only else f"{args.version}: Update dataset card",
         )
 
-        # Create version tag
-        print(f"Creating tag {args.version}...")
-        api.create_tag(
-            repo_id=HF_REPO_ID,
-            repo_type="dataset",
-            tag=args.version,
-            tag_message=args.message,
-        )
+        if not args.readme_only:
+            # Create version tag
+            print(f"Creating tag {args.version}...")
+            api.create_tag(
+                repo_id=HF_REPO_ID,
+                repo_type="dataset",
+                tag=args.version,
+                tag_message=args.message,
+            )
 
-        print(f"\nDone! Published {args.version} to https://huggingface.co/datasets/{HF_REPO_ID}")
+            print(f"\nDone! Published {args.version} to https://huggingface.co/datasets/{HF_REPO_ID}")
+        else:
+            print(f"\nDone! Updated dataset card at https://huggingface.co/datasets/{HF_REPO_ID}")
     finally:
         if os.path.exists(readme_path):
             os.remove(readme_path)
