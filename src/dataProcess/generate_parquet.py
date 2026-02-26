@@ -1,6 +1,7 @@
 """Generate Parquet files from papers.csv and authors.csv with optimized types."""
 
 import csv
+import csv
 import os
 import pandas as pd
 import pyarrow as pa
@@ -22,6 +23,23 @@ def split_semicolon_list(value):
     if pd.isna(value) or value == "":
         return []
     return [item.strip() for item in value.split(";") if item.strip()]
+
+
+def read_paper_links(doi):
+    """Read a paperLinks CSV file for the given DOI, returning a list of dicts."""
+    path = os.path.join(PAPER_LINKS_DIR, doi)
+    if not os.path.isfile(path):
+        return []
+    links = []
+    with open(path, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            name = (row.get("name") or "").strip()
+            url = (row.get("url") or "").strip()
+            icon = (row.get("icon") or "").strip()
+            if name or url:
+                links.append({"name": name, "url": url, "icon": icon})
+    return links
 
 
 def read_paper_links(doi):
