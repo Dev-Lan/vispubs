@@ -10,6 +10,7 @@ from combine import combine
 from process_paper_links import create_stub_files
 from bulk_preprint_search import search_preprint_versions
 from update_paper_link_flags import update_paper_link_flags
+from generate_parquet import generate_parquet
 from update_changelog import update_changelog
 
 
@@ -76,6 +77,11 @@ def process_new_data_from_dblp():
     step += 1
     print_banner(f"🦉 {step}. update_paper_link_flags")
     update_paper_link_flags()
+
+    # Generate Parquet files from CSVs
+    step += 1
+    print_banner(f"🦉 {step}. generate_parquet")
+    generate_parquet()
 
     # Update the changelog file
     step += 1
