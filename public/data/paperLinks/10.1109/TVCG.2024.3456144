@@ -2,4 +2,5 @@ name,url,icon
 Paper Preprint,http://arxiv.org/abs/2407.17431,paper
 Supplemental Material,https://github.com/ProvenanceWidgets/Supplemental-Material,other
 IEEE VIS Conference Page,https://ieeevis.org/year/2024/program/paper_v-full-1204.html,other
-Fast Forward Video,https://youtu.be/Ed1cZDTTFd0,video
+Fast Forward Video,https://youtu.be/Ed1cZDTTFd0,videoPresentation,https://youtu.be/HC69aABUJuc,video
+Session Recording,https://ieeevis-uploads.b-cdn.net/vis24/v-full/v-full-1204/v-full-1204_Preview.mp4?token=NcgZCl_jM23zSL86QflPmp1ABUfon9PW1Ai_9rwx-P0&expires=1730433600,video
