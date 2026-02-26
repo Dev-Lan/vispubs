@@ -12,6 +12,7 @@ from bulk_preprint_search import search_preprint_versions
 from update_paper_link_flags import update_paper_link_flags
 from generate_parquet import generate_parquet
 from update_changelog import update_changelog
+from validate_data import main as validate_data
 
 
 def process_new_data_from_dblp():
@@ -87,6 +88,11 @@ def process_new_data_from_dblp():
     step += 1
     print_banner(f"🦉 {step}. update_changelog")
     update_changelog(new_papers_award_abstract)
+
+    # Validate data and write report
+    step += 1
+    print_banner(f"🦉 {step}. validate_data")
+    validate_data()
     return
 
 
