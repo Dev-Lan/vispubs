@@ -4,7 +4,9 @@ import { useWindowSize } from '@vueuse/core';
 import { useKeypress } from 'vue3-keypress';
 
 import { usePaperDataStore } from 'src/stores/paperDataStore';
+import { useSeo } from 'src/composables/useSeo';
 const paperDataStore = usePaperDataStore();
+useSeo();
 
 import PaperInformation from 'src/components/PaperInformation.vue';
 import PaperList from 'src/components/PaperList.vue';
@@ -85,8 +87,10 @@ function focusNextPaper() {
   </q-drawer>
   <q-page-container>
     <q-page class="items-center">
-      <PaperList v-if="paperDataStore.allData" />
-      <div class="q-ma-lg" v-else>loading...</div>
+      <div v-if="paperDataStore.allData" :data-nosnippet="rightDrawerOpen ? '' : undefined">
+        <PaperList />
+      </div>
+      <div v-else class="q-ma-lg">loading...</div>
     </q-page>
   </q-page-container>
 </template>
