@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>vispubs example scatterplot</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      #info {
+        flex: 0 0 auto;
+        padding: 6px 10px;
+        font-size: 12px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+      }
+      #info .muted {
+        opacity: 0.7;
+      }
+      #canvas-wrap {
+        flex: 1 1 auto;
+        position: relative;
+        min-height: 0;
+      }
+      canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      body.dark {
+        background: #1d1d1d;
+        color: #eee;
+      }
+      body.light {
+        background: #fafafa;
+        color: #222;
+      }
+    </style>
+  </head>
+  <body class="light">
+    <div id="info">
+      <span id="count" class="muted">Waiting for vispubs…</span>
+    </div>
+    <div id="canvas-wrap">
+      <canvas id="chart"></canvas>
+    </div>
+
+    <script>
+      (function () {
+        'use strict';
+
+        const canvas = document.getElementById('chart');
+        const ctx = canvas.getContext('2d');
+        const info = document.getElementById('count');
+
+        let state = null;
+        let layout = null;
+        let hoveredDoi = null;
+        let dpr = window.devicePixelRatio || 1;
+
+        function resizeCanvas() {
+          const wrap = canvas.parentElement;
+          const w = wrap.clientWidth;
+          const h = wrap.clientHeight;
+          canvas.width = Math.max(1, Math.floor(w * dpr));
+          canvas.height = Math.max(1, Math.floor(h * dpr));
+          canvas.style.width = w + 'px';
+          canvas.style.height = h + 'px';
+          computeLayout();
+          draw();
+        }
+
+        function computeLayout() {
+          if (!state || !state.papers || state.papers.length === 0) {
+            layout = null;
+            return;
+          }
+          const papers = state.papers;
+
+          const byYear = new Map();
+          for (const p of papers) {
+            const year = p.year;
+            if (!byYear.has(year)) byYear.set(year, []);
+            byYear.get(year).push(p);
+          }
+          let minYear = Infinity;
+          let maxYear = -Infinity;
+          let maxCount = 0;
+          for (const [year, list] of byYear) {
+            if (year < minYear) minYear = year;
+            if (year > maxYear) maxYear = year;
+            if (list.length > maxCount) maxCount = list.length;
+          }
+          if (minYear === maxYear) {
+            minYear -= 0.5;
+            maxYear += 0.5;
+          }
+
+          const W = canvas.width;
+          const H = canvas.height;
+          const padL = 44 * dpr;
+          const padR = 12 * dpr;
+          const padT = 12 * dpr;
+          const padB = 28 * dpr;
+          const plotW = Math.max(1, W - padL - padR);
+          const plotH = Math.max(1, H - padT - padB);
+
+          const yearSpan = maxYear - minYear || 1;
+          const radius = Math.max(2 * dpr, Math.min(6 * dpr, plotW / papers.length));
+
+          const points = [];
+          const indexByDoi = new Map();
+          const yearCursor = new Map();
+          for (const p of papers) {
+            const cursor = (yearCursor.get(p.year) || 0);
+            yearCursor.set(p.year, cursor + 1);
+            const x = padL + ((p.year - minYear) / yearSpan) * plotW;
+            const yFrac = maxCount > 1 ? cursor / (maxCount - 1) : 0.5;
+            const y = padT + plotH - yFrac * plotH;
+            indexByDoi.set(p.doi, points.length);
+            points.push({ doi: p.doi, x, y, year: p.year });
+          }
+
+          layout = {
+            points,
+            indexByDoi,
+            minYear,
+            maxYear,
+            maxCount,
+            padL,
+            padR,
+            padT,
+            padB,
+            plotW,
+            plotH,
+            radius,
+          };
+        }
+
+        function colorForPaper(p, isSelected, isFocused) {
+          const darkMode = state && state.darkMode;
+          if (isSelected) return darkMode ? '#ffd54f' : '#f57c00';
+          if (isFocused) return darkMode ? '#80cbc4' : '#00796b';
+          return darkMode ? '#90a4ae' : '#546e7a';
+        }
+
+        function draw() {
+          const W = canvas.width;
+          const H = canvas.height;
+          ctx.clearRect(0, 0, W, H);
+          if (!state || !layout) return;
+
+          const darkMode = state.darkMode;
+          ctx.strokeStyle = darkMode
+            ? 'rgba(255,255,255,0.4)'
+            : 'rgba(0,0,0,0.4)';
+          ctx.fillStyle = darkMode ? '#eee' : '#222';
+          ctx.lineWidth = 1 * dpr;
+          ctx.font = `${11 * dpr}px sans-serif`;
+          ctx.textBaseline = 'middle';
+
+          ctx.beginPath();
+          ctx.moveTo(layout.padL, layout.padT);
+          ctx.lineTo(layout.padL, layout.padT + layout.plotH);
+          ctx.lineTo(layout.padL + layout.plotW, layout.padT + layout.plotH);
+          ctx.stroke();
+
+          ctx.textAlign = 'right';
+          ctx.fillText(
+            String(layout.maxCount),
+            layout.padL - 4 * dpr,
+            layout.padT + 4 * dpr
+          );
+          ctx.fillText(
+            '0',
+            layout.padL - 4 * dpr,
+            layout.padT + layout.plotH - 2 * dpr
+          );
+
+          ctx.textAlign = 'center';
+          const ty = layout.padT + layout.plotH + 16 * dpr;
+          const yearTicks = Math.max(2, Math.min(8, Math.round(layout.plotW / (60 * dpr))));
+          for (let i = 0; i <= yearTicks; i++) {
+            const year = Math.round(
+              layout.minYear + (i / yearTicks) * (layout.maxYear - layout.minYear)
+            );
+            const x =
+              layout.padL + ((year - layout.minYear) / (layout.maxYear - layout.minYear || 1)) * layout.plotW;
+            ctx.fillText(String(year), x, ty);
+          }
+
+          const selectedIdx = state.selectedDoi
+            ? layout.indexByDoi.get(state.selectedDoi)
+            : null;
+          const focusedIdx = state.focusedDoi
+            ? layout.indexByDoi.get(state.focusedDoi)
+            : null;
+
+          for (let i = 0; i < layout.points.length; i++) {
+            if (i === selectedIdx || i === focusedIdx) continue;
+            const pt = layout.points[i];
+            ctx.fillStyle = colorForPaper(pt, false, false);
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, layout.radius, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          if (focusedIdx != null) {
+            const pt = layout.points[focusedIdx];
+            ctx.fillStyle = colorForPaper(pt, false, true);
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, layout.radius * 1.6, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          if (selectedIdx != null) {
+            const pt = layout.points[selectedIdx];
+            ctx.fillStyle = colorForPaper(pt, true, false);
+            ctx.strokeStyle = darkMode ? '#fff' : '#000';
+            ctx.lineWidth = 2 * dpr;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, layout.radius * 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+          }
+        }
+
+        function hitTest(clientX, clientY) {
+          if (!layout) return null;
+          const rect = canvas.getBoundingClientRect();
+          const x = (clientX - rect.left) * dpr;
+          const y = (clientY - rect.top) * dpr;
+          const r = layout.radius * 2.2;
+          const r2 = r * r;
+          let best = null;
+          let bestDist = r2;
+          for (const pt of layout.points) {
+            const dx = pt.x - x;
+            const dy = pt.y - y;
+            const d = dx * dx + dy * dy;
+            if (d <= bestDist) {
+              bestDist = d;
+              best = pt;
+            }
+          }
+          return best;
+        }
+
+        canvas.addEventListener('pointermove', function (event) {
+          const hit = hitTest(event.clientX, event.clientY);
+          const doi = hit ? hit.doi : null;
+          if (doi === hoveredDoi) return;
+          hoveredDoi = doi;
+          window.parent.postMessage(
+            { type: 'vispubs:focusPaper', doi: doi },
+            '*'
+          );
+        });
+
+        canvas.addEventListener('pointerleave', function () {
+          if (hoveredDoi == null) return;
+          hoveredDoi = null;
+          window.parent.postMessage(
+            { type: 'vispubs:focusPaper', doi: null },
+            '*'
+          );
+        });
+
+        canvas.addEventListener('click', function (event) {
+          const hit = hitTest(event.clientX, event.clientY);
+          if (!hit) return;
+          window.parent.postMessage(
+            { type: 'vispubs:selectPaper', doi: hit.doi },
+            '*'
+          );
+        });
+
+        window.addEventListener('message', function (event) {
+          const data = event.data;
+          if (!data || data.type !== 'vispubs:state') return;
+          state = data;
+          document.body.className = state.darkMode ? 'dark' : 'light';
+          info.textContent =
+            state.papers.length +
+            ' paper' +
+            (state.papers.length === 1 ? '' : 's') +
+            (state.filters && state.filters.searchText
+              ? ' (search: "' + state.filters.searchText + '")'
+              : '');
+          computeLayout();
+          draw();
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+
+        resizeCanvas();
+        window.parent.postMessage({ type: 'vispubs:ready' }, '*');
+      })();
+    </script>
+  </body>
+</html>
