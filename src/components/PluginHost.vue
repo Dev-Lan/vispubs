@@ -140,8 +140,7 @@ watch(
     paperDataStore.focusedPaperIndex,
     globalStore.darkMode,
   ],
-  () => debouncedPostState(),
-  { deep: true }
+  () => debouncedPostState()
 );
 
 function maybePromptAndLoad(): void {
