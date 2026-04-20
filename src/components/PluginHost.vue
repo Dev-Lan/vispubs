@@ -157,7 +157,7 @@ function maybePromptAndLoad(): void {
       `<p>This page wants to load a plugin from <b>${escapeHtml(
         originLabel.value
       )}</b>.</p>` +
-      `<p>Plugins run in a sandboxed iframe and can display visualizations using the public paper data. They cannot read your cookies, local storage, or anything else on vispubs.com.</p>` +
+      '<p>Plugins run in a sandboxed iframe and can display visualizations using the public paper data. They cannot read your cookies, local storage, or anything else on vispubs.com.</p>' +
       '<p>Only load plugins from sources you trust.</p>',
     html: true,
     persistent: true,
