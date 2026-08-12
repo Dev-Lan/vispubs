@@ -175,11 +175,31 @@ def resolve(row, by_doi, by_title):
     return None, "no dblp record found"
 
 
-def fix_authors(vis_csv, xml_path, dry_run=False):
+def fix_authors(vis_csv, xml_path, dry_run=False, dois=None, allow_count_change=()):
+    """Correct author names for early-access papers, or for specific DOIs.
+
+    dois restricts the work to those papers regardless of their Early flag, which
+    is what makes a correction re-runnable after the flag has been cleared.
+
+    allow_count_change lists DOIs where a differing author count has been
+    reviewed by a human and should be applied. The default is to refuse, since an
+    unexpected count usually means the match is wrong.
+    """
     logger = logging.getLogger("fix_early_access_authors")
+    allow_count_change = {d.strip().lower() for d in allow_count_change}
 
     df = pd.read_csv(vis_csv, dtype=str)
-    early_mask = df["Early"].apply(is_early)
+    if dois:
+        wanted = {d.strip().lower() for d in dois}
+        early_mask = df["DOI"].fillna("").str.strip().str.lower().isin(wanted)
+        found = int(early_mask.sum())
+        if found != len(wanted):
+            missing = wanted - set(df["DOI"].fillna("").str.strip().str.lower())
+            raise SystemExit(f"DOIs not found in {vis_csv}: {sorted(missing)}")
+        logger.info(f"targeting {found} paper(s) by DOI")
+    else:
+        early_mask = df["Early"].apply(is_early)
+
     early_count = int(early_mask.sum())
     if early_count == 0:
         logger.info("No papers flagged Early — nothing to do.")
@@ -206,9 +226,14 @@ def fix_authors(vis_csv, xml_path, dry_run=False):
             matched_by[how] += 1
             replacement = record["authors"]
 
-            if len(replacement) != len(existing):
-                # A differing author count means the match is wrong, not that
-                # the names need updating. Never apply it.
+            doi_key = str(row.get("DOI") or "").strip().lower()
+            if (
+                len(replacement) != len(existing)
+                and doi_key not in allow_count_change
+            ):
+                # A differing author count usually means the match is wrong, not
+                # that the names need updating. Refuse unless a human has
+                # reviewed this specific paper and passed it in explicitly.
                 mismatched.append(
                     {
                         "row": row,
@@ -218,6 +243,11 @@ def fix_authors(vis_csv, xml_path, dry_run=False):
                     }
                 )
             elif replacement != existing:
+                if len(replacement) != len(existing):
+                    logger.info(
+                        f"applying reviewed author-count change for {doi_key}: "
+                        f"{len(existing)} -> {len(replacement)} authors"
+                    )
                 df.at[idx, "AuthorNames-Deduped"] = ";".join(replacement)
                 names_changed += 1
 
@@ -408,6 +438,22 @@ def main():
         help="correct the intermediate file only; skip rebuilding papers.csv "
         "and the Parquet files",
     )
+    parser.add_argument(
+        "--doi",
+        nargs="+",
+        metavar="DOI",
+        help="correct only these papers, regardless of their Early flag. Use to "
+        "re-run a correction after the flag has already been cleared.",
+    )
+    parser.add_argument(
+        "--allow-author-count-change",
+        nargs="+",
+        default=[],
+        metavar="DOI",
+        help="apply dblp's author list for these DOIs even though its author "
+        "count differs from ours. Only pass a DOI after reviewing it in the "
+        "report — an unexpected count usually means a bad match.",
+    )
     args = parser.parse_args()
 
     configure_logging()
@@ -415,7 +461,13 @@ def main():
     if not args.authors_only:
         if not os.path.isfile(args.dblp_xml):
             raise SystemExit(f"dblp snapshot not found: {args.dblp_xml}")
-        fix_authors(VIS_CSV, args.dblp_xml, dry_run=args.dry_run)
+        fix_authors(
+            VIS_CSV,
+            args.dblp_xml,
+            dry_run=args.dry_run,
+            dois=args.doi,
+            allow_count_change=args.allow_author_count_change,
+        )
 
     if args.dry_run or args.no_regen:
         # papers.csv still holds the uncorrected names, so reconciling
