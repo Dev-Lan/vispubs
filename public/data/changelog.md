@@ -2,6 +2,7 @@
 
 - add 55 papers from EuroVis[2026], including the 3 STAR papers, from the Eurographics digital library. These are marked early access since author names are not yet deduplicated.
 - add arXiv preprint links for 21 of the EuroVis 2026 papers
+- expand abbreviated EuroVis 2026 author names to full names using Crossref and ORCID
 - update EuroVis STAR collection to include papers from 2026.
 - check 1702 papers from CHI[2026], add the 106 visualization-relevant ones
 - add newly found preprint links for 16 VIS 2025 papers
