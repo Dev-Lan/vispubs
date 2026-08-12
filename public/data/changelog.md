@@ -1,3 +1,8 @@
+###### Aug 12, 2026
+
+- correct author names for 255 VIS 2024 / 2025 papers that were ingested before publication, using dblp's deduplicated names
+- clear the early access flag on those papers, which all have real DOIs now
+
 ###### Feb 8, 2026
 
 - update VIS 2025 placeholder DOIs with real DOIs
