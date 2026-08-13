@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>vispubs example scatterplot</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      #info {
+        flex: 0 0 auto;
+        padding: 6px 10px;
+        font-size: 12px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+      }
+      #info .muted {
+        opacity: 0.7;
+      }
+      #canvas-wrap {
+        flex: 1 1 auto;
+        position: relative;
+        min-height: 0;
+      }
+      canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      body.dark {
+        background: #1d1d1d;
+        color: #eee;
+      }
+      body.light {
+        background: #fafafa;
+        color: #222;
+      }
+    </style>
+  </head>
+  <body class="light">
+    <div id="info">
+      <span id="count" class="muted">Waiting for vispubs…</span>
+    </div>
+    <div id="canvas-wrap">
+      <canvas id="chart"></canvas>
+    </div>
+
+    <script>
+      (function () {
+        'use strict';
+
+        const canvas = document.getElementById('chart');
+        const ctx = canvas.getContext('2d');
+        const info = document.getElementById('count');
+
+        // Tableau 10 — readable in both light and dark mode.
+        const PALETTE = [
+          '#4e79a7',
+          '#f28e2b',
+          '#e15759',
+          '#76b7b2',
+          '#59a14f',
+          '#edc948',
+          '#b07aa1',
+          '#ff9da7',
+          '#9c755f',
+          '#bab0ac',
+        ];
+
+        let state = null;
+        let layout = null;
+        let venueColors = new Map();
+        let hoveredDoi = null;
+        let dpr = window.devicePixelRatio || 1;
+
+        function resizeCanvas() {
+          const wrap = canvas.parentElement;
+          const w = wrap.clientWidth;
+          const h = wrap.clientHeight;
+          canvas.width = Math.max(1, Math.floor(w * dpr));
+          canvas.height = Math.max(1, Math.floor(h * dpr));
+          canvas.style.width = w + 'px';
+          canvas.style.height = h + 'px';
+          computeLayout();
+          draw();
+        }
+
+        function titleLen(p) {
+          return p && typeof p.title === 'string' ? p.title.length : 0;
+        }
+        function abstractLen(p) {
+          return p && typeof p.abstract === 'string' ? p.abstract.length : 0;
+        }
+
+        function ensureVenueColors(papers) {
+          const venues = new Set();
+          for (const p of papers) venues.add(p.conference || 'Unknown');
+          const sorted = Array.from(venues).sort();
+          const next = new Map();
+          sorted.forEach((v, i) => {
+            next.set(v, PALETTE[i % PALETTE.length]);
+          });
+          venueColors = next;
+        }
+
+        function computeLayout() {
+          if (!state || !state.papers || state.papers.length === 0) {
+            layout = null;
+            return;
+          }
+          const papers = state.papers;
+          ensureVenueColors(papers);
+
+          let xMin = Infinity;
+          let xMax = -Infinity;
+          let yMin = Infinity;
+          let yMax = -Infinity;
+          for (const p of papers) {
+            const x = titleLen(p);
+            const y = abstractLen(p);
+            if (x < xMin) xMin = x;
+            if (x > xMax) xMax = x;
+            if (y < yMin) yMin = y;
+            if (y > yMax) yMax = y;
+          }
+          if (xMin === xMax) {
+            xMin -= 1;
+            xMax += 1;
+          }
+          if (yMin === yMax) {
+            yMin -= 1;
+            yMax += 1;
+          }
+
+          const W = canvas.width;
+          const H = canvas.height;
+          const padL = 56 * dpr;
+          const padR = 12 * dpr;
+          const padT = 12 * dpr;
+          const padB = 44 * dpr;
+          const legendH = 22 * dpr;
+          const plotW = Math.max(1, W - padL - padR);
+          const plotH = Math.max(1, H - padT - padB - legendH);
+
+          const xSpan = xMax - xMin || 1;
+          const ySpan = yMax - yMin || 1;
+          const radius = Math.max(
+            2 * dpr,
+            Math.min(5 * dpr, Math.sqrt((plotW * plotH) / papers.length) / 4)
+          );
+
+          const points = [];
+          const indexByDoi = new Map();
+          for (const p of papers) {
+            const tx = titleLen(p);
+            const ay = abstractLen(p);
+            const px = padL + ((tx - xMin) / xSpan) * plotW;
+            const py = padT + plotH - ((ay - yMin) / ySpan) * plotH;
+            indexByDoi.set(p.doi, points.length);
+            points.push({
+              doi: p.doi,
+              x: px,
+              y: py,
+              venue: p.conference || 'Unknown',
+            });
+          }
+
+          layout = {
+            points,
+            indexByDoi,
+            xMin,
+            xMax,
+            yMin,
+            yMax,
+            padL,
+            padR,
+            padT,
+            padB,
+            legendH,
+            plotW,
+            plotH,
+            radius,
+          };
+        }
+
+        function colorForPaper(pt, isSelected, isFocused) {
+          const darkMode = state && state.darkMode;
+          if (isSelected) return darkMode ? '#ffffff' : '#000000';
+          if (isFocused) return darkMode ? '#ffd54f' : '#f57c00';
+          return venueColors.get(pt.venue) || (darkMode ? '#90a4ae' : '#546e7a');
+        }
+
+        function niceTicks(min, max, count) {
+          const span = max - min || 1;
+          const step = Math.pow(10, Math.floor(Math.log10(span / count)));
+          const err = (span / count) / step;
+          let mult;
+          if (err >= 7.5) mult = 10;
+          else if (err >= 3.5) mult = 5;
+          else if (err >= 1.5) mult = 2;
+          else mult = 1;
+          const tickStep = mult * step;
+          const first = Math.ceil(min / tickStep) * tickStep;
+          const ticks = [];
+          for (let v = first; v <= max + 1e-9; v += tickStep) {
+            ticks.push(Math.round(v));
+          }
+          return ticks;
+        }
+
+        function draw() {
+          const W = canvas.width;
+          const H = canvas.height;
+          ctx.clearRect(0, 0, W, H);
+          if (!state || !layout) return;
+
+          const darkMode = state.darkMode;
+          const axisColor = darkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
+          const textColor = darkMode ? '#eee' : '#222';
+          ctx.lineWidth = 1 * dpr;
+          ctx.font = `${11 * dpr}px sans-serif`;
+          ctx.textBaseline = 'middle';
+
+          // Axes
+          ctx.strokeStyle = axisColor;
+          ctx.fillStyle = textColor;
+          ctx.beginPath();
+          ctx.moveTo(layout.padL, layout.padT);
+          ctx.lineTo(layout.padL, layout.padT + layout.plotH);
+          ctx.lineTo(layout.padL + layout.plotW, layout.padT + layout.plotH);
+          ctx.stroke();
+
+          // Y ticks
+          ctx.textAlign = 'right';
+          const yTicks = niceTicks(layout.yMin, layout.yMax, 5);
+          for (const v of yTicks) {
+            const y =
+              layout.padT +
+              layout.plotH -
+              ((v - layout.yMin) / (layout.yMax - layout.yMin || 1)) *
+                layout.plotH;
+            ctx.fillText(String(v), layout.padL - 6 * dpr, y);
+            ctx.strokeStyle = darkMode
+              ? 'rgba(255,255,255,0.08)'
+              : 'rgba(0,0,0,0.08)';
+            ctx.beginPath();
+            ctx.moveTo(layout.padL, y);
+            ctx.lineTo(layout.padL + layout.plotW, y);
+            ctx.stroke();
+          }
+
+          // X ticks
+          ctx.textAlign = 'center';
+          const xTicks = niceTicks(layout.xMin, layout.xMax, 6);
+          const tickY = layout.padT + layout.plotH + 14 * dpr;
+          for (const v of xTicks) {
+            const x =
+              layout.padL +
+              ((v - layout.xMin) / (layout.xMax - layout.xMin || 1)) *
+                layout.plotW;
+            ctx.fillStyle = textColor;
+            ctx.fillText(String(v), x, tickY);
+          }
+
+          // Axis labels
+          ctx.fillStyle = textColor;
+          ctx.font = `${12 * dpr}px sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.fillText(
+            'Title length (characters)',
+            layout.padL + layout.plotW / 2,
+            layout.padT + layout.plotH + 30 * dpr
+          );
+          ctx.save();
+          ctx.translate(14 * dpr, layout.padT + layout.plotH / 2);
+          ctx.rotate(-Math.PI / 2);
+          ctx.fillText('Abstract length (characters)', 0, 0);
+          ctx.restore();
+          ctx.font = `${11 * dpr}px sans-serif`;
+
+          const selectedIdx = state.selectedDoi
+            ? layout.indexByDoi.get(state.selectedDoi)
+            : null;
+          const focusedIdx = state.focusedDoi
+            ? layout.indexByDoi.get(state.focusedDoi)
+            : null;
+
+          // Base points
+          for (let i = 0; i < layout.points.length; i++) {
+            if (i === selectedIdx || i === focusedIdx) continue;
+            const pt = layout.points[i];
+            ctx.fillStyle = colorForPaper(pt, false, false);
+            ctx.globalAlpha = 0.75;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, layout.radius, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+
+          if (focusedIdx != null) {
+            const pt = layout.points[focusedIdx];
+            ctx.fillStyle = colorForPaper(pt, false, true);
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, layout.radius * 1.6, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          if (selectedIdx != null) {
+            const pt = layout.points[selectedIdx];
+            ctx.fillStyle = venueColors.get(pt.venue) || textColor;
+            ctx.strokeStyle = darkMode ? '#fff' : '#000';
+            ctx.lineWidth = 2 * dpr;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, layout.radius * 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+          }
+
+          drawLegend(darkMode, textColor);
+        }
+
+        function drawLegend(darkMode, textColor) {
+          const entries = Array.from(venueColors.entries());
+          if (entries.length === 0) return;
+          const y = layout.padT + layout.plotH + layout.padB - 6 * dpr;
+          const swatch = 8 * dpr;
+          const gap = 6 * dpr;
+          const pad = 14 * dpr;
+          ctx.font = `${11 * dpr}px sans-serif`;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+
+          // Measure total width for centering
+          let total = 0;
+          for (const [venue] of entries) {
+            total += swatch + gap + ctx.measureText(venue).width + pad;
+          }
+          let x = Math.max(
+            layout.padL,
+            layout.padL + (layout.plotW - total) / 2
+          );
+          for (const [venue, color] of entries) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y - swatch / 2, swatch, swatch);
+            x += swatch + gap;
+            ctx.fillStyle = textColor;
+            ctx.fillText(venue, x, y);
+            x += ctx.measureText(venue).width + pad;
+          }
+        }
+
+        function hitTest(clientX, clientY) {
+          if (!layout) return null;
+          const rect = canvas.getBoundingClientRect();
+          const x = (clientX - rect.left) * dpr;
+          const y = (clientY - rect.top) * dpr;
+          const r = layout.radius * 2.2;
+          const r2 = r * r;
+          let best = null;
+          let bestDist = r2;
+          for (const pt of layout.points) {
+            const dx = pt.x - x;
+            const dy = pt.y - y;
+            const d = dx * dx + dy * dy;
+            if (d <= bestDist) {
+              bestDist = d;
+              best = pt;
+            }
+          }
+          return best;
+        }
+
+        canvas.addEventListener('pointermove', function (event) {
+          const hit = hitTest(event.clientX, event.clientY);
+          const doi = hit ? hit.doi : null;
+          if (doi === hoveredDoi) return;
+          hoveredDoi = doi;
+          window.parent.postMessage(
+            { type: 'vispubs:focusPaper', doi: doi },
+            '*'
+          );
+        });
+
+        canvas.addEventListener('pointerleave', function () {
+          if (hoveredDoi == null) return;
+          hoveredDoi = null;
+          window.parent.postMessage(
+            { type: 'vispubs:focusPaper', doi: null },
+            '*'
+          );
+        });
+
+        canvas.addEventListener('click', function (event) {
+          const hit = hitTest(event.clientX, event.clientY);
+          if (!hit) return;
+          window.parent.postMessage(
+            { type: 'vispubs:selectPaper', doi: hit.doi },
+            '*'
+          );
+        });
+
+        window.addEventListener('message', function (event) {
+          const data = event.data;
+          if (!data || data.type !== 'vispubs:state') return;
+          state = data;
+          document.body.className = state.darkMode ? 'dark' : 'light';
+          info.textContent =
+            state.papers.length +
+            ' paper' +
+            (state.papers.length === 1 ? '' : 's') +
+            (state.filters && state.filters.searchText
+              ? ' (search: "' + state.filters.searchText + '")'
+              : '');
+          computeLayout();
+          draw();
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+
+        resizeCanvas();
+        window.parent.postMessage({ type: 'vispubs:ready' }, '*');
+      })();
+    </script>
+  </body>
+</html>

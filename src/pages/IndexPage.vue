@@ -4,13 +4,16 @@ import { useWindowSize } from '@vueuse/core';
 import { useKeypress } from 'vue3-keypress';
 
 import { usePaperDataStore } from 'src/stores/paperDataStore';
+import { usePluginStore } from 'src/stores/pluginStore';
 import { useSeo } from 'src/composables/useSeo';
 const paperDataStore = usePaperDataStore();
+const pluginStore = usePluginStore();
 useSeo();
 
 import PaperInformation from 'src/components/PaperInformation.vue';
 import PaperList from 'src/components/PaperList.vue';
 import FilterPanel from 'src/components/FilterPanel.vue';
+import PluginHost from 'src/components/PluginHost.vue';
 
 const rightDrawerOpen = computed(() => paperDataStore.selectedPaper !== null);
 
@@ -87,8 +90,21 @@ function focusNextPaper() {
   </q-drawer>
   <q-page-container>
     <q-page class="items-center">
-      <div v-if="paperDataStore.allData" :data-nosnippet="rightDrawerOpen ? '' : undefined">
-        <PaperList />
+      <div
+        v-if="paperDataStore.allData"
+        :data-nosnippet="rightDrawerOpen ? '' : undefined"
+        class="plugin-split"
+        :style="{
+          flexDirection:
+            pluginStore.pluginOrientation === 'horizontal' ? 'row' : 'column',
+        }"
+      >
+        <div class="plugin-split__pane">
+          <PaperList />
+        </div>
+        <div v-if="pluginStore.pluginUrl" class="plugin-split__pane plugin-split__pane--plugin">
+          <PluginHost />
+        </div>
       </div>
       <div v-else class="q-ma-lg">loading...</div>
     </q-page>
@@ -101,5 +117,22 @@ a {
 
 .no-scroll-x {
   overflow-x: hidden;
+}
+
+.plugin-split {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 50px);
+  align-items: stretch;
+}
+
+.plugin-split__pane {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+.plugin-split__pane--plugin {
+  display: flex;
 }
 </style>

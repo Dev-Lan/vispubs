@@ -11,6 +11,10 @@ For the specific Licenses I use two different licenses. One for the data files, 
 - Data Files (everything in public/data): CC-By 4.0, International. See LICENSE-DATA.md.
 - Other Code (everything else): Apache 2.0. See LICENSE.
 
+## Plugins
+
+VisPubs supports third-party plugins that render alongside the paper list in a sandboxed iframe. Load one via `?plugin=<url>`; see [docs/plugins.md](docs/plugins.md) for the message protocol, security model, and the reference example plugin.
+
 # For Developer
 
 ## Install the dependencies
