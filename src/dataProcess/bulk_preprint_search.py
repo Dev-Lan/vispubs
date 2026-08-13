@@ -1,8 +1,10 @@
 import logging
 import csv
+import json
 from pyparsing import C
 import os
 import urllib
+import urllib.request
 import feedparser
 import time
 import sys
@@ -26,8 +28,19 @@ ROOT_FOLDER = '../../public/data/paperLinks/'
 NOT_FOUND_LIST_FILENAME = './intermediate/openSourceNotFoundList.csv'
 CHECK_OSF = False
 
-def search_preprint_versions():
+def search_preprint_versions(year=None, conference=None, dois=None, recheck=False):
+    '''Search for preprints, optionally restricted to a subset of papers.
+
+    With no arguments every paper is considered, which is how main.py calls it.
+    The filters exist because a paper added outside the main pipeline (see
+    ingest_eurovis_26.py) would otherwise need a full pass over the corpus --
+    thousands of papers at 5 seconds each -- to be reached.
+
+    recheck ignores the previously-searched-and-not-found list, for re-running
+    after the search itself has been improved.
+    '''
     logger = logging.getLogger('search_preprint_versions')
+    wanted_dois = {d.strip().lower() for d in dois} if dois else None
     if CHECK_OSF:
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
@@ -44,10 +57,18 @@ def search_preprint_versions():
         found_osf = 0
         for row in reader:
             conf = row[0]
-            year = row[1]
+            year_value = row[1]
             title = row[2]
             doi = row[3]
-            print_message = str(index) + ": " + conf + "-" + year + ", " + title[:45] + '...'
+
+            if year is not None and year_value != str(year):
+                continue
+            if conference is not None and conf != conference:
+                continue
+            if wanted_dois is not None and doi.strip().lower() not in wanted_dois:
+                continue
+
+            print_message = str(index) + ": " + conf + "-" + year_value + ", " + title[:45] + '...'
             index += 1
             already_added = preprint_already_added(doi)
             if already_added:
@@ -56,7 +77,7 @@ def search_preprint_versions():
                 found_links += 1
                 continue
 
-            if preprint_already_searched_and_not_found(doi):
+            if not recheck and preprint_already_searched_and_not_found(doi):
                 logger.debug(print_message)
                 logger.debug('\t🤷 Skipping, searched in past and not found')
                 continue
@@ -66,7 +87,15 @@ def search_preprint_versions():
             if link is not None:
                 logger.info("\t🍺 Found arXiv")
                 found_arxiv += 1
-            elif CHECK_OSF:
+            else:
+                # The title search misses retitled preprints, and sometimes does
+                # not surface a paper whose title matches exactly. Semantic
+                # Scholar maps the DOI straight to an arXiv id instead.
+                link = search_semantic_scholar_arxiv(doi)
+                if link is not None:
+                    logger.info("\t🍺 Found arXiv (via Semantic Scholar DOI lookup)")
+                    found_arxiv += 1
+            if link is None and CHECK_OSF:
                 link = search_osf_api(browser, title)
                 if link is not None:
                     logger.info("\t🍺 Found OSF")
@@ -78,9 +107,11 @@ def search_preprint_versions():
                 added_links += 1
             else:
                 logger.info("\t❌ Not found")
-                # add doi and title to end of OPEN_SOURCE_NOT_FOUND_LIST_FILENAME
-                with open(NOT_FOUND_LIST_FILENAME, 'a') as not_found_file:
-                    not_found_file.write(doi + ',' + title + '\n')
+                # add doi and title to end of OPEN_SOURCE_NOT_FOUND_LIST_FILENAME,
+                # unless a recheck already recorded it on an earlier pass
+                if not preprint_already_searched_and_not_found(doi):
+                    with open(NOT_FOUND_LIST_FILENAME, 'a') as not_found_file:
+                        not_found_file.write(doi + ',' + title + '\n')
 
             wait_and_print(5)
     if CHECK_OSF:
@@ -135,6 +166,31 @@ def search_osf_api(browser, title):
 def close_enough(s1, s2):
     d = nltk.edit_distance(s1.lower(), s2.lower())
     return d <= 3
+
+def search_semantic_scholar_arxiv(doi):
+    '''Look up a paper's arXiv preprint by DOI via Semantic Scholar.
+
+    The arXiv title search misses preprints whose title was reworded before
+    publication, and it also fails on titles it simply does not surface in its
+    own results. Semantic Scholar records the DOI-to-arXiv relationship
+    directly, so no title comparison is involved and no false match is possible.
+    '''
+    logger = logging.getLogger('search_preprint_versions')
+    if not doi:
+        return None
+    url = f'https://api.semanticscholar.org/graph/v1/paper/DOI:{doi}?fields=externalIds'
+    try:
+        with urllib.request.urlopen(url, timeout=30) as response:
+            data = json.load(response)
+        arxiv_id = (data.get('externalIds') or {}).get('ArXiv')
+        if arxiv_id:
+            return f'https://arxiv.org/pdf/{arxiv_id}'
+        return None
+    except Exception as error:
+        logger.error('🐛🐞 semantic scholar error 🐞🐛')
+        logger.error(error)
+        return None
+
 
 def search_arxiv_api(title):
     logger = logging.getLogger('search_preprint_versions')
@@ -201,5 +257,16 @@ def add_link_to_file(link, doi):
 
 
 if __name__ == '__main__':
-  search_preprint_versions()
+  import argparse
+  parser = argparse.ArgumentParser(description='Search for preprint versions of papers')
+  parser.add_argument('--year', help='only search papers from this year')
+  parser.add_argument('--conference', help='only search papers from this venue, e.g. EuroVis')
+  parser.add_argument('--doi', nargs='+', metavar='DOI', help='only search these DOIs')
+  parser.add_argument('--recheck', action='store_true',
+                      help='ignore the previously-not-found list and search again')
+  args = parser.parse_args()
+
+  logging.basicConfig(level=logging.INFO, format='%(message)s')
+  search_preprint_versions(year=args.year, conference=args.conference,
+                           dois=args.doi, recheck=args.recheck)
 

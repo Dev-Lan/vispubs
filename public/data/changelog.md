@@ -1,5 +1,7 @@
 ###### Aug 12, 2026
 
+- add 55 papers from EuroVis[2026], including the 3 STAR papers, from the Eurographics digital library. These are marked early access since author names are not yet deduplicated.
+- add arXiv preprint links for 21 of the EuroVis 2026 papers
 - check 1702 papers from CHI[2026], add the 106 visualization-relevant ones
 - add newly found preprint links for 16 VIS 2025 papers
 - correct author names for 255 VIS 2024 / 2025 papers that were ingested before publication, using dblp's deduplicated names
