@@ -1,0 +1,92 @@
+name: Publish Hugging Face dataset release
+
+# Manually triggered on purpose. The release procedure expects a human to have
+# reviewed the validation report before publishing, and an on-push trigger would
+# remove that gate -- merging a stack of data PRs would publish several releases
+# in a row. To automate it later, add:
+#
+#   push:
+#     branches: [main]
+#     paths: ['public/data/papers.parquet']
+#
+# The version and message are both resolved by the script, so the same command
+# works either way.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report the version and message without publishing'
+        type: boolean
+        default: true
+      message:
+        description: 'Release message (default: newest changelog.md entry)'
+        type: string
+        required: false
+      version:
+        description: 'Version tag (default: next after the newest tag on the repo)'
+        type: string
+        required: false
+      prerelease:
+        description: 'Prerelease suffix, e.g. beta (default: inherit from latest tag)'
+        type: string
+        required: false
+      stable:
+        description: 'Publish without a prerelease suffix'
+        type: boolean
+        default: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install huggingface_hub
+
+      - name: Publish release
+        env:
+          # Needs a write-scoped token stored as a repository secret.
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          # Passed as environment variables rather than interpolated into the
+          # script, so input text cannot be executed as shell.
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_MESSAGE: ${{ inputs.message }}
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_PRERELEASE: ${{ inputs.prerelease }}
+          INPUT_STABLE: ${{ inputs.stable }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${HF_TOKEN:-}" ]; then
+            echo "HF_TOKEN secret is not set — add a write-scoped Hugging Face token" >&2
+            exit 1
+          fi
+
+          # Built as an array so each value stays one argv element, and with
+          # explicit if-blocks rather than `test && append`, whose exit status
+          # interacts awkwardly with `set -e`.
+          args=()
+          if [ -n "$INPUT_MESSAGE" ]; then
+            args+=(--message "$INPUT_MESSAGE")
+          else
+            args+=(--message-from-changelog)
+          fi
+          if [ -n "$INPUT_VERSION" ]; then
+            args+=(--version "$INPUT_VERSION")
+          fi
+          if [ -n "$INPUT_PRERELEASE" ]; then
+            args+=(--prerelease "$INPUT_PRERELEASE")
+          fi
+          if [ "$INPUT_STABLE" = "true" ]; then
+            args+=(--stable)
+          fi
+          if [ "$INPUT_DRY_RUN" = "true" ]; then
+            args+=(--dry-run)
+          fi
+
+          python src/dataProcess/upload_hf_dataset.py "${args[@]}"

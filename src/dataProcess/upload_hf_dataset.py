@@ -1,7 +1,15 @@
 """Upload papers.parquet to Hugging Face dataset repo with version tagging.
 
 Usage:
-    python upload_hf_dataset.py --version v2026.0-alpha --message "Initial alpha release"
+    Version and message resolved automatically -- the version from the tags
+    already on the repo, the message from the newest changelog.md entry:
+    python upload_hf_dataset.py --message-from-changelog
+
+    Either can be given explicitly instead:
+    python upload_hf_dataset.py --version v2026.4-alpha --message "Add EuroVis 2026"
+
+    See what would be published without publishing:
+    python upload_hf_dataset.py --message-from-changelog --dry-run
 
     Update only the dataset card (no data upload or version tag):
     python upload_hf_dataset.py --readme-only
@@ -21,8 +29,16 @@ from huggingface_hub import HfApi
 
 REPO_ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 PAPERS_PARQUET = os.path.join(REPO_ROOT, "public", "data", "papers.parquet")
+CHANGELOG = os.path.join(REPO_ROOT, "public", "data", "changelog.md")
 HF_REPO_ID = "DevLan/vispubs"
 VERSION_PATTERN = re.compile(r"^v\d{4}\.\d+(-[a-zA-Z][a-zA-Z0-9.]*)?$")
+
+# Same shape as VERSION_PATTERN, but with the parts captured so existing tags can
+# be compared to work out the next version.
+VERSION_PARTS = re.compile(r"^v(\d{4})\.(\d+)(-[a-zA-Z][a-zA-Z0-9.]*)?$")
+
+# Used when the repo has no tags at all to inherit a suffix from.
+DEFAULT_PRERELEASE = "-alpha"
 
 DATASET_CARD_TEMPLATE = """\
 ---
@@ -125,6 +141,94 @@ def validate_version(version):
         sys.exit(1)
 
 
+def existing_versions(api, repo_id):
+    """Return [(year, minor, suffix)] for every version tag on the repo."""
+    refs = api.list_repo_refs(repo_id=repo_id, repo_type="dataset")
+    parsed = []
+    for tag in refs.tags:
+        match = VERSION_PARTS.match(tag.name)
+        if match:
+            parsed.append(
+                (int(match.group(1)), int(match.group(2)), match.group(3) or "")
+            )
+    return parsed
+
+
+def next_version(api, repo_id, prerelease=None, stable=False):
+    """Work out the next version from the tags already on the repo.
+
+    The year is the current calendar year and the minor number is one past the
+    highest already used in that year, so a new year restarts at 0 on its own.
+
+    The prerelease suffix is inherited rather than dropped: forgetting to pass it
+    would otherwise silently promote the dataset to a stable release. Pass
+    --stable to drop it deliberately.
+
+    Note the year here is the calendar year, which is not always the data cycle
+    year -- a January run ingesting the previous VIS cycle is the case to watch.
+    Pass --version explicitly for that.
+    """
+    year = date.today().year
+    tags = existing_versions(api, repo_id)
+    this_year = [t for t in tags if t[0] == year]
+
+    if this_year:
+        latest = max(this_year, key=lambda t: t[1])
+        minor = latest[1] + 1
+        inherited = latest[2]
+    else:
+        minor = 0
+        # Carry the suffix across a year boundary from the newest tag overall.
+        inherited = (
+            max(tags, key=lambda t: (t[0], t[1]))[2] if tags else DEFAULT_PRERELEASE
+        )
+
+    if stable:
+        suffix = ""
+    elif prerelease:
+        suffix = "-" + prerelease.lstrip("-")
+    else:
+        suffix = inherited
+
+    return f"v{year}.{minor}{suffix}"
+
+
+def latest_changelog_entry(path=CHANGELOG):
+    """Return the newest changelog entry as a one-line release message.
+
+    changelog.md is a reverse-chronological list of dated sections:
+
+        ###### Aug 12, 2026
+
+        - check 1702 papers from CHI[2026]
+        - add newly found preprint links for 16 VIS 2025 papers
+
+    The bullets of the first section become the message, so the release message
+    is whatever was already written for the site changelog.
+    """
+    if not os.path.isfile(path):
+        print(f"Error: {path} not found, cannot read a release message from it")
+        sys.exit(1)
+
+    bullets = []
+    in_first_section = False
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            if line.startswith("######"):
+                if in_first_section:
+                    break  # reached the next dated section
+                in_first_section = True
+                continue
+            if in_first_section and line.strip().startswith("- "):
+                bullets.append(line.strip()[2:].strip())
+
+    if not bullets:
+        print(f"Error: no bullet points found in the newest {path} entry")
+        sys.exit(1)
+
+    return "; ".join(bullets)
+
+
 def get_existing_readme(api, repo_id):
     """Fetch the existing README.md from the HF repo, or return None."""
     try:
@@ -150,15 +254,51 @@ def update_changelog(readme_content, version, message):
 
 def main():
     parser = argparse.ArgumentParser(description="Upload papers.parquet to Hugging Face")
-    parser.add_argument("--version", help="Version tag (e.g., v2026.0-alpha)")
+    parser.add_argument(
+        "--version",
+        help="Version tag (e.g., v2026.4-alpha). Computed from the tags already "
+        "on the repo when omitted.",
+    )
     parser.add_argument("--message", help="Changelog entry describing changes")
+    parser.add_argument(
+        "--message-from-changelog",
+        action="store_true",
+        help="Use the newest entry in public/data/changelog.md as the message",
+    )
+    parser.add_argument(
+        "--prerelease",
+        help="Prerelease suffix for a computed version (e.g. beta). Inherited "
+        "from the latest existing tag when omitted.",
+    )
+    parser.add_argument(
+        "--stable",
+        action="store_true",
+        help="Drop the prerelease suffix from a computed version",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Report the version and message that would be published, then stop",
+    )
     parser.add_argument("--readme-only", action="store_true", help="Only update the dataset card (no data upload or version tag)")
     args = parser.parse_args()
 
+    if args.message and args.message_from_changelog:
+        parser.error("pass either --message or --message-from-changelog, not both")
+    if args.prerelease and args.stable:
+        parser.error("--prerelease and --stable are mutually exclusive")
+
+    message = args.message
     if not args.readme_only:
-        if not args.version or not args.message:
-            parser.error("--version and --message are required unless using --readme-only")
-        validate_version(args.version)
+        if args.message_from_changelog:
+            message = latest_changelog_entry()
+        if not message:
+            parser.error(
+                "a message is required unless using --readme-only: pass "
+                "--message or --message-from-changelog"
+            )
+        if args.version:
+            validate_version(args.version)
 
         if not os.path.isfile(PAPERS_PARQUET):
             print(f"Error: {PAPERS_PARQUET} not found. Run generate_parquet.py first.")
@@ -169,6 +309,30 @@ def main():
     # Create repo if it doesn't exist
     api.create_repo(repo_id=HF_REPO_ID, repo_type="dataset", exist_ok=True)
 
+    # Resolve the version only after the repo is known to exist, since computing
+    # it reads the repo's existing tags.
+    version = args.version
+    if not args.readme_only:
+        already = {
+            f"v{y}.{m}{s}" for y, m, s in existing_versions(api, HF_REPO_ID)
+        }
+        if not version:
+            version = next_version(
+                api, HF_REPO_ID, prerelease=args.prerelease, stable=args.stable
+            )
+            print(f"Computed next version: {version}")
+        if version in already:
+            # Re-tagging an existing version would publish different data under a
+            # name someone may already have pinned.
+            print(f"Error: tag {version} already exists on {HF_REPO_ID}")
+            sys.exit(1)
+
+        print(f"Version: {version}")
+        print(f"Message: {message}")
+        if args.dry_run:
+            print("\n--dry-run: nothing published")
+            return
+
     # Get existing README or use template
     existing_readme = get_existing_readme(api, HF_REPO_ID)
     if args.readme_only:
@@ -178,7 +342,7 @@ def main():
             existing_entries = existing_readme.split("## Changelog", 1)[1].lstrip("\n")
         readme_content = DATASET_CARD_TEMPLATE + existing_entries
     else:
-        readme_content = update_changelog(existing_readme, args.version, args.message)
+        readme_content = update_changelog(existing_readme, version, message)
 
     # Write temporary README
     readme_path = os.path.join(REPO_ROOT, ".hf_readme_tmp.md")
@@ -194,7 +358,7 @@ def main():
                 path_in_repo="papers.parquet",
                 repo_id=HF_REPO_ID,
                 repo_type="dataset",
-                commit_message=f"{args.version}: {args.message}",
+                commit_message=f"{version}: {message}",
             )
 
         # Upload README
@@ -204,20 +368,20 @@ def main():
             path_in_repo="README.md",
             repo_id=HF_REPO_ID,
             repo_type="dataset",
-            commit_message="Update dataset card" if args.readme_only else f"{args.version}: Update dataset card",
+            commit_message="Update dataset card" if args.readme_only else f"{version}: Update dataset card",
         )
 
         if not args.readme_only:
             # Create version tag
-            print(f"Creating tag {args.version}...")
+            print(f"Creating tag {version}...")
             api.create_tag(
                 repo_id=HF_REPO_ID,
                 repo_type="dataset",
-                tag=args.version,
-                tag_message=args.message,
+                tag=version,
+                tag_message=message,
             )
 
-            print(f"\nDone! Published {args.version} to https://huggingface.co/datasets/{HF_REPO_ID}")
+            print(f"\nDone! Published {version} to https://huggingface.co/datasets/{HF_REPO_ID}")
         else:
             print(f"\nDone! Updated dataset card at https://huggingface.co/datasets/{HF_REPO_ID}")
     finally:
