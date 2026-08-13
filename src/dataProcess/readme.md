@@ -275,7 +275,7 @@ preserved.
 
 ## 6. Announce
 
-Post to Twitter/X, Mastodon, Bluesky, and LinkedIn.
+Post to social media as needed.
 
 ---
 
