@@ -6,8 +6,7 @@
 - update EuroVis STAR collection to include papers from 2026.
 - check 1702 papers from CHI[2026], add the 106 visualization-relevant ones
 - add newly found preprint links for 16 VIS 2025 papers
-- correct author names for 255 VIS 2024 / 2025 papers that were ingested before publication, using dblp's deduplicated names
-- clear the early access flag on those papers, which all have real DOIs now
+- correct author names for 255 VIS 2024 / 2025 papers that were ingested before publication, using dblp's deduplicated names and clear early access flag
 
 ###### Feb 8, 2026
 
