@@ -212,11 +212,56 @@ huggingface-cli login       # or set the HF_TOKEN environment variable
 ### Publish a release
 
 ```bash
-python upload_hf_dataset.py --version v2026.1 --message "Add EuroVis 2026 and CHI 2026 papers"
+python upload_hf_dataset.py --message-from-changelog
 ```
 
-Both flags are required. This uploads the parquet file, regenerates the dataset card, appends a
-changelog entry to it, and creates a git tag on the HF repo.
+Both the version and the message are worked out for you:
+
+- The **version** comes from the tags already on the HF repo — current year, and one past the
+  highest minor number used in that year.
+- The **message** comes from the newest dated entry in `../../public/data/changelog.md`, which
+  `update_changelog` has already written during the pipeline run.
+
+This uploads the parquet file, regenerates the dataset card, appends a changelog entry to it, and
+creates a git tag on the HF repo.
+
+Check what would happen first with `--dry-run`, which prints the resolved version and message and
+stops:
+
+```bash
+python upload_hf_dataset.py --message-from-changelog --dry-run
+```
+
+Either value can still be given explicitly, which overrides the automatic one:
+
+```bash
+python upload_hf_dataset.py --version v2026.4-alpha --message "Add EuroVis 2026"
+```
+
+Publishing refuses to reuse a tag that already exists, since that would put different data behind a
+version someone may have pinned.
+
+### Publish from GitHub Actions
+
+`.github/workflows/publish-hf-dataset.yaml` runs the same command. It is **manually triggered**
+(`workflow_dispatch`) — from the Actions tab, or:
+
+```bash
+gh workflow run publish-hf-dataset.yaml -f dry_run=false
+```
+
+It defaults to `dry_run=true`, so running it with no arguments reports what would be published
+without publishing. The `version`, `message`, `prerelease`, and `stable` inputs map to the
+corresponding flags.
+
+It needs a **write-scoped Hugging Face token stored as the `HF_TOKEN` repository secret**; the
+workflow fails with a clear message if that secret is missing.
+
+The trigger is deliberately manual rather than firing on changes to `papers.parquet`. The review
+phase above expects a human to have read the validation report before publishing, and an on-push
+trigger would remove that gate — merging a stack of data PRs would publish several releases in a
+row. The commented-out `push` block in the workflow shows what to add if that tradeoff becomes
+worthwhile; the command does not change.
 
 ### Update only the dataset card
 
@@ -235,6 +280,14 @@ Versions are `v{year}.{minor}` with an optional `-{prerelease}` suffix.
   judgment call about whether a change is "big enough" to tag.
 - When the cycle rolls over to a new year, `{minor}` resets to `0` — so `v2026.4` is followed by
   `v2027.0`.
+
+All three fall out of the automatic version, with one case to watch: the script uses the **calendar**
+year, which is not always the data cycle year. A January run that ingests the previous VIS cycle is
+the exception — pass `--version` explicitly there rather than accepting the computed value.
+
+A computed version **inherits the prerelease suffix** from the latest existing tag, so an automatic
+release cannot accidentally promote the dataset from `-alpha` to stable. Changing it is deliberate:
+`--prerelease beta` to move to beta, `--stable` to drop the suffix.
 
 Prerelease suffixes:
 
