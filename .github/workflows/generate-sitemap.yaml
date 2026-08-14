@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
     paths: ['public/data/papers.csv']
+  # A push-triggered workflow only ever runs the copy of itself that exists on
+  # the default branch, so without this there is no way to run it on demand or
+  # to test a change to it before merging.
+  workflow_dispatch:
 
 # git-auto-commit-action pushes the regenerated sitemap back to main, which the
 # default read-only GITHUB_TOKEN rejects with a 403.
