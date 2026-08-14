@@ -35,6 +35,12 @@ on:
         type: boolean
         default: false
 
+# A successful publish records the tag in public/data/hf_version.json, which is
+# committed back so the website can offer a pinned export snippet. Without this
+# the push is rejected with a 403, as it was for the sitemap workflow.
+permissions:
+  contents: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -90,3 +96,11 @@ jobs:
           fi
 
           python src/dataProcess/upload_hf_dataset.py "${args[@]}"
+
+      # Only a real publish writes the version file, so on a dry run there is
+      # nothing staged and this step commits nothing.
+      - name: Commit the published version
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: record published Hugging Face version'
+          file_pattern: public/data/hf_version.json

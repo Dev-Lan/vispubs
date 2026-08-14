@@ -20,6 +20,7 @@ Requirements:
 """
 
 import argparse
+import json
 import os
 import re
 import sys
@@ -30,6 +31,8 @@ from huggingface_hub import HfApi
 REPO_ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 PAPERS_PARQUET = os.path.join(REPO_ROOT, "public", "data", "papers.parquet")
 CHANGELOG = os.path.join(REPO_ROOT, "public", "data", "changelog.md")
+# Read by the website so the export dialog can offer a pinned snippet.
+VERSION_FILE = os.path.join(REPO_ROOT, "public", "data", "hf_version.json")
 HF_REPO_ID = "DevLan/vispubs"
 VERSION_PATTERN = re.compile(r"^v\d{4}\.\d+(-[a-zA-Z][a-zA-Z0-9.]*)?$")
 
@@ -229,6 +232,21 @@ def latest_changelog_entry(path=CHANGELOG):
     return "; ".join(bullets)
 
 
+def write_version_file(version, path=VERSION_FILE):
+    """Record the version just published where the website can read it.
+
+    The export dialog offers to pin a snippet to the release matching the data
+    on screen, which means the front end needs to know which release that is.
+    Only a successful publish writes this, so the file never advertises a
+    version that does not exist.
+    """
+    payload = {"version": version, "published": date.today().isoformat()}
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
+        f.write("\n")
+    print(f"Wrote {path}")
+
+
 def get_existing_readme(api, repo_id):
     """Fetch the existing README.md from the HF repo, or return None."""
     try:
@@ -381,6 +399,7 @@ def main():
                 tag_message=message,
             )
 
+            write_version_file(version)
             print(f"\nDone! Published {version} to https://huggingface.co/datasets/{HF_REPO_ID}")
         else:
             print(f"\nDone! Updated dataset card at https://huggingface.co/datasets/{HF_REPO_ID}")

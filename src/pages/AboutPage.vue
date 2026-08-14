@@ -122,6 +122,23 @@ function hideCopiedToClipboardMessage() {
 
 const showCopiedToClipboardMessage = ref(false);
 
+const hfSnippetString = `from datasets import load_dataset
+
+ds = load_dataset("DevLan/vispubs")
+print(ds["train"].to_pandas().head())`;
+
+function copyHfSnippet() {
+  navigator.clipboard.writeText(hfSnippetString);
+  showCopiedHfSnippetMessage.value = true;
+  hideCopiedHfSnippetMessageDebounced();
+}
+
+const hideCopiedHfSnippetMessageDebounced = debounce(function () {
+  showCopiedHfSnippetMessage.value = false;
+}, 1500);
+
+const showCopiedHfSnippetMessage = ref(false);
+
 const datasetComparisonRows = ref([
   {
     name: 'IEEE VIS',
@@ -240,14 +257,71 @@ const datasetComparisonColumns = ref([
           <p>
             Currently this site includes IEEE Visualization (<b>VIS</b>)
             publications from 1990–2025, <b>EuroVis</b> publications from
-            1999–2025, and <b>CHI</b> publications from 1986–2025.
+            1999–2026, and <b>CHI</b> publications from 1986–2026.
 
             To download a <i>static</i> version of the full dataset, select the EXPORT button without any filters or
             search term.
 
-            You can also access a <i>live</i> version of the dataset from <a href="https://vispubs.com/data/papers.csv">vispubs.com/data/papers.csv</a>.
+            You can also access a <i>live</i> version of the dataset from <a href="https://vispubs.com/data/papers.csv">vispubs.com/data/papers.csv</a> and <a href="https://vispubs.com/data/papers.parquet">vispubs.com/data/papers.parquet</a>.
 
           </p>
+
+          <div class="fancy-subheader text-h5 q-mb-sm">Hugging Face</div>
+          <p>
+            The paper metadata is also published as a dataset at
+            <a href="https://huggingface.co/datasets/DevLan/vispubs"
+              >DevLan/vispubs <q-icon name="open_in_new" /></a
+            >, which is the easiest way to work with it in Python. Install it
+            with <code>pip install datasets</code>.
+          </p>
+
+          <q-card
+            flat
+            bordered
+            class="q-mb-md"
+            :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'"
+          >
+            <q-card-section>
+              <div class="row items-center no-wrap">
+                <div class="col">
+                  <div class="text-h6">Python</div>
+                </div>
+                <div class="col-auto">
+                  <Transition>
+                    <q-badge v-if="showCopiedHfSnippetMessage"
+                      >Copied to clipboard</q-badge
+                    >
+                  </Transition>
+                  <q-btn
+                    v-if="clipboardSupported"
+                    round
+                    flat
+                    icon="content_copy"
+                    title="Copy snippet to Clipboard"
+                    @click="copyHfSnippet"
+                  />
+                </div>
+              </div>
+              <pre>{{ hfSnippetString }}</pre>
+            </q-card-section>
+          </q-card>
+
+          <p>
+            Every publish is tagged, so you can pin a specific release and keep
+            an analysis reproducible as the data grows — pass
+            <code>revision="v2026.6"</code> to <code>load_dataset</code>.
+            Versions are <code>v{year}.{minor}</code>, where the year tracks the
+            ingest cycle and the minor number increments on every publish.
+          </p>
+          <p>
+            The Hugging Face copy contains the papers table only, and stores
+            authors, awards, and resources as list columns rather than the
+            semicolon-separated strings used in the CSV. It also includes a
+            <code>ResourceLinks</code> column that the CSV export does not have.
+            The EXPORT button on the main page will generate a snippet that
+            reproduces whatever filters you have applied.
+          </p>
+
           <p>
             If you notice a mistake, or would like to make a
             suggestion, please
