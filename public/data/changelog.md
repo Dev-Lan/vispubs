@@ -1,5 +1,6 @@
-###### Aug 12, 2026
+###### Aug 13, 2026
 
+- recover missing abstracts for 7 papers using OpenAlex, and add the abstract for one more by hand
 - add 55 papers from EuroVis[2026], including the 3 STAR papers, from the Eurographics digital library. These are marked early access since author names are not yet deduplicated.
 - add arXiv preprint links for 21 of the EuroVis 2026 papers
 - expand abbreviated EuroVis 2026 author names to full names using Crossref and ORCID
