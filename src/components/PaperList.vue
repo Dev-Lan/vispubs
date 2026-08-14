@@ -8,6 +8,12 @@ import ExcelJS from 'exceljs';
 import { storeToRefs } from 'pinia';
 import SimpleBar from './SimpleBar.vue';
 import { useQuasar } from 'quasar';
+import {
+  buildHfSnippet,
+  fetchHfVersion,
+  HF_DATASET_URL,
+  type HfVersionInfo,
+} from 'src/composables/useHfDataset';
 
 const $q = useQuasar();
 const paperDataStore = usePaperDataStore();
@@ -134,6 +140,53 @@ async function exportToXLSX() {
     }),
     'vispubs.xlsx'
   );
+}
+
+const hfVersion = ref<HfVersionInfo | null>(null);
+const pinToVersion = ref(false);
+
+// Only exists once a release has been published, so the pinned option stays
+// hidden rather than offering a revision that might not be there.
+onMounted(async () => {
+  hfVersion.value = await fetchHfVersion();
+});
+
+const hfSnippet = computed(() => {
+  const yearRange = paperDataStore.yearFilterSet
+    ? {
+        // An open-ended side comes through as ±Infinity, which is not a year.
+        min: Number.isFinite(paperDataStore.yearFilter?.min)
+          ? (paperDataStore.yearFilter?.min as number)
+          : paperDataStore.yearExtent?.[0] ?? 0,
+        max: Number.isFinite(paperDataStore.yearFilter?.max)
+          ? (paperDataStore.yearFilter?.max as number)
+          : paperDataStore.yearExtent?.[1] ?? 0,
+      }
+    : null;
+
+  const collection = paperDataStore.paperCollection
+    ? {
+        title: paperDataStore.paperCollection.title,
+        dois: Array.from(paperDataStore.paperCollection.papers),
+      }
+    : null;
+
+  return buildHfSnippet({
+    revision:
+      pinToVersion.value && hfVersion.value ? hfVersion.value.version : null,
+    venues: Array.from(paperDataStore.venueFilter),
+    yearRange,
+    awards: Array.from(paperDataStore.awardFilter),
+    resources: Array.from(paperDataStore.resourceFilter),
+    collection,
+    searchText: paperDataStore.searchText ?? '',
+    matchCase: !!paperDataStore.matchCase,
+    useRegex: !!paperDataStore.useRegex,
+  });
+});
+
+function copyHfSnippet() {
+  copyToClipboard(hfSnippet.value);
 }
 
 const searchbar = ref();
@@ -361,6 +414,42 @@ const hoveredIndex = ref<number | null>();
               @click="copyJSON"
             />
           </span>
+
+          <q-separator class="q-mb-md" />
+
+          <div class="flex row justify-between items-center q-mb-sm">
+            <div>
+              <div class="text-subtitle2">Python (Hugging Face)</div>
+              <div class="text-caption">
+                Pulls the same papers from the
+                <a :href="HF_DATASET_URL" target="_blank" rel="noopener"
+                  >dataset <q-icon name="open_in_new" /></a
+                >.
+              </div>
+            </div>
+            <q-btn
+              v-if="clipboardSupported"
+              size="md"
+              icon="content_copy"
+              label="copy"
+              title="copy python snippet to clipboard"
+              @click="copyHfSnippet"
+            />
+          </div>
+
+          <q-toggle
+            v-if="hfVersion"
+            v-model="pinToVersion"
+            dense
+            class="q-mb-sm"
+            :label="`Pin to ${hfVersion.version} instead of the latest release`"
+          />
+          <div v-if="pinToVersion" class="text-caption q-mb-sm text-warning">
+            The site can be ahead of the last release, so a pinned version may
+            not contain the newest papers.
+          </div>
+
+          <pre class="hf-snippet">{{ hfSnippet }}</pre>
         </q-card-section>
 
         <q-card-actions align="right">
@@ -482,6 +571,17 @@ const hoveredIndex = ref<number | null>();
 <style scoped lang="scss">
 .flex-grow-1 {
   flex-grow: 1;
+}
+
+.hf-snippet {
+  max-height: 260px;
+  overflow: auto;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  padding: 0.5rem;
+  margin: 0;
+  border-radius: 4px;
+  background: rgba(127, 127, 127, 0.12);
 }
 
 .error-message {
