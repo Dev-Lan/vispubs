@@ -7,6 +7,9 @@ import time
 INPUT_FILENAME = "./temp/new_papers.csv"
 OUTPUT_FILENAME = "./temp/new_papers_abstract.csv"
 
+# OpenAlex asks automated clients to identify themselves.
+OPENALEX_USER_AGENT = "vispubs/1.0 (https://vispubs.com; mailto:devin@hms.harvard.edu)"
+
 
 def strip_xml_tags(text):
     """Remove XML tags from a string"""
@@ -62,14 +65,58 @@ def replace_special_chars(text):
     )
 
 
-def get_abstract_from_doi(doi):
+def reconstruct_inverted_abstract(inverted_index):
+    """Rebuild plain text from OpenAlex's abstract_inverted_index.
+
+    OpenAlex stores abstracts as {word: [positions]} rather than as text, so
+    the words have to be placed back in order.
+    """
+    positions = []
+    for word, indexes in inverted_index.items():
+        for index in indexes:
+            positions.append((index, word))
+    positions.sort()
+    return " ".join(word for _, word in positions)
+
+
+def get_abstract_from_doi_openalex(doi):
+    """Look up an abstract in OpenAlex, which covers some older material that
+    Semantic Scholar and Crossref do not."""
+    logger = logging.getLogger("abstracts")
+    url = f"https://api.openalex.org/works/doi:{doi}"
+    try:
+        response = requests.get(url, headers={"User-Agent": OPENALEX_USER_AGENT})
+        response.raise_for_status()
+        inverted_index = response.json().get("abstract_inverted_index")
+        if not inverted_index:
+            return None
+        return strip_xml_tags(reconstruct_inverted_abstract(inverted_index))
+    except Exception as e:
+        logger.error(f"Error fetching abstract for DOI {doi}: {e}")
+        return None
+
+
+def get_abstract_from_doi_with_source(doi):
+    """Return (abstract, source), trying each source in turn.
+
+    The source is reported so a backfill run can say where its recoveries came
+    from rather than just how many there were.
+    """
     # sleep for 2 seconds to avoid rate limiting
     time.sleep(2)
-    abstract = get_abstract_from_doi_semantic(doi)
-    if abstract is None:
-        abstract = get_abstract_from_doi_crossref(doi)
-    if abstract is not None:
-        abstract = replace_special_chars(abstract)
+    for source, lookup in (
+        ("semantic scholar", get_abstract_from_doi_semantic),
+        ("crossref", get_abstract_from_doi_crossref),
+        ("openalex", get_abstract_from_doi_openalex),
+    ):
+        abstract = lookup(doi)
+        if abstract is not None and abstract.strip():
+            return replace_special_chars(abstract), source
+    return None, None
+
+
+def get_abstract_from_doi(doi):
+    abstract, _ = get_abstract_from_doi_with_source(doi)
     return abstract
 
 
