@@ -1,6 +1,6 @@
 ###### Aug 14, 2026
 
-- recover missing abstracts for 8 papers using OpenAlex
+- recover missing abstracts for 7 papers using OpenAlex, and add the abstract for one more by hand
 
 ###### Aug 12, 2026
 

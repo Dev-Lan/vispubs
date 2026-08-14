@@ -20,7 +20,7 @@ import csv
 import logging
 import os
 
-from abstracts import get_abstract_from_doi_with_source
+from abstracts import get_abstract_from_doi_with_source, looks_like_abstract
 
 csv.field_size_limit(10**9)
 
@@ -67,6 +67,38 @@ def published_dois():
         return {r["DOI"].strip() for r in csv.DictReader(f) if r.get("DOI")}
 
 
+def set_abstract(doi, text_path, dry_run, logger):
+    """Write a hand-supplied abstract for one paper.
+
+    Kept in the script rather than done by hand so the correction is repeatable
+    and lands in the intermediate file, where it survives the next pipeline run.
+    """
+    with open(text_path, encoding="utf-8") as f:
+        text = " ".join(f.read().split())
+    if not looks_like_abstract(text):
+        raise SystemExit(f"{text_path} does not look like an abstract")
+
+    target = doi.strip().lower()
+    for path in INTERMEDIATE_FILES:
+        if not os.path.isfile(path):
+            continue
+        rows, fieldnames = load(path)
+        for row in rows:
+            if (row.get("DOI") or "").strip().lower() != target:
+                continue
+            previous = (row.get("Abstract") or "").strip()
+            row["Abstract"] = text
+            logger.info(f"{path}: set abstract for {doi} ({len(text)} chars)")
+            if previous:
+                logger.info(f"  replaced: {previous[:60]!r}")
+            if not dry_run:
+                save(path, rows, fieldnames)
+            else:
+                logger.info("  --dry-run: nothing written")
+            return
+    raise SystemExit(f"DOI not found in the intermediate files: {doi}")
+
+
 def wanted(row, args, published):
     if (row.get("Abstract") or "").strip():
         return False
@@ -100,10 +132,22 @@ def main():
         "site. Note this can change which CHI papers the keyword filter "
         "selects, so review the resulting chi-filtered.csv.",
     )
+    parser.add_argument(
+        "--set-abstract",
+        metavar="FILE",
+        help="set the abstract for a single --doi from this file, instead of "
+        "looking it up. For papers no source has, or has correctly.",
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     logger = logging.getLogger("backfill_abstracts")
+
+    if args.set_abstract:
+        if not args.doi or len(args.doi) != 1:
+            parser.error("--set-abstract applies to exactly one --doi")
+        set_abstract(args.doi[0], args.set_abstract, args.dry_run, logger)
+        return
 
     published = None if args.include_unpublished else published_dois()
     if published is not None:

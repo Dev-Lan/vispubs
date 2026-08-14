@@ -96,12 +96,32 @@ def get_abstract_from_doi_openalex(doi):
         return None
 
 
+def looks_like_abstract(text):
+    """Reject responses that are technically non-empty but are not prose.
+
+    A source can return a fragment rather than an abstract -- OpenAlex returned
+    the single token "44" for one paper, which was stored as its abstract. An
+    abstract is several sentences of prose, so requiring a handful of words and
+    some letters filters that out while leaving genuinely short abstracts alone.
+    """
+    if text is None:
+        return False
+    stripped = text.strip()
+    if len(stripped) < 40:
+        return False
+    if len(stripped.split()) < 8:
+        return False
+    return any(c.isalpha() for c in stripped)
+
+
 def get_abstract_from_doi_with_source(doi):
     """Return (abstract, source), trying each source in turn.
 
     The source is reported so a backfill run can say where its recoveries came
-    from rather than just how many there were.
+    from rather than just how many there were. A source returning something that
+    does not look like an abstract falls through to the next one.
     """
+    logger = logging.getLogger("abstracts")
     # sleep for 2 seconds to avoid rate limiting
     time.sleep(2)
     for source, lookup in (
@@ -110,8 +130,15 @@ def get_abstract_from_doi_with_source(doi):
         ("openalex", get_abstract_from_doi_openalex),
     ):
         abstract = lookup(doi)
-        if abstract is not None and abstract.strip():
-            return replace_special_chars(abstract), source
+        if abstract is None:
+            continue
+        if not looks_like_abstract(abstract):
+            logger.warning(
+                f"Discarding implausible abstract for {doi} from {source}: "
+                f"{abstract.strip()[:60]!r}"
+            )
+            continue
+        return replace_special_chars(abstract), source
     return None, None
 
 
