@@ -442,12 +442,8 @@ const hoveredIndex = ref<number | null>();
             v-model="pinToVersion"
             dense
             class="q-mb-sm"
-            :label="`Pin to ${hfVersion.version} instead of the latest release`"
+            :label="`Pin to this version (${hfVersion.version}) of the dataset`"
           />
-          <div v-if="pinToVersion" class="text-caption q-mb-sm text-warning">
-            The site can be ahead of the last release, so a pinned version may
-            not contain the newest papers.
-          </div>
 
           <pre class="hf-snippet">{{ hfSnippet }}</pre>
         </q-card-section>
