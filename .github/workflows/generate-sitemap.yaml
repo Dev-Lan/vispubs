@@ -5,6 +5,11 @@ on:
     branches: [main]
     paths: ['public/data/papers.csv']
 
+# git-auto-commit-action pushes the regenerated sitemap back to main, which the
+# default read-only GITHUB_TOKEN rejects with a 403.
+permissions:
+  contents: write
+
 jobs:
   generate-sitemap:
     runs-on: ubuntu-latest
